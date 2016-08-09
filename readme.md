@@ -1,4 +1,4 @@
-Voonne Platform
+Voonne platform
 ===============
 
 Powerful platform based on Nette Framework for building CMS, CRM, IS and other systems.

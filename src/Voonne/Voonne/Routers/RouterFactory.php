@@ -32,6 +32,10 @@ class RouterFactory
 
 		$frontRouter[] = new Route('admin/', 'Default:default');
 
+		$frontRouter[] = $assetsRouter = new RouteList('Assets');
+
+		$assetsRouter[] = new Route('admin/assets/<name .+>', 'Default:default');
+
 		return $router;
 	}
 
