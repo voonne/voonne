@@ -3,9 +3,38 @@
  *
  * Copyright (c) 2016 Jan Lavička (mail@janlavicka.name)
  *
- * For the full copyright and license information, please view the file LICENCE.md that was distributed with this source code.
+ * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
 @media (min-width: @screen-sm-min) {
+	.sidebar-collapse {
+		.navbar {
+			margin-left: 0;
+		}
 
+		.sidebar {
+			width: 0;
+			display: none;
+		}
+
+		.content {
+			position: static;
+			padding-left: 15px;
+			margin-left: 0;
+		}
+	}
+
+	.navbar {
+		width: auto;
+		margin-left: 250px;
+	}
+
+	.sidebar {
+		width: 250px;
+		display: block;
+	}
+
+	.content {
+		padding-left: 265px;
+	}
 }

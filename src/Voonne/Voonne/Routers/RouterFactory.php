@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2016 Jan Lavička (mail@janlavicka.name)
  *
- * For the full copyright and license information, please view the file LICENCE.md that was distributed with this source code.
+ * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
 namespace Voonne\Voonne\Routers;
