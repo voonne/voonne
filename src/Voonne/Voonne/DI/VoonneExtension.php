@@ -10,11 +10,15 @@
 
 namespace Voonne\Voonne\DI;
 
+use Kdyby\Translation\Translator;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\IRouter;
 use Nette\Application\Routers\RouteList;
 use Nette\DI\CompilerExtension;
+use Nette\Utils\Finder;
+use Nette\Utils\Strings;
 use Voonne\Voonne\Assets\AssetsManager;
+use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Routers\RouterFactory;
 
 
@@ -72,6 +76,23 @@ class VoonneExtension extends CompilerExtension
 			->setClass(RouteList::class)
 			->addSetup('offsetSet', [NULL, '@voonne.router'])
 			->addSetup('offsetSet', [NULL, '@voonne.originalRouter']);
+
+		/* translator */
+
+		$translatorName = $builder->getByType(Translator::class);
+
+		if(empty($translatorName)) {
+			throw new InvalidStateException('Kdyby/Translation not found. Please register Kdyby/Translation as an extension.');
+		}
+
+		foreach(Finder::findFiles('*.*.neon')->from(__DIR__ . '/../translations') as $file) {
+			if (!$m = Strings::match($file->getFilename(), '~^(?P<domain>.*?)\.(?P<locale>[^\.]+)\.(?P<format>[^\.]+)$~')) {
+				continue;
+			}
+
+			$builder->getDefinition($translatorName)
+				->addSetup('addResource', [$m['format'], realpath($file->getPathname()), $m['locale'], 'voonne-' . $m['domain']]);
+		}
 	}
 
 }

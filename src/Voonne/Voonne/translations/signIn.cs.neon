@@ -1,0 +1,6 @@
+signIn:
+	title: "Přihlášení"
+	email: "Email"
+	password: "Heslo"
+	submit: "Přihlásit se"
+	lostPassword: "Zapoměli jste heslo?"

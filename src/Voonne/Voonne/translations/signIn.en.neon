@@ -1,0 +1,6 @@
+signIn:
+	title: "Sign in"
+	email: "Email"
+	password: "Password"
+	submit: "Sign in"
+	lostPassword: "Lost your password?"

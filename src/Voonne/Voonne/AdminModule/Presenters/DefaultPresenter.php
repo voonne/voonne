@@ -10,10 +10,8 @@
 
 namespace Voonne\Voonne\AdminModule\Presenters;
 
-use Nette\Application\UI\Presenter;
 
-
-class DefaultPresenter extends Presenter
+class DefaultPresenter extends BasePresenter
 {
 
 }
