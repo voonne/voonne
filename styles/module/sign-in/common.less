@@ -5,3 +5,51 @@
  *
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
+
+html, body {
+	background-color: @background;
+	font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color: @text;
+}
+
+.box {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 340px;
+	margin: -200px 0 0 -170px;
+	border-top: 8px solid @brand;
+	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+	background-color: @white;
+
+	h1 {
+		margin: 0 0 20px 0;
+		text-align: center;
+		font-size: 2.2em;
+	}
+
+	form {
+		padding: 30px 25px;
+		margin: auto;
+	}
+
+	.form-control {
+		background-color: #f2f2f2;
+	}
+
+	.btn-primary {
+		width: 100%;
+	}
+
+	.btn-bottom {
+		display: block;
+		padding: 15px 20px;
+		background-color: #f2f2f2;
+		text-align: center;
+		color: @text;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}

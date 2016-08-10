@@ -1,0 +1,25 @@
+{**
+ * This file is part of the Voonne platform (http://www.voonne.org)
+ *
+ * Copyright (c) 2016 Jan Lavička (mail@janlavicka.name)
+ *
+ * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
+ *}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1">
+
+		<title>{ifset $title}{$title|translate} - {/ifset}Voonne</title>
+
+		<link rel="stylesheet" type="text/css" href="{plink :Admin:Assets:Default:default, name => 'styles/sign-in.css'}">
+	</head>
+
+	<body>
+		{include content}
+
+		<script src="{plink :Admin:Assets:Default:default, name => 'scripts/sign-in.js'}"></script>
+	</body>
+</html>

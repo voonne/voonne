@@ -5,3 +5,34 @@
  *
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
+
+// buttons
+
+.btn {
+	padding: 7px 10px;
+	border-radius: 0;
+}
+
+.btn-primary {
+	background: @brand-dark;
+	border: none;
+
+	&:hover, &:focus, &:active, &:active:hover, &:active:focus {
+		background: @brand;
+		box-shadow: none;
+	}
+}
+
+// forms
+
+.form-control {
+	height: auto;
+	padding: 7px 15px;
+	border-radius: 0;
+	box-shadow: none;
+	background: @white;
+}
+
+label {
+	color: #505050;
+}
