@@ -11,7 +11,7 @@
 namespace Voonne\Voonne\AdminModule\Presenters;
 
 
-class CustomPresenter extends BasePresenter
+class CustomPresenter extends Presenter
 {
 
 }

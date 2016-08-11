@@ -10,15 +10,22 @@
 
 namespace Voonne\Voonne\DI;
 
+use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
+use Kdyby\Doctrine\DI\OrmExtension;
+use Kdyby\Doctrine\Mapping\AnnotationDriver;
 use Kdyby\Translation\Translator;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\IRouter;
 use Nette\Application\Routers\RouteList;
 use Nette\DI\CompilerExtension;
+use Nette\DI\Statement;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
+use Tracy\Debugger;
 use Voonne\Voonne\Assets\AssetsManager;
 use Voonne\Voonne\InvalidStateException;
+use Voonne\Voonne\Model\Facades\UserFacade;
+use Voonne\Voonne\Model\Repositories\UserRepository;
 use Voonne\Voonne\Routers\RouterFactory;
 
 
@@ -28,6 +35,16 @@ class VoonneExtension extends CompilerExtension
 	public function loadConfiguration()
 	{
 		$builder = $this->getContainerBuilder();
+
+		/* facades */
+
+		$builder->addDefinition('voonne.userFacade')
+			->setClass(UserFacade::class);
+
+		/* repositories */
+
+		$builder->addDefinition('voonne.userRepository')
+			->setClass(UserRepository::class);
 
 		/* router */
 
@@ -85,6 +102,7 @@ class VoonneExtension extends CompilerExtension
 			throw new InvalidStateException('Kdyby/Translation not found. Please register Kdyby/Translation as an extension.');
 		}
 
+		// inspired by: https://github.com/Kdyby/Translation/blob/master/src/Kdyby/Translation/DI/TranslationExtension.php
 		foreach(Finder::findFiles('*.*.neon')->from(__DIR__ . '/../translations') as $file) {
 			if (!$m = Strings::match($file->getFilename(), '~^(?P<domain>.*?)\.(?P<locale>[^\.]+)\.(?P<format>[^\.]+)$~')) {
 				continue;
@@ -93,6 +111,40 @@ class VoonneExtension extends CompilerExtension
 			$builder->getDefinition($translatorName)
 				->addSetup('addResource', [$m['format'], realpath($file->getPathname()), $m['locale'], 'voonne-' . $m['domain']]);
 		}
+
+		/* doctrine */
+
+		$metadataDriver = $this->getMetadataDriver();
+
+		if(empty($metadataDriver)) {
+			throw new InvalidStateException('Kdyby/Doctrine not found. Please register Kdyby/Doctrine as an extension.');
+		}
+
+		// inspired by: https://github.com/Kdyby/Doctrine/blob/master/src/Kdyby/Doctrine/DI/OrmExtension.php
+		$this->getContainerBuilder()->addDefinition('voonne.doctrine.annotations')
+			->setClass('Doctrine\Common\Persistence\Mapping\Driver\MappingDriver')
+			->setFactory(AnnotationDriver::class, [
+				0 => [0 => __DIR__ . '/..'],
+				2 => '@doctrine.cache.default.metadata'
+			])
+			->setAutowired(FALSE)
+			->setInject(FALSE);
+
+		$metadataDriver->addSetup('addDriver', ['@voonne.doctrine.annotations', 'Voonne\Voonne']);
+	}
+
+
+	private function getMetadataDriver()
+	{
+		$builder = $this->getContainerBuilder();
+
+		foreach($builder->getDefinitions() as $definition) {
+			if($definition->getClass() == MappingDriverChain::class) {
+				return $definition;
+			}
+		}
+
+		return null;
 	}
 
 }

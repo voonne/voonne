@@ -13,7 +13,6 @@ namespace Voonne\Voonne;
 
 // inspired by: https://github.com/nette/web-addons.nette.org/blob/master/app/misc/exceptions.php
 
-
 class InvalidStateException extends \RuntimeException
 {
 
