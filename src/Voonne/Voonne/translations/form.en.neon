@@ -1,0 +1,3 @@
+rules:
+	required: "Please, fill in this field."
+	email: "Please, fill this field in format xx@xx.xx."

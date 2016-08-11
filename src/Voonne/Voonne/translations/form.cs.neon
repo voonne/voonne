@@ -1,0 +1,3 @@
+rules:
+	required: "Prosím, vyplňte tuto položku."
+	email: "Prosím, vyplňte tuto položku ve formátu xx@xx.xx."

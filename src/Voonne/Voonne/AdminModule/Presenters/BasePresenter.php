@@ -13,9 +13,10 @@ namespace Voonne\Voonne\AdminModule\Presenters;
 use Kdyby\Autowired\AutowireComponentFactories;
 use Kdyby\Autowired\AutowireProperties;
 use Kdyby\Translation\Translator;
+use Nette\Application\UI\Presenter;
 
 
-abstract class Presenter extends \Nette\Application\UI\Presenter
+abstract class BasePresenter extends Presenter
 {
 
 	use AutowireProperties;

@@ -11,17 +11,15 @@
 namespace Voonne\Voonne\DI;
 
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
-use Kdyby\Doctrine\DI\OrmExtension;
 use Kdyby\Doctrine\Mapping\AnnotationDriver;
 use Kdyby\Translation\Translator;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\IRouter;
 use Nette\Application\Routers\RouteList;
 use Nette\DI\CompilerExtension;
-use Nette\DI\Statement;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
-use Tracy\Debugger;
+use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
 use Voonne\Voonne\Assets\AssetsManager;
 use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Model\Facades\UserFacade;
@@ -45,6 +43,11 @@ class VoonneExtension extends CompilerExtension
 
 		$builder->addDefinition('voonne.userRepository')
 			->setClass(UserRepository::class);
+
+		/* forms */
+
+		$builder->addDefinition('voonne.signInFormFactory')
+			->setClass(SignInFormFactory::class);
 
 		/* router */
 

@@ -11,20 +11,20 @@
 {block content}
 
 <div class="box">
-	<form action="">
-		<h1>{='voonne-signIn.signIn.title'|translate}</h1>
+	{form signInForm}
+		<h1>{('voonne-signIn.signIn.title'|translate)}</h1>
 
 		<div class="form-group">
-			<label>{='voonne-signIn.signIn.email'|translate}</label>
-			<input type="text" class="form-control">
+			{label email/}
+			{input email, class => 'form-control'}
 		</div>
 		<div class="form-group">
-			<label>{='voonne-signIn.signIn.password'|translate}</label>
-			<input type="password" class="form-control">
+			{label password/}
+			{input password, class => 'form-control'}
 		</div>
 
-		<input type="submit" class="btn btn-primary" value="{='voonne-signIn.signIn.submit'|translate}">
-	</form>
+		{input submit, class => 'btn btn-primary'}
+	{/form}
 
-	<a href="#" class="btn-bottom">{='voonne-signIn.signIn.lostPassword'|translate}</a>
+	<a href="#" class="btn-bottom">{('voonne-signIn.signIn.lostPassword'|translate)}</a>
 </div>

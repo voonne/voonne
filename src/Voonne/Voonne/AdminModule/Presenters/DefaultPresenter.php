@@ -10,8 +10,15 @@
 
 namespace Voonne\Voonne\AdminModule\Presenters;
 
+use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
 
-class DefaultPresenter extends Presenter
+
+class DefaultPresenter extends BasePresenter
 {
+
+	protected function createComponentSignInForm(SignInFormFactory $factory)
+	{
+		return $factory->create();
+	}
 
 }

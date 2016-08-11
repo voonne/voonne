@@ -11,7 +11,7 @@
 namespace Voonne\Voonne\AdminModule\Presenters;
 
 
-class DashboardPresenter extends BaseAuthorizedPresenter
+abstract class BaseAuthorizedPresenter extends BasePresenter
 {
 
 }
