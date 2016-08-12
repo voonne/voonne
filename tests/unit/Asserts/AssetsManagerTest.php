@@ -62,7 +62,7 @@ class AssetsManagerTest extends Unit
 	}
 
 
-	public function testAddAssetNonexistentFile()
+	public function testAddAssetFileDoNotExist()
 	{
 		$this->expectException(FileNotFoundException::class);
 		$this->assetsManager->addAsset('texts/doNotExist.txt', $this->root->url() . '/doNotExist.txt');
@@ -93,7 +93,7 @@ class AssetsManagerTest extends Unit
 	}
 
 
-	public function testAddScriptNonexistentFile()
+	public function testAddScriptFileDoNotExist()
 	{
 		$this->expectException(FileNotFoundException::class);
 		$this->assetsManager->addScript('admin', $this->root->url() . '/doNotExist.js');
@@ -124,7 +124,7 @@ class AssetsManagerTest extends Unit
 	}
 
 
-	public function testAddStyleNonexistentFile()
+	public function testAddStyleFileDoNotExist()
 	{
 		$this->expectException(FileNotFoundException::class);
 		$this->assetsManager->addScript('admin', $this->root->url() . '/doNotExist.css');

@@ -10,8 +10,29 @@
 
 namespace Voonne\Voonne\AdminModule\Presenters;
 
+use Voonne\Voonne\Messages\FlashMessage;
+
 
 abstract class BaseAuthorizedPresenter extends BasePresenter
 {
+
+	protected function startup()
+	{
+		parent::startup();
+
+		if(!$this->user->isLoggedIn()) {
+			$this->flashMessage('voonne-common.authentication.unauthenticatedAccess', FlashMessage::INFO);
+			$this->redirect('Default:default');
+		}
+	}
+
+
+	public function handleSignOut()
+	{
+		$this->getUser()->logout(true);
+
+		$this->flashMessage('voonne-common.authentication.signedOut', FlashMessage::INFO);
+		$this->redirect('Default:default');
+	}
 
 }

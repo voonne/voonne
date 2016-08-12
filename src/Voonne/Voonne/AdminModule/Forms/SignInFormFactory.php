@@ -18,11 +18,13 @@ class SignInFormFactory extends FormFactory
 
 	public function create()
 	{
-		$form = $this->getForm();
+		$form = parent::create();
 
 		$form->addText('email', 'voonne-signIn.signIn.email');
 
 		$form->addPassword('password', 'voonne-signIn.signIn.password');
+
+		$form->addCheckbox('stayLoggedIn', 'voonne-signIn.signIn.stayLoggedIn');
 
 		$form->addSubmit('submit', 'voonne-signIn.signIn.submit');
 

@@ -2,5 +2,6 @@ signIn:
 	title: "Přihlášení"
 	email: "Email"
 	password: "Heslo"
+	stayLoggedIn: "Zapamatovat si mě"
 	submit: "Přihlásit se"
 	lostPassword: "Zapoměli jste heslo?"

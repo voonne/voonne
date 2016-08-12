@@ -14,6 +14,9 @@ use Kdyby\Autowired\AutowireComponentFactories;
 use Kdyby\Autowired\AutowireProperties;
 use Kdyby\Translation\Translator;
 use Nette\Application\UI\Presenter;
+use Voonne\Voonne\Controls\FlashMessage\IFlashMessageControlFactory;
+use Voonne\Voonne\Controls\FormError\IFormErrorControlFactory;
+use Voonne\Voonne\Security\Authenticator;
 
 
 abstract class BasePresenter extends Presenter
@@ -21,6 +24,12 @@ abstract class BasePresenter extends Presenter
 
 	use AutowireProperties;
 	use AutowireComponentFactories;
+
+	/**
+	 * @var Authenticator
+	 * @inject
+	 */
+	public $authenticator;
 
 	/**
 	 * @var Translator
@@ -36,6 +45,18 @@ abstract class BasePresenter extends Presenter
 		$this->autoCanonicalize = false;
 
 		$this->translator->setLocale('cs');
+	}
+
+
+	protected function createComponentFlashMessageControl(IFlashMessageControlFactory $factory)
+	{
+		return $factory->create();
+	}
+
+
+	protected function createComponentFormErrorControl(IFormErrorControlFactory $factory)
+	{
+		return $factory->create();
 	}
 
 }

@@ -8,12 +8,13 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
-namespace Voonne\Voonne\Forms;
+namespace Voonne\Voonne\Controls;
 
+use Nette\ComponentModel\IContainer;
 use Nette\Localization\ITranslator;
 
 
-class FormFactory
+abstract class Control extends \Nette\Application\UI\Control
 {
 
 	/**
@@ -22,23 +23,11 @@ class FormFactory
 	protected $translator;
 
 
-	public function __construct(ITranslator $translator)
+	public function __construct(ITranslator $translator, IContainer $parent = null, $name = null)
 	{
+		parent::__construct($parent, $name);
+
 		$this->translator = $translator;
-	}
-
-
-	/**
-	 * @return Form
-	 */
-	public function create()
-	{
-		$form = new Form;
-
-		$form->getElementPrototype()->novalidate = 'novalidate';
-		$form->setTranslator($this->translator);
-
-		return $form;
 	}
 
 }

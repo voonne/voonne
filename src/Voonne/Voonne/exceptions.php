@@ -88,3 +88,8 @@ class InvalidDestinationException extends \Exception
 {
 
 }
+
+class AuthenticationException extends \Exception
+{
+
+}

@@ -6,16 +6,6 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  *}
 
-{var $title = 'voonne-admin.dashboard.title'}
-
-{block content}
-
-<div class="row">
-	<div class="col-sm-12 content-header">
-		<h1>{('voonne-admin.dashboard.title'|translate)}</h1>
-	</div>
-
-	<div class="col-xs-12" n:ifcontent>
-		{control flashMessageControl, $flashes}
-	</div>
+<div n:foreach="$flashes as $flash" class="alert alert-{$flash->type}">
+	{$flash->message|translate}
 </div>

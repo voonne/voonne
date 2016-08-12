@@ -21,10 +21,13 @@ use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
 use Voonne\Voonne\Assets\AssetsManager;
+use Voonne\Voonne\Controls\FlashMessage\IFlashMessageControlFactory;
+use Voonne\Voonne\Controls\FormError\IFormErrorControlFactory;
 use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Model\Facades\UserFacade;
 use Voonne\Voonne\Model\Repositories\UserRepository;
 use Voonne\Voonne\Routers\RouterFactory;
+use Voonne\Voonne\Security\Authenticator;
 
 
 class VoonneExtension extends CompilerExtension
@@ -49,11 +52,24 @@ class VoonneExtension extends CompilerExtension
 		$builder->addDefinition('voonne.signInFormFactory')
 			->setClass(SignInFormFactory::class);
 
+		/* controls */
+
+		$builder->addDefinition('voonne.flashMessageControlFactory')
+			->setImplement(IFlashMessageControlFactory::class);
+
+		$builder->addDefinition('voonne.formErrorControlFactory')
+			->setImplement(IFormErrorControlFactory::class);
+
 		/* router */
 
 		$builder->addDefinition('voonne.router')
 			->setFactory(RouterFactory::class . '::createRouter')
 			->setAutowired(false);
+
+		/* authentication and authorization */
+
+		$builder->addDefinition('voonne.authenticator')
+			->setClass(Authenticator::class);
 
 		/* assets */
 

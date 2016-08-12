@@ -2,5 +2,6 @@ signIn:
 	title: "Sign in"
 	email: "Email"
 	password: "Password"
+	stayLoggedIn: "Stay logged in"
 	submit: "Sign in"
 	lostPassword: "Lost your password?"
