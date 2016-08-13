@@ -14,7 +14,6 @@ use Defr\MimeType;
 use Voonne\Voonne\DirectoryNotFoundException;
 use Voonne\Voonne\FileNotFoundException;
 use Voonne\Voonne\InvalidArgumentException;
-use Nette\DI\Container;
 
 
 class AssetsManager

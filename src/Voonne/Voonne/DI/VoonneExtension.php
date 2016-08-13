@@ -21,8 +21,11 @@ use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
 use Voonne\Voonne\Assets\AssetsManager;
+use Voonne\Voonne\Content\ContentManager;
 use Voonne\Voonne\Controls\FlashMessage\IFlashMessageControlFactory;
 use Voonne\Voonne\Controls\FormError\IFormErrorControlFactory;
+use Voonne\Voonne\Controls\Layout21\ILayout21ControlFactory;
+use Voonne\Voonne\Controls\Panel\IPanelControlFactory;
 use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Model\Facades\UserFacade;
 use Voonne\Voonne\Model\Repositories\UserRepository;
@@ -59,6 +62,32 @@ class VoonneExtension extends CompilerExtension
 
 		$builder->addDefinition('voonne.formErrorControlFactory')
 			->setImplement(IFormErrorControlFactory::class);
+
+		/* layouts */
+
+		$builder->addDefinition('voonne.layout21ControlFactory')
+			->setImplement(ILayout21ControlFactory::class);
+
+		/* content */
+
+		$builder->addDefinition('voonne.contentManager')
+			->setClass(ContentManager::class)
+			->addSetup('addElement', ['@voonne.panel1', ContentManager::POSITION_LEFT])
+			->addSetup('addElement', ['@voonne.panel2', ContentManager::POSITION_LEFT, 110])
+			->addSetup('addElement', ['@voonne.panel3', ContentManager::POSITION_LEFT])
+			->addSetup('addElement', ['@voonne.panel4', ContentManager::POSITION_RIGHT]);
+
+		$builder->addDefinition('voonne.panel1')
+			->setImplement(IPanelControlFactory::class);
+
+		$builder->addDefinition('voonne.panel2')
+			->setImplement(IPanelControlFactory::class);
+
+		$builder->addDefinition('voonne.panel3')
+			->setImplement(IPanelControlFactory::class);
+
+		$builder->addDefinition('voonne.panel4')
+			->setImplement(IPanelControlFactory::class);
 
 		/* router */
 

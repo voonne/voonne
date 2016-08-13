@@ -1,0 +1,33 @@
+{**
+ * This file is part of the Voonne platform (http://www.voonne.org)
+ *
+ * Copyright (c) 2016 Jan Lavička (mail@janlavicka.name)
+ *
+ * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
+ *}
+
+{var $title = 'Title'}
+
+{block content}
+
+{form form}
+	<div class="row">
+		<div class="col-sm-12 content-header">
+			<h1>Title</h1>
+		</div>
+
+		<div class="col-sm-12 content-header">
+			<ol class="breadcrumb">
+				<li class="active">level 1</li>
+				<li><a href="#">level 2</a></li>
+				<li><a href="#">level 3</a></li>
+			</ol>
+		</div>
+
+		<div class="col-xs-12" n:ifcontent>
+			{control flashMessageControl, $flashes}
+		</div>
+
+		{control layout}
+	</div>
+{/form}

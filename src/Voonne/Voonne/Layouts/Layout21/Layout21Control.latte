@@ -1,0 +1,18 @@
+{**
+ * This file is part of the Voonne platform (http://www.voonne.org)
+ *
+ * Copyright (c) 2016 Jan Lavička (mail@janlavicka.name)
+ *
+ * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
+ *}
+
+<div class="col-xs-12 col-md-8 col-lg-9">
+	{foreach $elements[\Voonne\Voonne\Content\ContentManager::POSITION_LEFT] as $index => $element}
+		{control 'element_left_' . $index}
+	{/foreach}
+</div>
+<div class="col-xs-12 col-md-4 col-lg-3">
+	{foreach $elements[\Voonne\Voonne\Content\ContentManager::POSITION_RIGHT] as $index => $element}
+		{control 'element_right_' . $index}
+	{/foreach}
+</div>

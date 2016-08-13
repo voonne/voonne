@@ -8,10 +8,19 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
-namespace Voonne\Voonne\AdminModule\Presenters;
+namespace Voonne\Voonne\Controls\Panel;
+
+use Voonne\Voonne\Controls\Control;
 
 
-class CustomPresenter extends BaseAuthorizedPresenter
+class PanelControl extends Control
 {
+
+	public function render()
+	{
+		$this->template->setFile(__DIR__ . '/PanelControl.latte');
+
+		$this->template->render();
+	}
 
 }
