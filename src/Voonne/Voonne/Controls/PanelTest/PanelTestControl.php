@@ -8,17 +8,17 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
-namespace Voonne\Voonne\Controls\Panel;
+namespace Voonne\Voonne\Controls\PanelTest;
 
-use Voonne\Voonne\Controls\Control;
+use Voonne\Voonne\Controls\PanelControl;
 
 
-class PanelControl extends Control
+class PanelTestControl extends PanelControl
 {
 
 	public function render()
 	{
-		$this->template->setFile(__DIR__ . '/PanelControl.latte');
+		$this->template->setFile(__DIR__ . '/PanelTestControl.latte');
 
 		$this->template->render();
 	}

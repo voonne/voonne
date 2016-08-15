@@ -16,17 +16,21 @@ use Kdyby\Translation\Translator;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\IRouter;
 use Nette\Application\Routers\RouteList;
+use Nette\Bridges\ApplicationLatte\ILatteFactory;
+use Nette\Bridges\ApplicationLatte\TemplateFactory;
 use Nette\DI\CompilerExtension;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
 use Voonne\Voonne\Assets\AssetsManager;
+use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\ContentManager;
+use Voonne\Voonne\Content\Latte\Engine;
 use Voonne\Voonne\Controls\FlashMessage\IFlashMessageControlFactory;
 use Voonne\Voonne\Controls\FormError\IFormErrorControlFactory;
-use Voonne\Voonne\Controls\Layout21\ILayout21ControlFactory;
-use Voonne\Voonne\Controls\Panel\IPanelControlFactory;
+use Voonne\Voonne\Controls\PanelTest\IPanelTestControlFactory;
 use Voonne\Voonne\InvalidStateException;
+use Voonne\Voonne\Layouts\Layout21\ILayout21ControlFactory;
 use Voonne\Voonne\Model\Facades\UserFacade;
 use Voonne\Voonne\Model\Repositories\UserRepository;
 use Voonne\Voonne\Routers\RouterFactory;
@@ -72,22 +76,33 @@ class VoonneExtension extends CompilerExtension
 
 		$builder->addDefinition('voonne.contentManager')
 			->setClass(ContentManager::class)
-			->addSetup('addElement', ['@voonne.panel1', ContentManager::POSITION_LEFT])
-			->addSetup('addElement', ['@voonne.panel2', ContentManager::POSITION_LEFT, 110])
-			->addSetup('addElement', ['@voonne.panel3', ContentManager::POSITION_LEFT])
-			->addSetup('addElement', ['@voonne.panel4', ContentManager::POSITION_RIGHT]);
+			->addSetup('addPanel', ['@voonne.panelTest1', ContentManager::POSITION_LEFT])
+			->addSetup('addPanel', ['@voonne.panelTest2', ContentManager::POSITION_LEFT, 110])
+			->addSetup('addPanel', ['@voonne.panelTest3', ContentManager::POSITION_LEFT])
+			->addSetup('addPanel', ['@voonne.panelTest4', ContentManager::POSITION_RIGHT]);
 
-		$builder->addDefinition('voonne.panel1')
-			->setImplement(IPanelControlFactory::class);
+		$builder->addDefinition('voonne.contentForm')
+			->setClass(ContentForm::class);
 
-		$builder->addDefinition('voonne.panel2')
-			->setImplement(IPanelControlFactory::class);
+		$builder->addDefinition('voonne.templateFactory')
+			->setClass(TemplateFactory::class, ['@voonne.latteFactory'])
+			->setAutowired(false);
 
-		$builder->addDefinition('voonne.panel3')
-			->setImplement(IPanelControlFactory::class);
+		$builder->addDefinition('voonne.panelTest1')
+			->setImplement(IPanelTestControlFactory::class)
+			->setAutowired(false);
 
-		$builder->addDefinition('voonne.panel4')
-			->setImplement(IPanelControlFactory::class);
+		$builder->addDefinition('voonne.panelTest2')
+			->setImplement(IPanelTestControlFactory::class)
+			->setAutowired(false);
+
+		$builder->addDefinition('voonne.panelTest3')
+			->setImplement(IPanelTestControlFactory::class)
+			->setAutowired(false);
+
+		$builder->addDefinition('voonne.panelTest4')
+			->setImplement(IPanelTestControlFactory::class)
+			->setAutowired(false);
 
 		/* router */
 
@@ -175,10 +190,20 @@ class VoonneExtension extends CompilerExtension
 				0 => [0 => __DIR__ . '/..'],
 				2 => '@doctrine.cache.default.metadata'
 			])
-			->setAutowired(FALSE)
-			->setInject(FALSE);
+			->setAutowired(false);
 
 		$metadataDriver->addSetup('addDriver', ['@voonne.doctrine.annotations', 'Voonne\Voonne']);
+
+		/* content */
+
+		$latteFactoryDefinition = $builder->addDefinition('voonne.latteFactory')
+			->setClass(Engine::class, ['@voonne.contentForm'])
+			->setImplement(ILatteFactory::class)
+			->setAutowired(false);
+
+		foreach($builder->getDefinition('latte.latteFactory')->getSetup() as $setup) {
+			$latteFactoryDefinition->addSetup($setup);
+		}
 	}
 
 

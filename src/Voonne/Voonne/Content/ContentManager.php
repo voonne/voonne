@@ -23,7 +23,7 @@ class ContentManager
 	/**
 	 * @var array
 	 */
-	private $elements = [];
+	private $panels = [];
 
 	const POSITION_TOP = 'TOP';
 	const POSITION_BOTTOM = 'BOTTOM';
@@ -38,16 +38,16 @@ class ContentManager
 	}
 
 
-	public function addElement($element, $position, $priority = 100)
+	public function addPanel($element, $position, $priority = 100)
 	{
-		$this->elements[$position][$priority][] = $element;
+		$this->panels[$position][$priority][] = $element;
 	}
 
 
-	public function getElements()
+	public function getPanels()
 	{
-		if(!empty($this->elements)) {
-			$elements = [
+		if(!empty($this->panels)) {
+			$panels = [
 				self::POSITION_TOP => [],
 				self::POSITION_BOTTOM => [],
 				self::POSITION_LEFT => [],
@@ -55,17 +55,17 @@ class ContentManager
 				self::POSITION_CENTER => []
 			];
 
-			foreach($this->elements as $positionName => $position) {
+			foreach($this->panels as $positionName => $position) {
 				krsort($position);
 
 				foreach ($position as $priority) {
-					foreach ($priority as $element) {
-						$elements[$positionName][] = $element;
+					foreach ($priority as $panel) {
+						$panels[$positionName][] = $panel;
 					}
 				}
 			}
 
-			return $elements;
+			return $panels;
 		} else {
 			return [];
 		}

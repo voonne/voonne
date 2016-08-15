@@ -8,15 +8,20 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
-namespace Voonne\Voonne\Layouts\Layout21;
+namespace Voonne\Voonne\Content;
+
+use Nette\Localization\ITranslator;
+use Voonne\Voonne\Forms\Form;
 
 
-interface ILayout21ControlFactory
+class ContentForm extends Form
 {
 
-	/**
-	 * @return Layout21Control
-	 */
-	function create();
+	public function __construct(ITranslator $translator)
+	{
+		parent::__construct();
+
+		$this->form->setTranslator($translator);
+	}
 
 }

@@ -10,8 +10,10 @@
 
 namespace Voonne\Voonne\AdminModule\Presenters;
 
+use Nette\DI\Container;
+use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\ContentManager;
-use Voonne\Voonne\Controls\Layout21\ILayout21ControlFactory;
+use Voonne\Voonne\Layouts\Layout21\ILayout21ControlFactory;
 use Voonne\Voonne\Forms\Form;
 
 
@@ -24,16 +26,24 @@ class ContentPresenter extends BaseAuthorizedPresenter
 	 */
 	public $contentManager;
 
-	private $form;
+	/**
+	 * @var Container
+	 * @inject
+	 */
+	public $container;
+
+	/**
+	 * @var ContentForm
+	 * @inject
+	 */
+	public $contentForm;
 
 
 	public function actionDefault()
 	{
-		$this['form'] = $this->form = new Form();
+		$this['form'] = $this->contentForm;
 
-		$this->form->setTranslator($this->translator);
-
-		$this->form->onSuccess[] = [$this, 'success'];
+		$this->contentForm->onSuccess[] = [$this, 'success'];
 	}
 
 
@@ -45,7 +55,11 @@ class ContentPresenter extends BaseAuthorizedPresenter
 
 	protected function createComponentLayout(ILayout21ControlFactory $factory)
 	{
-		return $factory->create();
+		$layout = $factory->create();
+
+		$layout->setTemplateFactory($this->container->getService('voonne.templateFactory'));
+
+		return $layout;
 	}
 
 }

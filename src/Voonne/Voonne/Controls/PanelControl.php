@@ -8,15 +8,21 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
-namespace Voonne\Voonne\Layouts\Layout21;
+namespace Voonne\Voonne\Controls;
+
+use Voonne\Voonne\Forms\Form;
 
 
-interface ILayout21ControlFactory
+abstract class PanelControl extends Control
 {
 
 	/**
-	 * @return Layout21Control
+	 * Adjusted ContentFrom for use in a panel.
+	 *
+	 * @param Form $form
 	 */
-	function create();
+	public function setupForm(Form $form)
+	{
+	}
 
 }
