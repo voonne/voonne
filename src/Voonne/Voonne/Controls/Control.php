@@ -10,12 +10,17 @@
 
 namespace Voonne\Voonne\Controls;
 
+use Kdyby\Autowired\AutowireComponentFactories;
+use Kdyby\Autowired\AutowireProperties;
 use Nette\ComponentModel\IContainer;
 use Nette\Localization\ITranslator;
 
 
 abstract class Control extends \Nette\Application\UI\Control
 {
+
+	use AutowireProperties;
+	use AutowireComponentFactories;
 
 	/**
 	 * @var ITranslator

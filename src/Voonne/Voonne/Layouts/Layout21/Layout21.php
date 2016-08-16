@@ -13,11 +13,11 @@ namespace Voonne\Voonne\Layouts\Layout21;
 use Nette\Localization\ITranslator;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\ContentManager;
-use Voonne\Voonne\Controls\PanelControl;
-use Voonne\Voonne\Layouts\LayoutControl;
+use Voonne\Voonne\Layouts\Layout;
+use Voonne\Voonne\Panels\Panel;
 
 
-class Layout21Control extends LayoutControl
+class Layout21 extends Layout
 {
 
 	/**
@@ -42,25 +42,23 @@ class Layout21Control extends LayoutControl
 
 	public function render()
 	{
-		$this->template->setFile(__DIR__ . '/Layout21Control.latte');
+		$this->template->setFile(__DIR__ . '/Layout21.latte');
 
 		$this->template->elements = $elements = $this->contentManager->getPanels();
 
-		foreach($elements[ContentManager::POSITION_LEFT] as $index => $factory) {
-			/** @var PanelControl $panel */
-			$panel = $factory->create();
-
+		foreach($elements[ContentManager::POSITION_LEFT] as $index => $panel) {
+			/** @var Panel $panel */
 			$panel->setTemplateFactory($this->getTemplateFactory());
+			$panel->setupPanel();
 			$panel->setupForm($this->contentForm);
 
 			$this['element_left_' . $index] = $panel;
 		}
 
-		foreach($elements[ContentManager::POSITION_RIGHT] as $index => $factory) {
-			/** @var PanelControl $panel */
-			$panel = $factory->create();
-
+		foreach($elements[ContentManager::POSITION_RIGHT] as $index => $panel) {
+			/** @var Panel $panel */
 			$panel->setTemplateFactory($this->getTemplateFactory());
+			$panel->setupPanel();
 			$panel->setupForm($this->contentForm);
 
 			$this['element_right_' . $index] = $panel;

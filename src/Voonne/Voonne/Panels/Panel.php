@@ -8,13 +8,22 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
-namespace Voonne\Voonne\Controls;
+namespace Voonne\Voonne\Panels;
 
+use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\Forms\Form;
 
 
-abstract class PanelControl extends Control
+abstract class Panel extends Control
 {
+
+	/**
+	 * Sets basic information about the panel.
+	 */
+	public function setupPanel()
+	{
+	}
+
 
 	/**
 	 * Adjusted ContentFrom for use in a panel.

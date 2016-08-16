@@ -8,14 +8,14 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
-namespace Voonne\Voonne\Layouts\Layout21;
+namespace Voonne\Voonne\Panels\BasicPanelTest;
 
 
-interface ILayout21ControlFactory
+interface IBasicPanelTestFactory
 {
 
 	/**
-	 * @return Layout21Control
+	 * @return BasicPanelTest
 	 */
 	function create();
 

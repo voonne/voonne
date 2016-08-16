@@ -14,7 +14,7 @@ use Nette\Application\UI\ITemplateFactory;
 use Voonne\Voonne\Controls\Control;
 
 
-abstract class LayoutControl extends Control
+abstract class Layout extends Control
 {
 
 	/**

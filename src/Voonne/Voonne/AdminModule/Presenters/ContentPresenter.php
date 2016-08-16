@@ -13,7 +13,7 @@ namespace Voonne\Voonne\AdminModule\Presenters;
 use Nette\DI\Container;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\ContentManager;
-use Voonne\Voonne\Layouts\Layout21\ILayout21ControlFactory;
+use Voonne\Voonne\Layouts\Layout21\ILayout21Factory;
 use Voonne\Voonne\Forms\Form;
 
 
@@ -53,7 +53,7 @@ class ContentPresenter extends BaseAuthorizedPresenter
 	}
 
 
-	protected function createComponentLayout(ILayout21ControlFactory $factory)
+	protected function createComponentLayout(ILayout21Factory $factory)
 	{
 		$layout = $factory->create();
 

@@ -46,28 +46,28 @@ class ContentManager
 
 	public function getPanels()
 	{
-		if(!empty($this->panels)) {
-			$panels = [
-				self::POSITION_TOP => [],
-				self::POSITION_BOTTOM => [],
-				self::POSITION_LEFT => [],
-				self::POSITION_RIGHT => [],
-				self::POSITION_CENTER => []
-			];
+		$panels = [
+			self::POSITION_TOP => [],
+			self::POSITION_BOTTOM => [],
+			self::POSITION_LEFT => [],
+			self::POSITION_RIGHT => [],
+			self::POSITION_CENTER => []
+		];
 
+		if(!empty($this->panels)) {
 			foreach($this->panels as $positionName => $position) {
 				krsort($position);
 
 				foreach ($position as $priority) {
-					foreach ($priority as $panel) {
-						$panels[$positionName][] = $panel;
+					foreach ($priority as $factory) {
+						$panels[$positionName][] = $factory->create();
 					}
 				}
 			}
 
 			return $panels;
 		} else {
-			return [];
+			return $panels;
 		}
 	}
 

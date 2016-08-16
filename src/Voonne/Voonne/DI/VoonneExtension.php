@@ -28,11 +28,12 @@ use Voonne\Voonne\Content\ContentManager;
 use Voonne\Voonne\Content\Latte\Engine;
 use Voonne\Voonne\Controls\FlashMessage\IFlashMessageControlFactory;
 use Voonne\Voonne\Controls\FormError\IFormErrorControlFactory;
-use Voonne\Voonne\Controls\PanelTest\IPanelTestControlFactory;
 use Voonne\Voonne\InvalidStateException;
-use Voonne\Voonne\Layouts\Layout21\ILayout21ControlFactory;
+use Voonne\Voonne\Layouts\Layout21\ILayout21Factory;
 use Voonne\Voonne\Model\Facades\UserFacade;
 use Voonne\Voonne\Model\Repositories\UserRepository;
+use Voonne\Voonne\Panels\BasicPanelTest\IBasicPanelTestFactory;
+use Voonne\Voonne\Panels\BlankPanelTest\IBlankPanelTestFactory;
 use Voonne\Voonne\Routers\RouterFactory;
 use Voonne\Voonne\Security\Authenticator;
 
@@ -69,17 +70,15 @@ class VoonneExtension extends CompilerExtension
 
 		/* layouts */
 
-		$builder->addDefinition('voonne.layout21ControlFactory')
-			->setImplement(ILayout21ControlFactory::class);
+		$builder->addDefinition('voonne.layout21Factory')
+			->setImplement(ILayout21Factory::class);
 
 		/* content */
 
 		$builder->addDefinition('voonne.contentManager')
 			->setClass(ContentManager::class)
-			->addSetup('addPanel', ['@voonne.panelTest1', ContentManager::POSITION_LEFT])
-			->addSetup('addPanel', ['@voonne.panelTest2', ContentManager::POSITION_LEFT, 110])
-			->addSetup('addPanel', ['@voonne.panelTest3', ContentManager::POSITION_LEFT])
-			->addSetup('addPanel', ['@voonne.panelTest4', ContentManager::POSITION_RIGHT]);
+			->addSetup('addPanel', ['@voonne.blankPanelTest', ContentManager::POSITION_LEFT])
+			->addSetup('addPanel', ['@voonne.basicPanelTest', ContentManager::POSITION_RIGHT]);
 
 		$builder->addDefinition('voonne.contentForm')
 			->setClass(ContentForm::class);
@@ -88,21 +87,11 @@ class VoonneExtension extends CompilerExtension
 			->setClass(TemplateFactory::class, ['@voonne.latteFactory'])
 			->setAutowired(false);
 
-		$builder->addDefinition('voonne.panelTest1')
-			->setImplement(IPanelTestControlFactory::class)
-			->setAutowired(false);
+		$builder->addDefinition('voonne.basicPanelTest')
+			->setImplement(IBasicPanelTestFactory::class);
 
-		$builder->addDefinition('voonne.panelTest2')
-			->setImplement(IPanelTestControlFactory::class)
-			->setAutowired(false);
-
-		$builder->addDefinition('voonne.panelTest3')
-			->setImplement(IPanelTestControlFactory::class)
-			->setAutowired(false);
-
-		$builder->addDefinition('voonne.panelTest4')
-			->setImplement(IPanelTestControlFactory::class)
-			->setAutowired(false);
+		$builder->addDefinition('voonne.blankPanelTest')
+			->setImplement(IBlankPanelTestFactory::class);
 
 		/* router */
 

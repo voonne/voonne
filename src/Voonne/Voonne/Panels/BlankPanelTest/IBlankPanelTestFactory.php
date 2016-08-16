@@ -8,14 +8,14 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
-namespace Voonne\Voonne\Controls\PanelTest;
+namespace Voonne\Voonne\Panels\BlankPanelTest;
 
 
-interface IPanelTestControlFactory
+interface IBlankPanelTestFactory
 {
 
 	/**
-	 * @return PanelTestControl
+	 * @return BlankPanelTest
 	 */
 	function create();
 
