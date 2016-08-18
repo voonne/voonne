@@ -8,23 +8,20 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
-namespace Voonne\Voonne\Panels\BasicPanelTest;
+namespace Voonne\Voonne\Panels\Renderers\BasicPanelRenderer;
 
+use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\Panels\BasicPanel;
 
 
-class BasicPanelTest extends BasicPanel
+class BasicPanelRenderer extends Control
 {
 
-	public function setupPanel()
+	public function render(BasicPanel $panel)
 	{
-		$this->setTitle('Basic panel test');
-	}
+		$this->template->setFile(__DIR__ . '/BasicPanelRenderer.latte');
 
-
-	public function render()
-	{
-		$this->template->setFile(__DIR__ . '/BasicPanelTest.latte');
+		$this->template->panel = $this['panel'] = $panel;
 
 		$this->template->render();
 	}

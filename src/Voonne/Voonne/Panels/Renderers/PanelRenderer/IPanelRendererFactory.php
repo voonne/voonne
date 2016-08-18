@@ -8,19 +8,15 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
-namespace Voonne\Voonne\Panels\BlankPanelTest;
-
-use Voonne\Voonne\Panels\BlankPanel;
+namespace Voonne\Voonne\Panels\Renderers\PanelRenderer;
 
 
-class BlankPanelTest extends BlankPanel
+interface IPanelRendererFactory
 {
 
-	public function render()
-	{
-		$this->template->setFile(__DIR__ . '/BlankPanelTest.latte');
-
-		$this->template->render();
-	}
+	/**
+	 * @return PanelRenderer
+	 */
+	function create();
 
 }

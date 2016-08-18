@@ -11,7 +11,11 @@
 namespace Voonne\Voonne\Layouts;
 
 use Nette\Application\UI\ITemplateFactory;
+use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Controls\Control;
+use Voonne\Voonne\InvalidStateException;
+use Voonne\Voonne\Panels\Panel;
+use Voonne\Voonne\Panels\Renderers\PanelRenderer\IPanelRendererFactory;
 
 
 abstract class Layout extends Control
@@ -22,16 +26,56 @@ abstract class Layout extends Control
 	 */
 	private $templateFactory;
 
+	/**
+	 * @var ContentForm
+	 */
+	private $contentForm;
 
-	public function setTemplateFactory(ITemplateFactory $templateFactory)
-	{
-		$this->templateFactory = $templateFactory;
-	}
 
-
+	/**
+	 * @return ITemplateFactory
+	 */
 	public function getTemplateFactory()
 	{
 		return $this->templateFactory;
+	}
+
+
+	/**
+	 * @return ContentForm
+	 */
+	public function getContentForm()
+	{
+		return $this->contentForm;
+	}
+
+
+	/**
+	 * @param ITemplateFactory $templateFactory
+	 * @param ContentForm $contentForm
+	 */
+	public function injectPrimary(ITemplateFactory $templateFactory, ContentForm $contentForm)
+	{
+		if($this->templateFactory !== null) {
+			throw new InvalidStateException('Method ' . __METHOD__ . ' is intended for initialization and should not be called more than once.');
+		}
+
+		$this->templateFactory = $templateFactory;
+		$this->contentForm = $contentForm;
+	}
+
+
+	public function setupPanel(Panel $panel)
+	{
+		$panel->setTemplateFactory($this->getTemplateFactory());
+		$panel->setupPanel();
+		$panel->setupForm($this->getContentForm());
+	}
+
+
+	protected function createComponentPanelRenderer(IPanelRendererFactory $factory)
+	{
+		return $factory->create();
 	}
 
 }

@@ -73,6 +73,12 @@ class NotSupportedException extends \LogicException
 }
 
 
+class NotRegisteredException extends \LogicException
+{
+
+}
+
+
 class DeprecatedException extends NotSupportedException
 {
 

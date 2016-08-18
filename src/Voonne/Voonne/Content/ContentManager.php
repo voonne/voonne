@@ -10,20 +10,9 @@
 
 namespace Voonne\Voonne\Content;
 
-use Nette\Localization\ITranslator;
-
 
 class ContentManager
 {
-	/**
-	 * @var ITranslator
-	 */
-	private $translator;
-
-	/**
-	 * @var array
-	 */
-	private $panels = [];
 
 	const POSITION_TOP = 'TOP';
 	const POSITION_BOTTOM = 'BOTTOM';
@@ -31,11 +20,10 @@ class ContentManager
 	const POSITION_RIGHT = 'RIGHT';
 	const POSITION_CENTER = 'CENTER';
 
-
-	public function __construct(ITranslator $translator)
-	{
-		$this->translator = $translator;
-	}
+	/**
+	 * @var array
+	 */
+	private $panels = [];
 
 
 	public function addPanel($element, $position, $priority = 100)
@@ -64,11 +52,9 @@ class ContentManager
 					}
 				}
 			}
-
-			return $panels;
-		} else {
-			return $panels;
 		}
+
+		return $panels;
 	}
 
 }

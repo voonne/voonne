@@ -13,8 +13,9 @@ namespace Voonne\Voonne\AdminModule\Presenters;
 use Nette\DI\Container;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\ContentManager;
-use Voonne\Voonne\Layouts\Layout21\ILayout21Factory;
 use Voonne\Voonne\Forms\Form;
+use Voonne\Voonne\Layouts\Layout21\Layout21;
+use Voonne\Voonne\Layouts\LayoutManager;
 
 
 class ContentPresenter extends BaseAuthorizedPresenter
@@ -25,6 +26,12 @@ class ContentPresenter extends BaseAuthorizedPresenter
 	 * @inject
 	 */
 	public $contentManager;
+
+	/**
+	 * @var LayoutManager
+	 * @inject
+	 */
+	public $layoutManager;
 
 	/**
 	 * @var Container
@@ -53,11 +60,13 @@ class ContentPresenter extends BaseAuthorizedPresenter
 	}
 
 
-	protected function createComponentLayout(ILayout21Factory $factory)
+	protected function createComponentLayout()
 	{
-		$layout = $factory->create();
+		$layout = $this->layoutManager->getLayout(Layout21::class);
 
-		$layout->setTemplateFactory($this->container->getService('voonne.templateFactory'));
+		$layout->injectPrimary(
+			$this->container->getService('voonne.templateFactory'),
+			$this->contentForm);
 
 		return $layout;
 	}

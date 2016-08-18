@@ -8,14 +8,14 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
-namespace Voonne\Voonne\Layouts\Layout21;
+namespace Voonne\Voonne\Layouts\Layout1;
 
 use Nette\Localization\ITranslator;
 use Voonne\Voonne\Content\ContentManager;
 use Voonne\Voonne\Layouts\Layout;
 
 
-class Layout21 extends Layout
+class Layout1 extends Layout
 {
 
 	/**
@@ -34,15 +34,11 @@ class Layout21 extends Layout
 
 	public function render()
 	{
-		$this->template->setFile(__DIR__ . '/Layout21.latte');
+		$this->template->setFile(__DIR__ . '/Layout1.latte');
 
 		$this->template->elements = $elements = $this->contentManager->getPanels();
 
-		foreach($elements[ContentManager::POSITION_LEFT] as $index => $panel) {
-			$this->setupPanel($panel);
-		}
-
-		foreach($elements[ContentManager::POSITION_RIGHT] as $index => $panel) {
+		foreach($elements[ContentManager::POSITION_CENTER] as $index => $panel) {
 			$this->setupPanel($panel);
 		}
 
