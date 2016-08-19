@@ -28,12 +28,14 @@ use Voonne\Voonne\Content\ContentManager;
 use Voonne\Voonne\Content\Latte\Engine;
 use Voonne\Voonne\Controls\FlashMessage\IFlashMessageControlFactory;
 use Voonne\Voonne\Controls\FormError\IFormErrorControlFactory;
+use Voonne\Voonne\Controls\Menu\IMenuControlFactory;
 use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Layouts\Layout1\ILayout1Factory;
 use Voonne\Voonne\Layouts\Layout21\ILayout21Factory;
 use Voonne\Voonne\Layouts\LayoutManager;
 use Voonne\Voonne\Model\Facades\UserFacade;
 use Voonne\Voonne\Model\Repositories\UserRepository;
+use Voonne\Voonne\Pages\PageManager;
 use Voonne\Voonne\Panels\Renderers\BasicPanelRenderer\IBasicPanelRendererFactory;
 use Voonne\Voonne\Panels\Renderers\BlankPanelRenderer\IBlankPanelRendererFactory;
 use Voonne\Voonne\Panels\Renderers\PanelRenderer\IPanelRendererFactory;
@@ -64,6 +66,11 @@ class VoonneExtension extends CompilerExtension
 		$builder->addDefinition('voonne.signInFormFactory')
 			->setClass(SignInFormFactory::class);
 
+		/* pages */
+
+		$builder->addDefinition('voonne.pageManager')
+			->setClass(PageManager::class);
+
 		/* controls */
 
 		$builder->addDefinition('voonne.flashMessageControlFactory')
@@ -72,12 +79,13 @@ class VoonneExtension extends CompilerExtension
 		$builder->addDefinition('voonne.formErrorControlFactory')
 			->setImplement(IFormErrorControlFactory::class);
 
+		$builder->addDefinition('voonne.menuControlFactory')
+			->setImplement(IMenuControlFactory::class);
+
 		/* content */
 
 		$builder->addDefinition('voonne.contentManager')
-			->setClass(ContentManager::class)
-			->addSetup('addPanel', ['@voonne.blankPanelTest', ContentManager::POSITION_LEFT])
-			->addSetup('addPanel', ['@voonne.basicPanelTest', ContentManager::POSITION_RIGHT]);
+			->setClass(ContentManager::class);
 
 		$builder->addDefinition('voonne.contentForm')
 			->setClass(ContentForm::class);

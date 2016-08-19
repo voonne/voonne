@@ -10,6 +10,7 @@
 
 namespace Voonne\Voonne\AdminModule\Presenters;
 
+use Voonne\Voonne\Controls\Menu\IMenuControlFactory;
 use Voonne\Voonne\Messages\FlashMessage;
 
 
@@ -33,6 +34,12 @@ abstract class BaseAuthorizedPresenter extends BasePresenter
 
 		$this->flashMessage('voonne-common.authentication.signedOut', FlashMessage::INFO);
 		$this->redirect('Default:default');
+	}
+
+
+	protected function createComponentMenuControl(IMenuControlFactory $factory)
+	{
+		return $factory->create();
 	}
 
 }

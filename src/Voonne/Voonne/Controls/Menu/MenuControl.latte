@@ -1,0 +1,66 @@
+{**
+ * This file is part of the Voonne platform (http://www.voonne.org)
+ *
+ * Copyright (c) 2016 Jan Lavička (mail@janlavicka.name)
+ *
+ * For the full copyright and license information, please view the file LICENCE.md that was distributed with this source code.
+ *}
+
+<ul class="sidebar-menu">
+	<li>
+		<a href="{plink Dashboard:default}">
+			<i class="fa fa-tachometer"></i>
+			{('voonne-admin.dashboard.title'|translate)}
+		</a>
+	</li>
+	<li class="active">
+		<a href="{plink Content:default}">
+			<i class="fa fa-user"></i>
+			Users
+			<i class="fa fa-chevron-down"></i>
+		</a>
+
+		<ul>
+			<li>
+				<a href="{plink Content:default}">Test</a>
+			</li>
+			<li>
+				<a href="{plink Content:default}">Test</a>
+			</li>
+			<li>
+				<a href="{plink Content:default}">Test</a>
+			</li>
+			<li>
+				<a href="{plink Content:default}">Test</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a href="{plink Content:default}">
+			<i class="fa fa-cogs"></i>
+			Settings
+			<i class="fa fa-chevron-down"></i>
+		</a>
+
+		<ul>
+			<li>
+				<a href="{plink Content:default}">Test</a>
+			</li>
+			<li>
+				<a href="{plink Content:default}">Test</a>
+			</li>
+			<li>
+				<a href="{plink Content:default}">Test</a>
+			</li>
+			<li>
+				<a href="{plink Content:default}">Test</a>
+			</li>
+		</ul>
+	</li>
+	<li n:foreach="$groups as $name => $group">
+		<a href="{plink Content:default}">
+			<i class="fa fa-{if !empty($group->getIcon())}{$group->getIcon()}{else}circle{/if}"></i>
+			{$group->getLabel()|translate}
+		</a>
+	</li>
+</ul>
