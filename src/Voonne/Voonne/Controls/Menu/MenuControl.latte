@@ -13,54 +13,20 @@
 			{('voonne-admin.dashboard.title'|translate)}
 		</a>
 	</li>
-	<li class="active">
-		<a href="{plink Content:default}">
-			<i class="fa fa-user"></i>
-			Users
-			<i class="fa fa-chevron-down"></i>
-		</a>
-
-		<ul>
-			<li>
-				<a href="{plink Content:default}">Test</a>
-			</li>
-			<li>
-				<a href="{plink Content:default}">Test</a>
-			</li>
-			<li>
-				<a href="{plink Content:default}">Test</a>
-			</li>
-			<li>
-				<a href="{plink Content:default}">Test</a>
-			</li>
-		</ul>
-	</li>
-	<li>
-		<a href="{plink Content:default}">
-			<i class="fa fa-cogs"></i>
-			Settings
-			<i class="fa fa-chevron-down"></i>
-		</a>
-
-		<ul>
-			<li>
-				<a href="{plink Content:default}">Test</a>
-			</li>
-			<li>
-				<a href="{plink Content:default}">Test</a>
-			</li>
-			<li>
-				<a href="{plink Content:default}">Test</a>
-			</li>
-			<li>
-				<a href="{plink Content:default}">Test</a>
-			</li>
-		</ul>
-	</li>
-	<li n:foreach="$groups as $name => $group">
-		<a href="{plink Content:default}">
+	{foreach $groups as $group}
+	{var $structure = $group->getStructure()}
+	<li{foreach $group->getStructure() as $destination => $page}{ifCurrent Content:default, destination => $group->getName() . '.' . $destination} class="active"{/ifCurrent}{/foreach}>
+		<a {if empty($structure)}href="#"{else}href="{plink Content:default, destination => $group->getName() . '.' . current($structure)->getPath()}"{/if}>
 			<i class="fa fa-{if !empty($group->getIcon())}{$group->getIcon()}{else}circle{/if}"></i>
-			{$group->getLabel()|translate}
+			{$group->getTitle()|translate}
+			<i class="fa fa-chevron-down" n:if="count($structure) > 1"></i>
 		</a>
+
+		<ul n:if="count($structure) > 1">
+			<li n:foreach="$structure as $destination => $page"{ifCurrent Content:default, destination => $group->getName() . '.' . $destination} class="active"{/ifCurrent} n:if="$page->isVisible()">
+				<a href="{plink Content:default, destination => $group->getName()  . '.' . $destination}">{$page->getTitle()|translate}</a>
+			</li>
+		</ul>
 	</li>
+	{/foreach}
 </ul>

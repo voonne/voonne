@@ -43,10 +43,10 @@ class PageManagerTest extends Unit
 
 		$this->assertCount(2, $groups);
 
-		$this->assertEquals('Users', $groups['users']->getLabel());
+		$this->assertEquals('Users', $groups['users']->getTitle());
 		$this->assertNull($groups['users']->getIcon());
 
-		$this->assertEquals('Options', $groups['options']->getLabel());
+		$this->assertEquals('Options', $groups['options']->getTitle());
 		$this->assertEquals('cog', $groups['options']->getIcon());
 	}
 
@@ -57,6 +57,95 @@ class PageManagerTest extends Unit
 
 		$this->expectException(DuplicateEntryException::class);
 		$this->pageManager->addGroup('users', 'Users');
+	}
+
+
+	public function testAddPage()
+	{
+		$group = $this->pageManager->addGroup('group1', 'Group');
+		$page1 = Mockery::mock(Page::class);
+		$page2 = Mockery::mock(Page::class);
+
+		$page1->shouldReceive('getName')
+			->twice()
+			->withNoArgs()
+			->andReturn('page1');
+
+		$page1->shouldReceive('setParent')
+			->once()
+			->with($group);
+
+		$page2->shouldReceive('getName')
+			->twice()
+			->withNoArgs()
+			->andReturn('page2');
+
+		$page2->shouldReceive('setParent')
+			->once()
+			->with($group);
+
+		$this->pageManager->addPage('group1', 'page1', $page1);
+		$this->pageManager->addPage('group1', 'page2', $page2);
+
+		$this->assertEquals([
+			'page1' => $page1,
+			'page2' => $page2
+		], $group->getPages());
+	}
+
+
+	public function testGetStructure()
+	{
+		$group1 = $this->pageManager->addGroup('group1', 'Group');
+		$group2 = $this->pageManager->addGroup('group2', 'Group');
+		$page1 = Mockery::mock(Page::class);
+		$page2 = Mockery::mock(Page::class);
+
+		$page1->shouldReceive('getName')
+			->twice()
+			->withNoArgs()
+			->andReturn('page1');
+
+		$page1->shouldReceive('setParent')
+			->once()
+			->with($group1);
+
+		$page1->shouldReceive('getPath')
+			->once()
+			->withNoArgs()
+			->andReturn('page1');
+
+		$page1->shouldReceive('getPages')
+			->once()
+			->withNoArgs()
+			->andReturn([]);
+
+		$page2->shouldReceive('getName')
+			->twice()
+			->withNoArgs()
+			->andReturn('page2');
+
+		$page2->shouldReceive('setParent')
+			->once()
+			->with($group2);
+
+		$page2->shouldReceive('getPath')
+			->once()
+			->withNoArgs()
+			->andReturn('page2');
+
+		$page2->shouldReceive('getPages')
+			->once()
+			->withNoArgs()
+			->andReturn([]);
+
+		$this->pageManager->addPage('group1', 'page1', $page1);
+		$this->pageManager->addPage('group2', 'page2', $page2);
+
+		$this->assertEquals([
+			'group1.page1' => $page1,
+			'group2.page2' => $page2
+		], $this->pageManager->getStructure());
 	}
 
 }

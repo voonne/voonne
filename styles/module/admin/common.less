@@ -191,9 +191,15 @@ h1 {
 			a {
 				padding: 5px 0 5px 20px;
 			}
+
+			.active {
+				a {
+					color: @white;
+				}
+			}
 		}
 
-		.active {
+		&>.active {
 			& > a {
 				border-left: 4px solid @brand;
 				padding-left: 11px;

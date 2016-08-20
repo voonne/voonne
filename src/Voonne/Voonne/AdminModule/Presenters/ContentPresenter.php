@@ -10,12 +10,17 @@
 
 namespace Voonne\Voonne\AdminModule\Presenters;
 
+use Nette\Application\BadRequestException;
 use Nette\DI\Container;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\ContentManager;
+use Voonne\Voonne\Controls\Breadcrumbs\IBreadcrumbsControlFactory;
 use Voonne\Voonne\Forms\Form;
 use Voonne\Voonne\Layouts\Layout21\Layout21;
 use Voonne\Voonne\Layouts\LayoutManager;
+use Voonne\Voonne\NotFoundException;
+use Voonne\Voonne\Pages\Page;
+use Voonne\Voonne\Pages\PageManager;
 
 
 class ContentPresenter extends BaseAuthorizedPresenter
@@ -34,6 +39,12 @@ class ContentPresenter extends BaseAuthorizedPresenter
 	public $layoutManager;
 
 	/**
+	 * @var PageManager
+	 * @inject
+	 */
+	public $pageManager;
+
+	/**
 	 * @var Container
 	 * @inject
 	 */
@@ -45,9 +56,26 @@ class ContentPresenter extends BaseAuthorizedPresenter
 	 */
 	public $contentForm;
 
+	/**
+	 * @var Page
+	 */
+	public $page;
+
+	/**
+	 * @var string
+	 * @persistent
+	 */
+	public $destination;
+
 
 	public function actionDefault()
 	{
+		try {
+			$this->template->page = $this->page = $this->pageManager->findByDestination($this->destination);
+		} catch(NotFoundException $e) {
+			throw new BadRequestException('Not found', 404);
+		}
+
 		$this['form'] = $this->contentForm;
 
 		$this->contentForm->onSuccess[] = [$this, 'success'];
@@ -62,13 +90,19 @@ class ContentPresenter extends BaseAuthorizedPresenter
 
 	protected function createComponentLayout()
 	{
-		$layout = $this->layoutManager->getLayout(Layout21::class);
+		$layout = $this->layoutManager->getLayout($this->page->getLayout());
 
 		$layout->injectPrimary(
 			$this->container->getService('voonne.templateFactory'),
 			$this->contentForm);
 
 		return $layout;
+	}
+
+
+	protected function createComponentBreadcrumbsControl(IBreadcrumbsControlFactory $factory)
+	{
+		return $factory->create();
 	}
 
 }

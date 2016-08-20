@@ -25,6 +25,12 @@ class DuplicateEntryException extends \RuntimeException
 }
 
 
+class NotFoundException extends \RuntimeException
+{
+
+}
+
+
 class IOException extends \RuntimeException
 {
 
@@ -77,7 +83,6 @@ class NotRegisteredException extends \LogicException
 {
 
 }
-
 
 class DeprecatedException extends NotSupportedException
 {

@@ -26,6 +26,7 @@ use Voonne\Voonne\Assets\AssetsManager;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\ContentManager;
 use Voonne\Voonne\Content\Latte\Engine;
+use Voonne\Voonne\Controls\Breadcrumbs\IBreadcrumbsControlFactory;
 use Voonne\Voonne\Controls\FlashMessage\IFlashMessageControlFactory;
 use Voonne\Voonne\Controls\FormError\IFormErrorControlFactory;
 use Voonne\Voonne\Controls\Menu\IMenuControlFactory;
@@ -72,6 +73,9 @@ class VoonneExtension extends CompilerExtension
 			->setClass(PageManager::class);
 
 		/* controls */
+
+		$builder->addDefinition('voonne.breadcrumbsControlFactory')
+			->setImplement(IBreadcrumbsControlFactory::class);
 
 		$builder->addDefinition('voonne.flashMessageControlFactory')
 			->setImplement(IFlashMessageControlFactory::class);

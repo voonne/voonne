@@ -6,22 +6,18 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  *}
 
-{var $title = 'Title'}
+{var $title = $page->getTitle()}
 
 {block content}
 
 {form form}
 	<div class="row">
 		<div class="col-sm-12 content-header">
-			<h1>Title</h1>
+			<h1>{$title|translate}</h1>
 		</div>
 
 		<div class="col-sm-12 content-header">
-			<ol class="breadcrumb">
-				<li class="active">level 1</li>
-				<li><a href="#">level 2</a></li>
-				<li><a href="#">level 3</a></li>
-			</ol>
+			{control breadcrumbsControl, $page}
 		</div>
 
 		<div class="col-xs-12" n:ifcontent>

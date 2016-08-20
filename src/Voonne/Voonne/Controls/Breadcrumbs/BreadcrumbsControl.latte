@@ -1,0 +1,19 @@
+{**
+ * This file is part of the Voonne platform (http://www.voonne.org)
+ *
+ * Copyright (c) 2016 Jan Lavička (mail@janlavicka.name)
+ *
+ * For the full copyright and license information, please view the file LICENCE.md that was distributed with this source code.
+ *}
+
+<ol class="breadcrumb">
+	{foreach $cascade as $item}
+		{if !$iterator->isFirst()}
+			{var $name .= '.' . $item->getName()}
+			<li><a href="{plink Content:default, destination => $name}">{$item->getTitle()|translate}</a></li>
+		{else}
+		{var $name = $item->getName()}
+			<li class="active">{$item->getTitle()|translate}</li>
+		{/if}
+	{/foreach}
+</ol>
