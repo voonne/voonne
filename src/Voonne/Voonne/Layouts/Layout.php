@@ -15,7 +15,7 @@ use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Panels\Panel;
-use Voonne\Voonne\Panels\Renderers\PanelRenderer\IPanelRendererFactory;
+use Voonne\Voonne\Panels\Renderers\PanelRenderer\PanelRendererFactory;
 
 
 abstract class Layout extends Control
@@ -30,6 +30,11 @@ abstract class Layout extends Control
 	 * @var ContentForm
 	 */
 	private $contentForm;
+
+	/**
+	 * @var PanelRendererFactory
+	 */
+	private $panelRendererFactory;
 
 
 	/**
@@ -51,10 +56,20 @@ abstract class Layout extends Control
 
 
 	/**
+	 * @return PanelRendererFactory
+	 */
+	public function getPanelRendererFactory()
+	{
+		return $this->panelRendererFactory;
+	}
+
+
+	/**
 	 * @param ITemplateFactory $templateFactory
 	 * @param ContentForm $contentForm
+	 * @param PanelRendererFactory $panelRendererFactory
 	 */
-	public function injectPrimary(ITemplateFactory $templateFactory, ContentForm $contentForm)
+	public function injectPrimary(ITemplateFactory $templateFactory, ContentForm $contentForm, PanelRendererFactory $panelRendererFactory)
 	{
 		if($this->templateFactory !== null) {
 			throw new InvalidStateException('Method ' . __METHOD__ . ' is intended for initialization and should not be called more than once.');
@@ -62,20 +77,18 @@ abstract class Layout extends Control
 
 		$this->templateFactory = $templateFactory;
 		$this->contentForm = $contentForm;
+		$this->panelRendererFactory = $panelRendererFactory;
 	}
 
 
+	/**
+	 * @param Panel $panel
+	 */
 	public function setupPanel(Panel $panel)
 	{
 		$panel->setTemplateFactory($this->getTemplateFactory());
 		$panel->setupPanel();
 		$panel->setupForm($this->getContentForm());
-	}
-
-
-	protected function createComponentPanelRenderer(IPanelRendererFactory $factory)
-	{
-		return $factory->create();
 	}
 
 }

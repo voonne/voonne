@@ -16,11 +16,11 @@ use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\ContentManager;
 use Voonne\Voonne\Controls\Breadcrumbs\IBreadcrumbsControlFactory;
 use Voonne\Voonne\Forms\Form;
-use Voonne\Voonne\Layouts\Layout21\Layout21;
 use Voonne\Voonne\Layouts\LayoutManager;
 use Voonne\Voonne\NotFoundException;
 use Voonne\Voonne\Pages\Page;
 use Voonne\Voonne\Pages\PageManager;
+use Voonne\Voonne\Panels\Renderers\PanelRenderer\PanelRendererFactory;
 
 
 class ContentPresenter extends BaseAuthorizedPresenter
@@ -57,6 +57,12 @@ class ContentPresenter extends BaseAuthorizedPresenter
 	public $contentForm;
 
 	/**
+	 * @var PanelRendererFactory
+	 * @inject
+	 */
+	public $panelRendererFactory;
+
+	/**
 	 * @var Page
 	 */
 	public $page;
@@ -76,7 +82,7 @@ class ContentPresenter extends BaseAuthorizedPresenter
 			throw new BadRequestException('Not found', 404);
 		}
 
-		$this['form'] = $this->contentForm;
+		$this->addComponent($this->contentForm, 'form');
 
 		$this->contentForm->onSuccess[] = [$this, 'success'];
 	}
@@ -94,7 +100,8 @@ class ContentPresenter extends BaseAuthorizedPresenter
 
 		$layout->injectPrimary(
 			$this->container->getService('voonne.templateFactory'),
-			$this->contentForm);
+			$this->contentForm,
+			$this->panelRendererFactory);
 
 		return $layout;
 	}

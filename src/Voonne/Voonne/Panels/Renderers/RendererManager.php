@@ -38,15 +38,15 @@ class RendererManager
 	 *
 	 * @param Panel $panel
 	 *
-	 * @return PanelRenderer
+	 * @return object
 	 *
 	 * @throws NotRegisteredException
 	 */
-	public function getRenderer(Panel $panel)
+	public function getRendererFactory(Panel $panel)
 	{
-		foreach($this->getRenderers() as $type => $renderer) {
+		foreach($this->getRendererFactories() as $type => $rendererFactory) {
 			if($panel instanceof $type) {
-				return $renderer;
+				return $rendererFactory;
 			}
 		}
 
@@ -55,28 +55,27 @@ class RendererManager
 
 
 	/**
-	 * Return list of registrated renderers.
+	 * Return list of renderer factories.
 	 *
 	 * @return array
 	 */
-	private function getRenderers()
+	private function getRendererFactories()
 	{
-		$renderers = [];
+		$rendererFactories = [];
 
 		foreach($this->container->findByTag(self::TAG_RENDERER) as $name => $attribute) {
 			$rendererFactory = $this->container->getService($name);
-			$renderer = $rendererFactory->create();
 
-			$reflectionClass = new ReflectionClass(get_class($renderer));
+			$reflectionClass = new ReflectionClass(get_class($rendererFactory));
 
-			$parameters = $reflectionClass->getMethod('render')->getParameters();
+			$parameters = $reflectionClass->getMethod('create')->getParameters();
 
 			if(isset($parameters[0])) {
-				$renderers[$parameters[0]->getClass()->getName()] = $renderer;
+				$rendererFactories[$parameters[0]->getClass()->getName()] = $rendererFactory;
 			}
 		}
 
-		return $renderers;
+		return $rendererFactories;
 	}
 
 }

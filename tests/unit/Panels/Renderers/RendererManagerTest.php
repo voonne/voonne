@@ -10,9 +10,9 @@ use UnitTester;
 use Voonne\Voonne\NotRegisteredException;
 use Voonne\Voonne\Panels\BasicPanel;
 use Voonne\Voonne\Panels\Renderers\BasicPanelRenderer\BasicPanelRenderer;
-use Voonne\Voonne\Panels\Renderers\BasicPanelRenderer\IBasicPanelRendererFactory;
+use Voonne\Voonne\Panels\Renderers\BasicPanelRenderer\BasicPanelRendererFactory;
 use Voonne\Voonne\Panels\Renderers\BlankPanelRenderer\BlankPanelRenderer;
-use Voonne\Voonne\Panels\Renderers\BlankPanelRenderer\IBlankPanelRendererFactory;
+use Voonne\Voonne\Panels\Renderers\BlankPanelRenderer\BlankPanelRendererFactory;
 
 
 class RendererManagerTest extends Unit
@@ -48,24 +48,12 @@ class RendererManagerTest extends Unit
 	}
 
 
-	public function testGetExistingRenderer()
+	public function testGetExistingRendererFactory()
 	{
-		$basicPanelRendererFactory = Mockery::mock(IBasicPanelRendererFactory::class);
-		$blankPanelRendererFactory = Mockery::mock(IBlankPanelRendererFactory::class);
-		$basicPanelRenderer = Mockery::mock(BasicPanelRenderer::class);
-		$blankPanelRenderer = Mockery::mock(BlankPanelRenderer::class);
+		$basicPanelRendererFactory = Mockery::mock(BasicPanelRendererFactory::class);
+		$blankPanelRendererFactory = Mockery::mock(BlankPanelRendererFactory::class);
 
 		$panel = Mockery::mock(BasicPanel::class);
-
-		$basicPanelRendererFactory->shouldReceive('create')
-			->once()
-			->withNoArgs()
-			->andReturn($basicPanelRenderer);
-
-		$blankPanelRendererFactory->shouldReceive('create')
-			->once()
-			->withNoArgs()
-			->andReturn($blankPanelRenderer);
 
 		$this->container->shouldReceive('findByTag')
 			->once()
@@ -82,21 +70,15 @@ class RendererManagerTest extends Unit
 			->with('voonne.blankPanelRenderer')
 			->andReturn($blankPanelRendererFactory);
 
-		$this->assertEquals($basicPanelRenderer, $this->rendererManager->getRenderer($panel));
+		$this->assertEquals($basicPanelRendererFactory, $this->rendererManager->getRendererFactory($panel));
 	}
 
 
-	public function testGetNonexistentRenderer()
+	public function testGetNonexistentRendererFactory()
 	{
-		$blankPanelRendererFactory = Mockery::mock(IBlankPanelRendererFactory::class);
-		$blankPanelRenderer = Mockery::mock(BlankPanelRenderer::class);
+		$blankPanelRendererFactory = Mockery::mock(BlankPanelRendererFactory::class);
 
 		$panel = Mockery::mock(BasicPanel::class);
-
-		$blankPanelRendererFactory->shouldReceive('create')
-			->once()
-			->withNoArgs()
-			->andReturn($blankPanelRenderer);
 
 		$this->container->shouldReceive('findByTag')
 			->once()
@@ -109,7 +91,7 @@ class RendererManagerTest extends Unit
 			->andReturn($blankPanelRendererFactory);
 
 		$this->expectException(NotRegisteredException::class);
-		$this->rendererManager->getRenderer($panel);
+		$this->rendererManager->getRendererFactory($panel);
 	}
 
 }

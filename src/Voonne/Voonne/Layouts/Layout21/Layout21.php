@@ -23,6 +23,11 @@ class Layout21 extends Layout
 	 */
 	private $contentManager;
 
+	/**
+	 * @var array
+	 */
+	private $elements;
+
 
 	public function __construct(ContentManager $contentManager, ITranslator $translator)
 	{
@@ -32,19 +37,29 @@ class Layout21 extends Layout
 	}
 
 
+	public function beforeRender()
+	{
+		$this->elements = $this->contentManager->getPanels();
+
+		foreach($this->elements[ContentManager::POSITION_LEFT] as $name => $panel) {
+			$this->setupPanel($panel);
+
+			$this->addComponent($this->getPanelRendererFactory()->create($panel), $name);
+		}
+
+		foreach($this->elements[ContentManager::POSITION_RIGHT] as $name => $panel) {
+			$this->setupPanel($panel);
+
+			$this->addComponent($this->getPanelRendererFactory()->create($panel), $name);
+		}
+	}
+
+
 	public function render()
 	{
 		$this->template->setFile(__DIR__ . '/Layout21.latte');
 
-		$this->template->elements = $elements = $this->contentManager->getPanels();
-
-		foreach($elements[ContentManager::POSITION_LEFT] as $index => $panel) {
-			$this->setupPanel($panel);
-		}
-
-		foreach($elements[ContentManager::POSITION_RIGHT] as $index => $panel) {
-			$this->setupPanel($panel);
-		}
+		$this->template->elements = $this->elements;
 
 		$this->template->render();
 	}

@@ -37,9 +37,9 @@ use Voonne\Voonne\Layouts\LayoutManager;
 use Voonne\Voonne\Model\Facades\UserFacade;
 use Voonne\Voonne\Model\Repositories\UserRepository;
 use Voonne\Voonne\Pages\PageManager;
-use Voonne\Voonne\Panels\Renderers\BasicPanelRenderer\IBasicPanelRendererFactory;
-use Voonne\Voonne\Panels\Renderers\BlankPanelRenderer\IBlankPanelRendererFactory;
-use Voonne\Voonne\Panels\Renderers\PanelRenderer\IPanelRendererFactory;
+use Voonne\Voonne\Panels\Renderers\BasicPanelRenderer\BasicPanelRendererFactory;
+use Voonne\Voonne\Panels\Renderers\BlankPanelRenderer\BlankPanelRendererFactory;
+use Voonne\Voonne\Panels\Renderers\PanelRenderer\PanelRendererFactory;
 use Voonne\Voonne\Panels\Renderers\RendererManager;
 use Voonne\Voonne\Routers\RouterFactory;
 use Voonne\Voonne\Security\Authenticator;
@@ -67,11 +67,6 @@ class VoonneExtension extends CompilerExtension
 		$builder->addDefinition('voonne.signInFormFactory')
 			->setClass(SignInFormFactory::class);
 
-		/* pages */
-
-		$builder->addDefinition('voonne.pageManager')
-			->setClass(PageManager::class);
-
 		/* controls */
 
 		$builder->addDefinition('voonne.breadcrumbsControlFactory')
@@ -98,6 +93,11 @@ class VoonneExtension extends CompilerExtension
 			->setClass(TemplateFactory::class, ['@voonne.latteFactory'])
 			->setAutowired(false);
 
+		/* pages */
+
+		$builder->addDefinition('voonne.pageManager')
+			->setClass(PageManager::class);
+
 		/* layouts */
 
 		$builder->addDefinition('voonne.layoutManager')
@@ -117,14 +117,14 @@ class VoonneExtension extends CompilerExtension
 			->setClass(RendererManager::class);
 
 		$builder->addDefinition('voonne.panelRendererFactory')
-			->setImplement(IPanelRendererFactory::class);
+			->setClass(PanelRendererFactory::class);
 
 		$builder->addDefinition('voonne.basicPanelRendererFactory')
-			->setImplement(IBasicPanelRendererFactory::class)
+			->setClass(BasicPanelRendererFactory::class)
 			->addTag(RendererManager::TAG_RENDERER);
 
 		$builder->addDefinition('voonne.blankPanelRendererFactory')
-			->setImplement(IBlankPanelRendererFactory::class)
+			->setClass(BlankPanelRendererFactory::class)
 			->addTag(RendererManager::TAG_RENDERER);
 
 		/* router */

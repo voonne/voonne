@@ -11,6 +11,7 @@ use UnitTester;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Panels\BasicPanel;
+use Voonne\Voonne\Panels\Renderers\PanelRenderer\PanelRendererFactory;
 
 
 class LayoutTest extends Unit
@@ -37,6 +38,11 @@ class LayoutTest extends Unit
 	private $contentForm;
 
 	/**
+	 * @var MockInterface
+	 */
+	private $panelRendererFactory;
+
+	/**
 	 * @var Layout
 	 */
 	private $layout;
@@ -47,9 +53,10 @@ class LayoutTest extends Unit
 		$this->translator = Mockery::mock(ITranslator::class);
 		$this->templateFactory = Mockery::mock(ITemplateFactory::class);
 		$this->contentForm = Mockery::mock(ContentForm::class);
+		$this->panelRendererFactory = Mockery::mock(PanelRendererFactory::class);
 
 		$this->layout = new TestLayout($this->translator);
-		$this->layout->injectPrimary($this->templateFactory, $this->contentForm);
+		$this->layout->injectPrimary($this->templateFactory, $this->contentForm, $this->panelRendererFactory);
 	}
 
 
@@ -63,9 +70,10 @@ class LayoutTest extends Unit
 	{
 		$this->assertEquals($this->templateFactory, $this->layout->getTemplateFactory());
 		$this->assertEquals($this->contentForm, $this->layout->getContentForm());
+		$this->assertEquals($this->panelRendererFactory, $this->layout->getPanelRendererFactory());
 
 		$this->expectException(InvalidStateException::class);
-		$this->layout->injectPrimary($this->templateFactory, $this->contentForm);
+		$this->layout->injectPrimary($this->templateFactory, $this->contentForm, $this->panelRendererFactory);
 	}
 
 

@@ -10,7 +10,7 @@
 	{foreach $cascade as $item}
 		{if !$iterator->isFirst()}
 			{var $name .= '.' . $item->getName()}
-			<li><a href="{plink Content:default, destination => $name}">{$item->getTitle()|translate}</a></li>
+			<li><a n:href="$name">{$item->getTitle()|translate}</a></li>
 		{else}
 		{var $name = $item->getName()}
 			<li class="active">{$item->getTitle()|translate}</li>

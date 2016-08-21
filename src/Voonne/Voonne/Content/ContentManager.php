@@ -10,6 +10,9 @@
 
 namespace Voonne\Voonne\Content;
 
+use Nette\Utils\Strings;
+use ReflectionClass;
+
 
 class ContentManager
 {
@@ -48,7 +51,10 @@ class ContentManager
 
 				foreach ($position as $priority) {
 					foreach ($priority as $factory) {
-						$panels[$positionName][] = $factory->create();
+						$panel = $factory->create();
+						$reflectionClass = new ReflectionClass($panel);
+
+						$panels[$positionName][Strings::webalize($reflectionClass->getShortName())] = $panel;
 					}
 				}
 			}

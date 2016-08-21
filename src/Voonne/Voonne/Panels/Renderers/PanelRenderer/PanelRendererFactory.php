@@ -11,12 +11,11 @@
 namespace Voonne\Voonne\Panels\Renderers\PanelRenderer;
 
 use Nette\Localization\ITranslator;
-use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\Panels\Panel;
 use Voonne\Voonne\Panels\Renderers\RendererManager;
 
 
-class PanelRenderer extends Control
+class PanelRendererFactory
 {
 
 	/**
@@ -25,33 +24,26 @@ class PanelRenderer extends Control
 	private $rendererManager;
 
 	/**
-	 * @var Panel
+	 * @var ITranslator
 	 */
-	private $panel;
+	private $translator;
 
 
-	public function __construct(Panel $panel, RendererManager $rendererManager, ITranslator $translator)
+	public function __construct(RendererManager $rendererManager, ITranslator $translator)
 	{
-		parent::__construct($translator);
-
-		$this->panel = $panel;
 		$this->rendererManager = $rendererManager;
+		$this->translator = $translator;
 	}
 
 
-	public function beforeRender()
+	/**
+	 * @param Panel $panel
+	 *
+	 * @return PanelRenderer
+	 */
+	public function create(Panel $panel)
 	{
-		$rendererFactory = $this->rendererManager->getRendererFactory($this->panel);
-
-		$this->addComponent($rendererFactory->create($this->panel), 'renderer');
-	}
-
-
-	public function render()
-	{
-		$this->template->setFile(__DIR__ . '/PanelRenderer.latte');
-
-		$this->template->render();
+		return new PanelRenderer($panel, $this->rendererManager, $this->translator);
 	}
 
 }
