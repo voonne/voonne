@@ -39,7 +39,7 @@ class Layout1 extends Layout
 
 	public function beforeRender()
 	{
-		$this->elements = $this->contentManager->getPanels();
+		$this->elements = $this->contentManager->getPanels($this->getPresenter()->destination);
 
 		foreach($this->elements[ContentManager::POSITION_CENTER] as $name => $panel) {
 			$this->setupPanel($panel);

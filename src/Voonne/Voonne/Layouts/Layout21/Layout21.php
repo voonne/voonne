@@ -39,7 +39,7 @@ class Layout21 extends Layout
 
 	public function beforeRender()
 	{
-		$this->elements = $this->contentManager->getPanels();
+		$this->elements = $this->contentManager->getPanels($this->getPresenter()->destination);
 
 		foreach($this->elements[ContentManager::POSITION_LEFT] as $name => $panel) {
 			$this->setupPanel($panel);

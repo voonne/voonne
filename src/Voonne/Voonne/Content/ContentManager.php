@@ -12,6 +12,7 @@ namespace Voonne\Voonne\Content;
 
 use Nette\Utils\Strings;
 use ReflectionClass;
+use Voonne\Voonne\InvalidArgumentException;
 
 
 class ContentManager
@@ -29,13 +30,34 @@ class ContentManager
 	private $panels = [];
 
 
-	public function addPanel($element, $position, $priority = 100)
+	/**
+	 * Adds panel.
+	 *
+	 * @param string $destination
+	 * @param string $position
+	 * @param object $panelFactory
+	 * @param integer $priority
+	 *
+	 * @throws InvalidArgumentException
+	 */
+	public function addPanel($destination, $position, $panelFactory, $priority = 100)
 	{
-		$this->panels[$position][$priority][] = $element;
+		if(!in_array($position, [self::POSITION_TOP, self::POSITION_BOTTOM, self::POSITION_LEFT, self::POSITION_RIGHT, self::POSITION_CENTER])) {
+			throw new InvalidArgumentException("Position must be '" . self::POSITION_TOP . "', '" . self::POSITION_BOTTOM . "', '" . self::POSITION_LEFT . "', '" . self::POSITION_RIGHT . "' or '" . self::POSITION_CENTER . "', '"  . $position . "' given.");
+		}
+
+		$this->panels[$destination][$position][$priority][] = $panelFactory;
 	}
 
 
-	public function getPanels()
+	/**
+	 * Returns array of corresponding panels for specific destination.
+	 *
+	 * @param string $destination
+	 *
+	 * @return array
+	 */
+	public function getPanels($destination)
 	{
 		$panels = [
 			self::POSITION_TOP => [],
@@ -45,8 +67,8 @@ class ContentManager
 			self::POSITION_CENTER => []
 		];
 
-		if(!empty($this->panels)) {
-			foreach($this->panels as $positionName => $position) {
+		if(!empty($this->panels[$destination])) {
+			foreach($this->panels[$destination] as $positionName => $position) {
 				krsort($position);
 
 				foreach ($position as $priority) {
