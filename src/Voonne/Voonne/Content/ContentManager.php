@@ -13,6 +13,7 @@ namespace Voonne\Voonne\Content;
 use Nette\Utils\Strings;
 use ReflectionClass;
 use Voonne\Voonne\InvalidArgumentException;
+use Voonne\Voonne\Panels\Panel;
 
 
 class ContentManager
@@ -35,18 +36,18 @@ class ContentManager
 	 *
 	 * @param string $destination
 	 * @param string $position
-	 * @param object $panelFactory
+	 * @param Panel $panel
 	 * @param integer $priority
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function addPanel($destination, $position, $panelFactory, $priority = 100)
+	public function addPanel($destination, $position, Panel $panel, $priority = 100)
 	{
 		if(!in_array($position, [self::POSITION_TOP, self::POSITION_BOTTOM, self::POSITION_LEFT, self::POSITION_RIGHT, self::POSITION_CENTER])) {
 			throw new InvalidArgumentException("Position must be '" . self::POSITION_TOP . "', '" . self::POSITION_BOTTOM . "', '" . self::POSITION_LEFT . "', '" . self::POSITION_RIGHT . "' or '" . self::POSITION_CENTER . "', '"  . $position . "' given.");
 		}
 
-		$this->panels[$destination][$position][$priority][] = $panelFactory;
+		$this->panels[$destination][$position][$priority][] = $panel;
 	}
 
 
@@ -72,8 +73,7 @@ class ContentManager
 				krsort($position);
 
 				foreach ($position as $priority) {
-					foreach ($priority as $factory) {
-						$panel = $factory->create();
+					foreach ($priority as $panel) {
 						$reflectionClass = new ReflectionClass($panel);
 
 						$panels[$positionName][Strings::webalize($reflectionClass->getShortName())] = $panel;

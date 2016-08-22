@@ -11,6 +11,7 @@
 namespace Voonne\Voonne\Pages;
 
 use Voonne\Voonne\DuplicateEntryException;
+use Voonne\Voonne\Forms\Form;
 use Voonne\Voonne\InvalidArgumentException;
 use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Layouts\Layout;
@@ -120,6 +121,30 @@ class Page
 	public function show()
 	{
 		$this->visible = true;
+	}
+
+
+	/**
+	 * Checks whether the user is authorized to access this page.
+	 *
+	 * @return boolean
+	 */
+	public function checkAuthorization()
+	{
+		return true;
+	}
+
+
+	/**
+	 * Checks whether it is possible according to the parameters to access this page.
+	 *
+	 * @param array $parameters
+	 *
+	 * @return boolean
+	 */
+	public function checkRequirements(array $parameters)
+	{
+		return true;
 	}
 
 

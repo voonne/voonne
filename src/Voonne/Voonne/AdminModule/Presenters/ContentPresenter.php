@@ -82,20 +82,12 @@ class ContentPresenter extends BaseAuthorizedPresenter
 			throw new BadRequestException('Not found', 404);
 		}
 
+		/* content form */
+
 		$this->addComponent($this->contentForm, 'form');
 
-		$this->contentForm->onSuccess[] = [$this, 'success'];
-	}
+		/* layout */
 
-
-	public function success(Form $form, $values)
-	{
-		\Tracy\Debugger::barDump($values);
-	}
-
-
-	protected function createComponentLayout()
-	{
 		$layout = $this->layoutManager->getLayout($this->page->getLayout());
 
 		$layout->injectPrimary(
@@ -103,7 +95,7 @@ class ContentPresenter extends BaseAuthorizedPresenter
 			$this->contentForm,
 			$this->panelRendererFactory);
 
-		return $layout;
+		$this->addComponent($layout, 'layout');
 	}
 
 

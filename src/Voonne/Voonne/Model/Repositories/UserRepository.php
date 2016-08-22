@@ -10,8 +10,23 @@
 
 namespace Voonne\Voonne\Model\Repositories;
 
+use Voonne\Voonne\Model\Entities\User;
+
 
 class UserRepository extends Repository
 {
+
+	/**
+	 * @param User $user
+	 * @param string $email
+	 *
+	 * @return boolean
+	 */
+	public function isEmailFree(User $user, $email)
+	{
+		return $this->createQuery('SELECT COUNT(u) FROM ' . User::class . ' u WHERE u.id != ?0 AND u.email = ?1')
+			->setParameters([$user->getId(), $email])
+			->getSingleScalarResult() == 0;
+	}
 
 }

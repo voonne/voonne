@@ -11,11 +11,13 @@
 namespace Voonne\Voonne\Model\Facades;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Nette\Object;
+use Doctrine\ORM\OptimisticLockException;
+use Voonne\Voonne\DuplicateEntryException;
 use Voonne\Voonne\Model\Entities\User;
+use Voonne\Voonne\Model\Repositories\UserRepository;
 
 
-class UserFacade extends Object
+class UserFacade
 {
 
 	/**
@@ -23,20 +25,41 @@ class UserFacade extends Object
 	 */
 	private $entityManager;
 
+	/**
+	 * @var UserRepository
+	 */
+	private $userRepository;
 
-	public function __construct(EntityManagerInterface $entityManager)
+
+	public function __construct(EntityManagerInterface $entityManager, UserRepository $userRepository)
 	{
 		$this->entityManager = $entityManager;
+		$this->userRepository = $userRepository;
 	}
 
 
+	/**
+	 * @param User $user
+	 *
+	 * @throws OptimisticLockException
+	 * @throws DuplicateEntryException
+	 */
 	public function save(User $user)
 	{
+		if(!$this->userRepository->isEmailFree($user, $user->getEmail())) {
+			throw new DuplicateEntryException('User with this email is already exists.');
+		}
+
 		$this->entityManager->persist($user);
 		$this->entityManager->flush();
 	}
 
 
+	/**
+	 * @param User $user
+	 *
+	 * @throws OptimisticLockException
+	 */
 	public function remove(User $user)
 	{
 		$this->entityManager->remove($user);

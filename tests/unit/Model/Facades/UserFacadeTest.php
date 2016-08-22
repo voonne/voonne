@@ -7,8 +7,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Mockery\MockInterface;
 use UnitTester;
+use Voonne\Voonne\DuplicateEntryException;
 use Voonne\Voonne\Model\Entities\User;
 use Voonne\Voonne\Model\Facades\UserFacade;
+use Voonne\Voonne\Model\Repositories\UserRepository;
 
 
 class UserFacadeTest extends Unit
@@ -25,6 +27,11 @@ class UserFacadeTest extends Unit
 	private $entityManager;
 
 	/**
+	 * @var MockInterface
+	 */
+	private $userRepository;
+
+	/**
 	 * @var UserFacade
 	 */
 	private $userFacade;
@@ -33,8 +40,9 @@ class UserFacadeTest extends Unit
 	protected function _before()
 	{
 		$this->entityManager = Mockery::mock(EntityManagerInterface::class);
+		$this->userRepository = Mockery::mock(UserRepository::class);
 
-		$this->userFacade = new UserFacade($this->entityManager);
+		$this->userFacade = new UserFacade($this->entityManager, $this->userRepository);
 	}
 
 
@@ -48,6 +56,16 @@ class UserFacadeTest extends Unit
 	{
 		$user = Mockery::mock(User::class);
 
+		$user->shouldReceive('getEmail')
+			->once()
+			->withNoArgs()
+			->andReturn('new@example.com');
+
+		$this->userRepository->shouldReceive('isEmailFree')
+			->once()
+			->with($user, 'new@example.com')
+			->andReturn(true);
+
 		$this->entityManager->shouldReceive('persist')
 			->once()
 			->with($user);
@@ -56,6 +74,25 @@ class UserFacadeTest extends Unit
 			->once()
 			->withNoArgs();
 
+		$this->userFacade->save($user);
+	}
+
+
+	public function testSaveDuplicateEntry()
+	{
+		$user = Mockery::mock(User::class);
+
+		$user->shouldReceive('getEmail')
+			->once()
+			->withNoArgs()
+			->andReturn('new@example.com');
+
+		$this->userRepository->shouldReceive('isEmailFree')
+			->once()
+			->with($user, 'new@example.com')
+			->andReturn(false);
+
+		$this->expectException(DuplicateEntryException::class);
 		$this->userFacade->save($user);
 	}
 

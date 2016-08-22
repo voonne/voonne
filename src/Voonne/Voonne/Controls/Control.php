@@ -90,12 +90,14 @@ abstract class Control extends \Nette\Application\UI\Control
 
 
 	/**
-	 * @param string $message
-	 * @param string $type
+	 * Saves the message to template, that can be displayed after redirect.
+	 *
+	 * @param  string
+	 * @param  string
 	 *
 	 * @return stdClass
 	 */
-	public function message($message, $type = 'info')
+	public function flashMessage($message, $type = 'info')
 	{
 		return $this->presenter->flashMessage($message, $type);
 	}
