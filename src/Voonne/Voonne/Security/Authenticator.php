@@ -39,8 +39,8 @@ class Authenticator
 
 
 	/**
-	 * @param $email
-	 * @param $password
+	 * @param string $email
+	 * @param string $password
 	 *
 	 * @throws AuthenticationException
 	 */
@@ -48,11 +48,11 @@ class Authenticator
 	{
 		try {
 			$user = $this->userRepository->findOneBy(['email' => $email]);
-		} catch(IOException $e) {
+		} catch (IOException $e) {
 			throw new AuthenticationException('voonne-common.authentication.wrongEmailOrPassword');
 		}
 
-		if(!Passwords::verify($password, $user->getPassword())) {
+		if (!Passwords::verify($password, $user->getPassword())) {
 			throw new AuthenticationException('voonne-common.authentication.wrongEmailOrPassword');
 		}
 

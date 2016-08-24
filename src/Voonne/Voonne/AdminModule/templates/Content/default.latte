@@ -6,24 +6,20 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  *}
 
-{var $title = $page->getTitle()}
+{var $title = $page->getPageTitle()}
 
 {block content}
 
-{form form}
+{form form, class => "form-horizontal"}
 	<div class="row">
-		<div class="col-sm-12 content-header">
+		<div class="col-md-12 content-header">
 			<h1>{$title|translate}</h1>
 		</div>
 
-		<div class="col-sm-12 content-header">
-			{control breadcrumbsControl, $page}
-		</div>
-
-		<div class="col-xs-12" n:ifcontent>
+		<div class="col-md-12" n:ifcontent>
 			{control flashMessageControl, $flashes}
 		</div>
 
-		{control layout}
+		{control page}
 	</div>
 {/form}

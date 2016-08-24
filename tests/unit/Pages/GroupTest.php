@@ -5,6 +5,7 @@ namespace Voonne\Voonne\Pages;
 use Codeception\Test\Unit;
 use Mockery;
 use UnitTester;
+use Voonne\Voonne\DuplicateEntryException;
 
 
 class GroupTest extends Unit
@@ -38,6 +39,10 @@ class GroupTest extends Unit
 		$this->assertEquals('name', $this->group->getName());
 		$this->assertEquals('label', $this->group->getTitle());
 		$this->assertNull($this->group->getIcon());
+
+		$this->group->setIcon('user');
+
+		$this->assertEquals('user', $this->group->getIcon());
 	}
 
 
@@ -46,23 +51,15 @@ class GroupTest extends Unit
 		$page1 = Mockery::mock(Page::class);
 		$page2 = Mockery::mock(Page::class);
 
-		$page1->shouldReceive('getName')
+		$page1->shouldReceive('getPageName')
 			->twice()
 			->withNoArgs()
 			->andReturn('page1');
 
-		$page1->shouldReceive('setParent')
-			->once()
-			->with($this->group);
-
-		$page2->shouldReceive('getName')
-			->twice()
+		$page2->shouldReceive('getPageName')
+			->times(4)
 			->withNoArgs()
 			->andReturn('page2');
-
-		$page2->shouldReceive('setParent')
-			->once()
-			->with($this->group);
 
 		$this->group->addPage($page1);
 		$this->group->addPage($page2);
@@ -71,83 +68,9 @@ class GroupTest extends Unit
 			'page1' => $page1,
 			'page2' => $page2
 		], $this->group->getPages());
-	}
 
-
-	public function testGetStructure()
-	{
-		$page1 = Mockery::mock(Page::class);
-		$page2 = Mockery::mock(Page::class);
-		$page3 = Mockery::mock(Page::class);
-		$page4 = Mockery::mock(Page::class);
-
-		$page1->shouldReceive('getName')
-			->twice()
-			->withNoArgs()
-			->andReturn('page1');
-
-		$page1->shouldReceive('setParent')
-			->once()
-			->with($this->group);
-
-		$page1->shouldReceive('getPath')
-			->once()
-			->withNoArgs()
-			->andReturn('page1');
-
-		$page1->shouldReceive('getPages')
-			->once()
-			->withNoArgs()
-			->andReturn([]);
-
-		$page2->shouldReceive('getName')
-			->twice()
-			->withNoArgs()
-			->andReturn('page2');
-
-		$page2->shouldReceive('setParent')
-			->once()
-			->with($this->group);
-
-		$page2->shouldReceive('getPath')
-			->once()
-			->withNoArgs()
-			->andReturn('page2');
-
-		$page2->shouldReceive('getPages')
-			->twice()
-			->withNoArgs()
-			->andReturn(['page3' => $page3, 'page4' => $page4]);
-
-		$page3->shouldReceive('getPath')
-			->once()
-			->withNoArgs()
-			->andReturn('page2.page3');
-
-		$page3->shouldReceive('getPages')
-			->once()
-			->withNoArgs()
-			->andReturn([]);
-
-		$page4->shouldReceive('getPath')
-			->once()
-			->withNoArgs()
-			->andReturn('page2.page4');
-
-		$page4->shouldReceive('getPages')
-			->once()
-			->withNoArgs()
-			->andReturn([]);
-
-		$this->group->addPage($page1);
+		$this->expectException(DuplicateEntryException::class);
 		$this->group->addPage($page2);
-
-		$this->assertEquals([
-			'page1' => $page1,
-			'page2' => $page2,
-			'page2.page3' => $page3,
-			'page2.page4' => $page4
-		], $this->group->getStructure());
 	}
 
 }

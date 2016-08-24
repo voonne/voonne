@@ -10,31 +10,30 @@
 
 namespace Voonne\Voonne\Panels\Renderers\BlankPanelRenderer;
 
-use Nette\Localization\ITranslator;
-use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\Panels\BlankPanel;
+use Voonne\Voonne\Panels\Renderers\PanelRenderer;
 
 
-class BlankPanelRenderer extends Control
+class BlankPanelRenderer extends PanelRenderer
 {
 
 	/**
 	 * @var BlankPanel
 	 */
-	private $blankPanel;
+	private $panel;
 
 
-	public function __construct(BlankPanel $panel, ITranslator $translator)
+	public function __construct(BlankPanel $panel)
 	{
-		parent::__construct($translator);
+		parent::__construct();
 
-		$this->blankPanel = $panel;
+		$this->panel = $panel;
 	}
 
 
 	public function beforeRender()
 	{
-		$this->addComponent($this->blankPanel, 'panel');
+		$this->addComponent($this->panel, 'panel');
 	}
 
 
@@ -42,7 +41,7 @@ class BlankPanelRenderer extends Control
 	{
 		$this->template->setFile(__DIR__ . '/BlankPanelRenderer.latte');
 
-		$this->template->panel = $this->blankPanel;
+		$this->template->panel = $this->panel;
 
 		$this->template->render();
 	}

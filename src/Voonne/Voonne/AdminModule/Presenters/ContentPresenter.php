@@ -11,32 +11,15 @@
 namespace Voonne\Voonne\AdminModule\Presenters;
 
 use Nette\Application\BadRequestException;
-use Nette\DI\Container;
 use Voonne\Voonne\Content\ContentForm;
-use Voonne\Voonne\Content\ContentManager;
-use Voonne\Voonne\Controls\Breadcrumbs\IBreadcrumbsControlFactory;
-use Voonne\Voonne\Forms\Form;
 use Voonne\Voonne\Layouts\LayoutManager;
-use Voonne\Voonne\NotFoundException;
 use Voonne\Voonne\Pages\Page;
 use Voonne\Voonne\Pages\PageManager;
-use Voonne\Voonne\Panels\Renderers\PanelRenderer\PanelRendererFactory;
+use Voonne\Voonne\Panels\Renderers\RendererManager;
 
 
 class ContentPresenter extends BaseAuthorizedPresenter
 {
-
-	/**
-	 * @var ContentManager
-	 * @inject
-	 */
-	public $contentManager;
-
-	/**
-	 * @var LayoutManager
-	 * @inject
-	 */
-	public $layoutManager;
 
 	/**
 	 * @var PageManager
@@ -45,22 +28,22 @@ class ContentPresenter extends BaseAuthorizedPresenter
 	public $pageManager;
 
 	/**
-	 * @var Container
+	 * @var LayoutManager
 	 * @inject
 	 */
-	public $container;
+	public $layoutManager;
+
+	/**
+	 * @var RendererManager
+	 * @inject
+	 */
+	public $rendererManager;
 
 	/**
 	 * @var ContentForm
 	 * @inject
 	 */
 	public $contentForm;
-
-	/**
-	 * @var PanelRendererFactory
-	 * @inject
-	 */
-	public $panelRendererFactory;
 
 	/**
 	 * @var Page
@@ -71,37 +54,36 @@ class ContentPresenter extends BaseAuthorizedPresenter
 	 * @var string
 	 * @persistent
 	 */
-	public $destination;
+	public $groupName;
+
+	/**
+	 * @var string
+	 * @persistent
+	 */
+	public $pageName;
 
 
 	public function actionDefault()
 	{
-		try {
-			$this->template->page = $this->page = $this->pageManager->findByDestination($this->destination);
-		} catch(NotFoundException $e) {
+		$groups = $this->pageManager->getGroups();
+
+		if (!isset($groups[$this->groupName]) || !isset($groups[$this->groupName]->getPages()[$this->pageName])) {
 			throw new BadRequestException('Not found', 404);
 		}
+
+		$this->template->page = $this->page = $groups[$this->groupName]->getPages()[$this->pageName];
+
+		$this->page->injectPrimary(
+			$this->layoutManager,
+			$this->rendererManager,
+			$this->contentForm
+		);
+
+		$this->addComponent($this->page, 'page');
 
 		/* content form */
 
 		$this->addComponent($this->contentForm, 'form');
-
-		/* layout */
-
-		$layout = $this->layoutManager->getLayout($this->page->getLayout());
-
-		$layout->injectPrimary(
-			$this->container->getService('voonne.templateFactory'),
-			$this->contentForm,
-			$this->panelRendererFactory);
-
-		$this->addComponent($layout, 'layout');
-	}
-
-
-	protected function createComponentBreadcrumbsControl(IBreadcrumbsControlFactory $factory)
-	{
-		return $factory->create();
 	}
 
 }

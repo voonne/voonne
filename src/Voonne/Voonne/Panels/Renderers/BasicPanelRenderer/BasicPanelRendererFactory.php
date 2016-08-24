@@ -18,25 +18,13 @@ class BasicPanelRendererFactory
 {
 
 	/**
-	 * @var ITranslator
-	 */
-	private $translator;
-
-
-	public function __construct(ITranslator $translator)
-	{
-		$this->translator = $translator;
-	}
-
-
-	/**
 	 * @param BasicPanel $basicPanel
 	 *
 	 * @return BasicPanelRenderer
 	 */
 	public function create(BasicPanel $basicPanel)
 	{
-		return new BasicPanelRenderer($basicPanel, $this->translator);
+		return new BasicPanelRenderer($basicPanel);
 	}
 
 }

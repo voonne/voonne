@@ -18,25 +18,13 @@ class BlankPanelRendererFactory
 {
 
 	/**
-	 * @var ITranslator
-	 */
-	private $translator;
-
-
-	public function __construct(ITranslator $translator)
-	{
-		$this->translator = $translator;
-	}
-
-
-	/**
 	 * @param BlankPanel $blankPanel
 	 *
 	 * @return BlankPanelRenderer
 	 */
 	public function create(BlankPanel $blankPanel)
 	{
-		return new BlankPanelRenderer($blankPanel, $this->translator);
+		return new BlankPanelRenderer($blankPanel);
 	}
 
 }

@@ -7,7 +7,7 @@
  *}
 
 <div class="col-md-12">
-	{foreach $elements[\Voonne\Voonne\Content\ContentManager::POSITION_CENTER] as $name => $panel}
+	{foreach $panels[\Voonne\Voonne\Layouts\Layout::POSITION_CENTER] as $name => $panel}
 		{control $name}
 	{/foreach}
 </div>

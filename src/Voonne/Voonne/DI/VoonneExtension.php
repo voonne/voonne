@@ -24,22 +24,19 @@ use Nette\Utils\Strings;
 use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
 use Voonne\Voonne\Assets\AssetsManager;
 use Voonne\Voonne\Content\ContentForm;
-use Voonne\Voonne\Content\ContentManager;
 use Voonne\Voonne\Content\Latte\Engine;
-use Voonne\Voonne\Controls\Breadcrumbs\IBreadcrumbsControlFactory;
 use Voonne\Voonne\Controls\FlashMessage\IFlashMessageControlFactory;
 use Voonne\Voonne\Controls\FormError\IFormErrorControlFactory;
 use Voonne\Voonne\Controls\Menu\IMenuControlFactory;
 use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Layouts\Layout1\ILayout1Factory;
-use Voonne\Voonne\Layouts\Layout21\ILayout21Factory;
 use Voonne\Voonne\Layouts\LayoutManager;
 use Voonne\Voonne\Model\Facades\UserFacade;
 use Voonne\Voonne\Model\Repositories\UserRepository;
 use Voonne\Voonne\Pages\PageManager;
+use Voonne\Voonne\Panels\Panel;
 use Voonne\Voonne\Panels\Renderers\BasicPanelRenderer\BasicPanelRendererFactory;
 use Voonne\Voonne\Panels\Renderers\BlankPanelRenderer\BlankPanelRendererFactory;
-use Voonne\Voonne\Panels\Renderers\PanelRenderer\PanelRendererFactory;
 use Voonne\Voonne\Panels\Renderers\RendererManager;
 use Voonne\Voonne\Routers\RouterFactory;
 use Voonne\Voonne\Security\Authenticator;
@@ -69,9 +66,6 @@ class VoonneExtension extends CompilerExtension
 
 		/* controls */
 
-		$builder->addDefinition('voonne.breadcrumbsControlFactory')
-			->setImplement(IBreadcrumbsControlFactory::class);
-
 		$builder->addDefinition('voonne.flashMessageControlFactory')
 			->setImplement(IFlashMessageControlFactory::class);
 
@@ -82,9 +76,6 @@ class VoonneExtension extends CompilerExtension
 			->setImplement(IMenuControlFactory::class);
 
 		/* content */
-
-		$builder->addDefinition('voonne.contentManager')
-			->setClass(ContentManager::class);
 
 		$builder->addDefinition('voonne.contentForm')
 			->setClass(ContentForm::class);
@@ -98,34 +89,29 @@ class VoonneExtension extends CompilerExtension
 		$builder->addDefinition('voonne.pageManager')
 			->setClass(PageManager::class);
 
+
 		/* layouts */
 
 		$builder->addDefinition('voonne.layoutManager')
-			->setClass(LayoutManager::class);
+				->setClass(LayoutManager::class);
 
 		$builder->addDefinition('voonne.layout1Factory')
-			->setImplement(ILayout1Factory::class)
-			->addTag(LayoutManager::TAG_LAYOUT);
+				->setImplement(ILayout1Factory::class)
+				->addTag(LayoutManager::TAG_LAYOUT);
 
-		$builder->addDefinition('voonne.layout21Factory')
-			->setImplement(ILayout21Factory::class)
-			->addTag(LayoutManager::TAG_LAYOUT);
 
 		/* panels */
 
 		$builder->addDefinition('voonne.rendererManager')
-			->setClass(RendererManager::class);
-
-		$builder->addDefinition('voonne.panelRendererFactory')
-			->setClass(PanelRendererFactory::class);
+				->setClass(RendererManager::class);
 
 		$builder->addDefinition('voonne.basicPanelRendererFactory')
-			->setClass(BasicPanelRendererFactory::class)
-			->addTag(RendererManager::TAG_RENDERER);
+				->setClass(BasicPanelRendererFactory::class)
+				->addTag(RendererManager::TAG_RENDERER);
 
 		$builder->addDefinition('voonne.blankPanelRendererFactory')
-			->setClass(BlankPanelRendererFactory::class)
-			->addTag(RendererManager::TAG_RENDERER);
+				->setClass(BlankPanelRendererFactory::class)
+				->addTag(RendererManager::TAG_RENDERER);
 
 		/* router */
 
@@ -189,7 +175,7 @@ class VoonneExtension extends CompilerExtension
 		}
 
 		// inspired by: https://github.com/Kdyby/Translation/blob/master/src/Kdyby/Translation/DI/TranslationExtension.php
-		foreach(Finder::findFiles('*.*.neon')->from(__DIR__ . '/../translations') as $file) {
+		foreach (Finder::findFiles('*.*.neon')->from(__DIR__ . '/../translations') as $file) {
 			if (!$m = Strings::match($file->getFilename(), '~^(?P<domain>.*?)\.(?P<locale>[^\.]+)\.(?P<format>[^\.]+)$~')) {
 				continue;
 			}
@@ -202,7 +188,7 @@ class VoonneExtension extends CompilerExtension
 
 		$metadataDriver = $this->getMetadataDriver();
 
-		if(empty($metadataDriver)) {
+		if (empty($metadataDriver)) {
 			throw new InvalidStateException('Kdyby/Doctrine not found. Please register Kdyby/Doctrine as an extension.');
 		}
 
@@ -224,8 +210,14 @@ class VoonneExtension extends CompilerExtension
 			->setImplement(ILatteFactory::class)
 			->setAutowired(false);
 
-		foreach($builder->getDefinition('latte.latteFactory')->getSetup() as $setup) {
+		foreach ($builder->getDefinition('latte.latteFactory')->getSetup() as $setup) {
 			$latteFactoryDefinition->addSetup($setup);
+		}
+
+		foreach ($builder->getDefinitions() as $definition) {
+			if(is_subclass_of($definition->getClass(), Panel::class)) {
+				$definition->addSetup('setTemplateFactory', ['@voonne.templateFactory']);
+			}
 		}
 	}
 
@@ -234,8 +226,8 @@ class VoonneExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		foreach($builder->getDefinitions() as $definition) {
-			if($definition->getClass() == MappingDriverChain::class) {
+		foreach ($builder->getDefinitions() as $definition) {
+			if ($definition->getClass() == MappingDriverChain::class) {
 				return $definition;
 			}
 		}

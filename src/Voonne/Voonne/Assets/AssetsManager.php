@@ -43,7 +43,7 @@ class AssetsManager
 	 */
 	public function addAsset($name, $path)
 	{
-		if(file_exists($path)) {
+		if (file_exists($path)) {
 			$this->assets[$name] = new Resource($name, file_get_contents($path), MimeType::get($path));
 		} else {
 			throw new FileNotFoundException("File '$path' doesn't exist.");
@@ -59,7 +59,7 @@ class AssetsManager
 	 */
 	public function addScript($name, $path)
 	{
-		if(file_exists($path)) {
+		if (file_exists($path)) {
 			$this->scripts[$name][] = realpath($path);
 		} else {
 			throw new FileNotFoundException("File '$path' doesn't exist.");
@@ -75,7 +75,7 @@ class AssetsManager
 	 */
 	public function addStyle($name, $path)
 	{
-		if(file_exists($path)) {
+		if (file_exists($path)) {
 			$this->styles[$name][] = realpath($path);
 		} else {
 			throw new FileNotFoundException("File '$path' doesn't exist.");
@@ -85,13 +85,13 @@ class AssetsManager
 
 	private function getScript($name)
 	{
-		if(!isset($this->scripts[$name])) {
+		if (!isset($this->scripts[$name])) {
 			throw new InvalidArgumentException("Script with name '$name' does not exists.");
 		}
 
 		$content = '';
 
-		foreach($this->scripts[$name] as $script) {
+		foreach ($this->scripts[$name] as $script) {
 			$content .= file_get_contents($script) . PHP_EOL;
 		}
 
@@ -101,13 +101,13 @@ class AssetsManager
 
 	private function getStyle($name)
 	{
-		if(!isset($this->styles[$name])) {
+		if (!isset($this->styles[$name])) {
 			throw new InvalidArgumentException("Style with name '$name' does not exists.");
 		}
 
 		$content = '';
 
-		foreach($this->styles[$name] as $style) {
+		foreach ($this->styles[$name] as $style) {
 			$content .= file_get_contents($style) . PHP_EOL;
 		}
 
@@ -130,7 +130,7 @@ class AssetsManager
 	{
 		try {
 			$path = explode('/', $name);
-			if(count($path) == 2) {
+			if (count($path) == 2) {
 				switch ($path[0]) {
 					case 'scripts':
 						return $this->getScript(pathinfo($name, PATHINFO_FILENAME));
@@ -140,18 +140,13 @@ class AssetsManager
 						break;
 				}
 			}
-		} catch(InvalidArgumentException $e) {}
+		} catch (InvalidArgumentException $e) {}
 
-		if(isset($this->assets[$name])) {
+		if (isset($this->assets[$name])) {
 			return $this->assets[$name];
 		} else {
 			throw new FileNotFoundException('The requested resource does not exist.');
 		}
 	}
 
-}
-
-function realpath($path)
-{
-	return $path;
 }

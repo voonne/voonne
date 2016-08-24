@@ -84,6 +84,7 @@ class NotRegisteredException extends \LogicException
 
 }
 
+
 class DeprecatedException extends NotSupportedException
 {
 
@@ -95,10 +96,12 @@ class StaticClassException extends \LogicException
 
 }
 
+
 class InvalidDestinationException extends \Exception
 {
 
 }
+
 
 class AuthenticationException extends \Exception
 {

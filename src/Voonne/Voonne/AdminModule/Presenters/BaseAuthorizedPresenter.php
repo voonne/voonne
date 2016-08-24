@@ -21,7 +21,7 @@ abstract class BaseAuthorizedPresenter extends BasePresenter
 	{
 		parent::startup();
 
-		if(!$this->user->isLoggedIn()) {
+		if (!$this->user->isLoggedIn()) {
 			$this->flashMessage('voonne-common.authentication.unauthenticatedAccess', FlashMessage::INFO);
 			$this->redirect('Default:default');
 		}

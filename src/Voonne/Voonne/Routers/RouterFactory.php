@@ -13,18 +13,15 @@ namespace Voonne\Voonne\Routers;
 use Nette\Application\IRouter;
 use Nette\Application\Routers\Route;
 use Nette\Application\Routers\RouteList;
-use Nette\Http\Request;
 
 
 class RouterFactory
 {
 
 	/**
-	 * @param Request $request
-	 *
 	 * @return IRouter
 	 */
-	public static function createRouter(Request $request)
+	public static function createRouter()
 	{
 		$router = new RouteList;
 
@@ -32,13 +29,13 @@ class RouterFactory
 
 		$frontRouter[] = new Route('admin/', 'Default:default');
 
-		$frontRouter[] = new Route('admin/content/', 'Content:default');
-
 		$frontRouter[] = new Route('admin/dashboard/', 'Dashboard:default');
 
 		$frontRouter[] = $assetsRouter = new RouteList('Assets');
 
 		$assetsRouter[] = new Route('admin/assets/<name .+>', 'Default:default');
+
+		$frontRouter[] = new Route('admin/<groupName>/<pageName>/', 'Content:default');
 
 		return $router;
 	}

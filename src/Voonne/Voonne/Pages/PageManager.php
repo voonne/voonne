@@ -12,7 +12,6 @@ namespace Voonne\Voonne\Pages;
 
 use Voonne\Voonne\DuplicateEntryException;
 use Voonne\Voonne\InvalidArgumentException;
-use Voonne\Voonne\NotFoundException;
 
 
 class PageManager
@@ -36,13 +35,16 @@ class PageManager
 	 *
 	 * @throws DuplicateEntryException
 	 */
-	public function addGroup($name, $label, $priority = 100, $icon = null)
+	public function addGroup($name, $label, $icon = null, $priority = 100)
 	{
-		if(isset($this->getGroups()[$name])) {
+		if (isset($this->getGroups()[$name])) {
 			throw new DuplicateEntryException("Group is named '$name' already exists.");
 		}
 
-		return $this->groups[$priority][$name] = new Group($name, $label, $icon);
+		$this->groups[$priority][$name] = $group = new Group($name, $label);
+		$group->setIcon($icon);
+
+		return $group;
 	}
 
 
@@ -50,29 +52,22 @@ class PageManager
 	 * Adds new a page.
 	 *
 	 * @param string $groupName
-	 * @param string $name
 	 * @param Page $page
 	 * @param integer $priority
 	 *
+	 * @return Page
+	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function addPage($groupName, $name, Page $page, $priority = 100)
+	public function addPage($groupName, Page $page, $priority = 100)
 	{
-		if(!isset($this->getGroups()[$groupName])) {
+		if (!isset($this->getGroups()[$groupName])) {
 			throw new InvalidArgumentException("Group named '$groupName' does not exist.");
 		}
 
-		$current = $this->getGroups()[$groupName];
+		$this->getGroups()[$groupName]->addPage($page, $priority);
 
-		$structure = explode('.', $name);
-
-		for($i = 0; $i < count($structure); $i++) {
-			if($i == (count($structure) - 1)) {
-				$current->addPage($page, $priority);
-			} else {
-				$current = $current->getPages()[$structure[$i]];
-			}
-		}
+		return $page;
 	}
 
 
@@ -87,53 +82,13 @@ class PageManager
 
 		krsort($this->groups);
 
-		foreach($this->groups as $priority) {
-			foreach($priority as $name => $group) {
+		foreach ($this->groups as $priority) {
+			foreach ($priority as $name => $group) {
 				$groups[$name] = $group;
 			}
 		}
 
 		return $groups;
-	}
-
-
-	/**
-	 * Returns complete structure.
-	 *
-	 * @return array
-	 */
-	public function getStructure()
-	{
-		$pages = [];
-
-		foreach($this->getGroups() as $group) {
-			foreach($group->getStructure() as $path => $page) {
-				$pages[$group->getName() . '.' . $path] = $page;
-			}
-		}
-
-		return $pages;
-	}
-
-
-	/**
-	 * Returns page by destination.
-	 *
-	 * @param $destination
-	 *
-	 * @return Page
-	 *
-	 * @throws NotFoundException
-	 */
-	public function findByDestination($destination)
-	{
-		$pages = $this->getStructure();
-
-		if(isset($pages[$destination])) {
-			return $pages[$destination];
-		} else {
-			throw new NotFoundException("Page '$destination' not found.");
-		}
 	}
 
 }

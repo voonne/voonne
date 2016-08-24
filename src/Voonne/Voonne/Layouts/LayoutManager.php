@@ -62,7 +62,6 @@ class LayoutManager
 		foreach($this->container->findByTag(self::TAG_LAYOUT) as $name => $attribute) {
 			$layoutFactory = $this->container->getService($name);
 			$layout = $layoutFactory->create();
-
 			$layouts[] = $layout;
 		}
 

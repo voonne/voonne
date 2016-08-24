@@ -23,7 +23,7 @@ class DefaultPresenter extends BasePresenter
 	{
 		parent::startup();
 
-		if($this->user->isLoggedIn()) {
+		if ($this->user->isLoggedIn()) {
 			$this->redirect('Dashboard:default');
 		}
 	}

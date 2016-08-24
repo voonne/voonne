@@ -1,7 +1,5 @@
 <?php
 
-namespace Voonne\Voonne\Messages;
-
 /**
  * This file is part of the Voonne platform (http://www.voonne.org)
  *
@@ -9,6 +7,9 @@ namespace Voonne\Voonne\Messages;
  *
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
+
+namespace Voonne\Voonne\Messages;
+
 
 abstract class FlashMessage
 {

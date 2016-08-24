@@ -70,8 +70,11 @@ abstract class BasePresenter extends Presenter
 	 */
 	public function link($destination, $args = [])
 	{
-		if(count(explode('.', $destination)) > 1) {
-			$args['destination'] = $destination;
+		$parts = explode('.', $destination);
+
+		if (count($parts) == 2) {
+			$args['groupName'] = $parts[0];
+			$args['pageName'] = $parts[1];
 
 			return parent::link('Content:default', $args);
 		} else {
@@ -84,12 +87,15 @@ abstract class BasePresenter extends Presenter
 	 * @param string|null $destination
 	 * @param array $args
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isLinkCurrent($destination = null, $args = [])
 	{
-		if(count(explode('.', $destination)) > 1) {
-			$args['destination'] = $destination;
+		$parts = explode('.', $destination);
+
+		if (count($parts) == 2) {
+			$args['groupName'] = $parts[0];
+			$args['pageName'] = $parts[1];
 
 			return parent::isLinkCurrent('Content:default', $args);
 		} else {
@@ -109,7 +115,7 @@ abstract class BasePresenter extends Presenter
 	{
 		parent::addComponent($component, $name, $insertBefore);
 
-		if($component instanceof Control) {
+		if ($component instanceof Control) {
 			$component->beforeRender();
 		}
 

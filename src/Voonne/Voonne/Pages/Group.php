@@ -34,14 +34,13 @@ class Group
 	/**
 	 * @var array
 	 */
-	private $pages = [];
+	public $pages = [];
 
 
-	public function __construct($name, $title, $icon = null)
+	public function __construct($name, $title)
 	{
 		$this->name = $name;
 		$this->title = $title;
-		$this->icon = $icon;
 	}
 
 
@@ -73,6 +72,15 @@ class Group
 
 
 	/**
+	 * @param string|null $icon
+	 */
+	public function setIcon($icon)
+	{
+		$this->icon = $icon;
+	}
+
+
+	/**
 	 * Adds a child item.
 	 *
 	 * @param Page $page
@@ -82,13 +90,11 @@ class Group
 	 */
 	public function addPage(Page $page, $priority = 100)
 	{
-		if(isset($this->getPages()[$page->getName()])) {
-			throw new DuplicateEntryException("Page with name '" . $page->getName() . "' already exists.");
+		if (isset($this->getPages()[$page->getPageName()])) {
+			throw new DuplicateEntryException("Page with name '" . $page->getPageName() . "' in group '" . $this->getName() . "' already exists.");
 		}
 
-		$this->pages[$priority][$page->getName()] = $page;
-
-		$page->setParent($this);
+		$this->pages[$priority][$page->getPageName()] = $page;
 	}
 
 
@@ -103,38 +109,13 @@ class Group
 
 		krsort($this->pages);
 
-		foreach($this->pages as $priority) {
-			foreach($priority as $name => $page) {
+		foreach ($this->pages as $priority) {
+			foreach ($priority as $name => $page) {
 				$pages[$name] = $page;
 			}
 		}
 
 		return $pages;
-	}
-
-
-	/**
-	 * Returns complete structure of group.
-	 *
-	 * @return array
-	 */
-	public function getStructure()
-	{
-		$recursive = function($pages) use (&$recursive) {
-			$result = [];
-
-			foreach($pages as $page) {
-				$result[$page->getPath()] = $page;
-
-				if(!empty($page->getPages())) {
-					$result = array_merge($result, $recursive($page->getPages()));
-				}
-			}
-
-			return $result;
-		};
-
-		return $recursive($this->getPages());
 	}
 
 }

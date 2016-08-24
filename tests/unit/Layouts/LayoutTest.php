@@ -5,13 +5,10 @@ namespace Voonne\Voonne\Layouts;
 use Codeception\Test\Unit;
 use Mockery;
 use Mockery\MockInterface;
-use Nette\Application\UI\ITemplateFactory;
-use Nette\Localization\ITranslator;
 use UnitTester;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\InvalidStateException;
-use Voonne\Voonne\Panels\BasicPanel;
-use Voonne\Voonne\Panels\Renderers\PanelRenderer\PanelRendererFactory;
+use Voonne\Voonne\Panels\Renderers\RendererManager;
 
 
 class LayoutTest extends Unit
@@ -25,22 +22,12 @@ class LayoutTest extends Unit
 	/**
 	 * @var MockInterface
 	 */
-	private $translator;
-
-	/**
-	 * @var MockInterface
-	 */
-	private $templateFactory;
+	private $rendererManager;
 
 	/**
 	 * @var MockInterface
 	 */
 	private $contentForm;
-
-	/**
-	 * @var MockInterface
-	 */
-	private $panelRendererFactory;
 
 	/**
 	 * @var Layout
@@ -50,13 +37,17 @@ class LayoutTest extends Unit
 
 	protected function _before()
 	{
-		$this->translator = Mockery::mock(ITranslator::class);
-		$this->templateFactory = Mockery::mock(ITemplateFactory::class);
+		$this->rendererManager = Mockery::mock(RendererManager::class);
 		$this->contentForm = Mockery::mock(ContentForm::class);
-		$this->panelRendererFactory = Mockery::mock(PanelRendererFactory::class);
 
-		$this->layout = new TestLayout($this->translator);
-		$this->layout->injectPrimary($this->templateFactory, $this->contentForm, $this->panelRendererFactory);
+		$this->layout = new TestLayout();
+		$this->layout->injectPrimary($this->rendererManager, $this->contentForm, [
+			Layout::POSITION_TOP => [],
+			Layout::POSITION_BOTTOM => [],
+			Layout::POSITION_LEFT => [],
+			Layout::POSITION_RIGHT => [],
+			Layout::POSITION_CENTER => []
+		]);
 	}
 
 
@@ -68,35 +59,28 @@ class LayoutTest extends Unit
 
 	public function testInitialize()
 	{
-		$this->assertEquals($this->templateFactory, $this->layout->getTemplateFactory());
+		$this->assertEquals($this->rendererManager, $this->layout->getRendererManager());
 		$this->assertEquals($this->contentForm, $this->layout->getContentForm());
-		$this->assertEquals($this->panelRendererFactory, $this->layout->getPanelRendererFactory());
+		$this->assertEquals([
+			Layout::POSITION_TOP => [],
+			Layout::POSITION_BOTTOM => [],
+			Layout::POSITION_LEFT => [],
+			Layout::POSITION_RIGHT => [],
+			Layout::POSITION_CENTER => []
+		], $this->layout->getPanels());
 
 		$this->expectException(InvalidStateException::class);
-		$this->layout->injectPrimary($this->templateFactory, $this->contentForm, $this->panelRendererFactory);
-	}
-
-
-	public function testSetupPanel()
-	{
-		$panel = Mockery::mock(BasicPanel::class);
-
-		$panel->shouldReceive('setTemplateFactory')
-			->once()
-			->with($this->templateFactory);
-
-		$panel->shouldReceive('setupPanel')
-			->once()
-			->withNoArgs();
-
-		$panel->shouldReceive('setupForm')
-			->once()
-			->with($this->contentForm);
-
-		$this->layout->setupPanel($panel);
+		$this->layout->injectPrimary($this->rendererManager, $this->contentForm, [
+			Layout::POSITION_TOP => [],
+			Layout::POSITION_BOTTOM => [],
+			Layout::POSITION_LEFT => [],
+			Layout::POSITION_RIGHT => [],
+			Layout::POSITION_CENTER => []
+		]);
 	}
 
 }
+
 
 class TestLayout extends Layout
 {

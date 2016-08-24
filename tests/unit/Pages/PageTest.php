@@ -4,12 +4,19 @@ namespace Voonne\Voonne\Pages;
 
 use Codeception\Test\Unit;
 use Mockery;
-use stdClass;
+use Mockery\MockInterface;
+use Nette\Utils\Strings;
+use ReflectionClass;
 use UnitTester;
+use Voonne\Voonne\Content\ContentForm;
+use Voonne\Voonne\DuplicateEntryException;
 use Voonne\Voonne\InvalidArgumentException;
 use Voonne\Voonne\InvalidStateException;
+use Voonne\Voonne\Layouts\Layout;
 use Voonne\Voonne\Layouts\Layout1\Layout1;
-use Voonne\Voonne\Layouts\Layout21\Layout21;
+use Voonne\Voonne\Layouts\LayoutManager;
+use Voonne\Voonne\Panels\Panel;
+use Voonne\Voonne\Panels\Renderers\RendererManager;
 
 
 class PageTest extends Unit
@@ -21,6 +28,21 @@ class PageTest extends Unit
 	protected $tester;
 
 	/**
+	 * @var MockInterface
+	 */
+	private $layoutManager;
+
+	/**
+	 * @var MockInterface
+	 */
+	private $rendererManager;
+
+	/**
+	 * @var MockInterface
+	 */
+	private $contentForm;
+
+	/**
 	 * @var Page
 	 */
 	private $page;
@@ -28,7 +50,12 @@ class PageTest extends Unit
 
 	protected function _before()
 	{
-		$this->page = new Page('name', 'title');
+		$this->layoutManager = Mockery::mock(LayoutManager::class);
+		$this->rendererManager = Mockery::mock(RendererManager::class);
+		$this->contentForm = Mockery::mock(ContentForm::class);
+
+		$this->page = new TestPage('name', 'title');
+		$this->page->injectPrimary($this->layoutManager, $this->rendererManager, $this->contentForm);
 	}
 
 
@@ -40,11 +67,12 @@ class PageTest extends Unit
 
 	public function testInitialize()
 	{
-		$this->assertEquals('name', $this->page->getName());
-		$this->assertEquals('title', $this->page->getTitle());
+		$this->assertEquals('name', $this->page->getPageName());
+		$this->assertEquals('title', $this->page->getPageTitle());
 		$this->assertTrue($this->page->isVisible());
-		$this->assertNull($this->page->getParent());
-		$this->assertEquals(Layout1::class, $this->page->getLayout());
+
+		$this->expectException(InvalidStateException::class);
+		$this->page->injectPrimary($this->layoutManager, $this->rendererManager, $this->contentForm);
 	}
 
 
@@ -60,88 +88,69 @@ class PageTest extends Unit
 	}
 
 
-	public function testLayout()
+	public function testAddPanel()
 	{
-		$this->page->setLayout(Layout21::class);
+		$panel = Mockery::mock(Panel::class);
 
-		$this->assertEquals(Layout21::class, $this->page->getLayout());
+		$reflectionClass = new ReflectionClass($panel);
 
-		$this->expectException(InvalidArgumentException::class);
-		$this->page->setLayout(stdClass::class);
-	}
-
-
-	public function testSetParent()
-	{
-		$page = Mockery::mock(Page::class);
-
-		$this->page->setParent($page);
-
-		$this->assertEquals($page, $this->page->getParent());
-
-		$this->expectException(InvalidStateException::class);
-		$this->page->setParent($page);
-	}
-
-
-	public function testSetParentBadType()
-	{
-		$this->expectException(InvalidArgumentException::class);
-		$this->page->setParent(new stdClass());
-	}
-
-
-	public function testAddPage()
-	{
-		$page1 = Mockery::mock(Page::class);
-		$page2 = Mockery::mock(Page::class);
-
-		$page1->shouldReceive('getName')
-			->twice()
-			->withNoArgs()
-			->andReturn('page1');
-
-		$page1->shouldReceive('setParent')
-			->once()
-			->with($this->page);
-
-		$page2->shouldReceive('getName')
-			->twice()
-			->withNoArgs()
-			->andReturn('page2');
-
-		$page2->shouldReceive('setParent')
-			->once()
-			->with($this->page);
-
-		$this->page->addPage($page1);
-		$this->page->addPage($page2);
+		$this->page->addPanel($panel, Layout::POSITION_CENTER);
 
 		$this->assertEquals([
-			'page1' => $page1,
-			'page2' => $page2
-		], $this->page->getPages());
+			Layout::POSITION_TOP => [],
+			Layout::POSITION_BOTTOM => [],
+			Layout::POSITION_LEFT => [],
+			Layout::POSITION_RIGHT => [],
+			Layout::POSITION_CENTER => [
+				Strings::webalize($reflectionClass->getShortName()) => $panel
+			]
+		], $this->page->getPanels());
+
+		$this->expectException(DuplicateEntryException::class);
+		$this->page->addPanel($panel, Layout::POSITION_CENTER);
+
+		$this->expectException(DuplicateEntryException::class);
+		$this->page->addPanel($panel, Layout::POSITION_TOP);
+
+		$this->expectException(InvalidArgumentException::class);
+		$this->page->addPanel($panel, 'BAD_POSITION');
 	}
 
 
-	public function testGetPath()
+	public function testBeforeRender()
 	{
-		$group = Mockery::mock(Group::class);
-		$page = Mockery::mock(Page::class);
+		$layout = Mockery::mock(Layout1::class);
 
-		$page->shouldReceive('getParent')
+		$this->layoutManager->shouldReceive('getLayout')
 			->once()
-			->withNoArgs()
-			->andReturn($group);
+			->with(Layout1::class)
+			->andReturn($layout);
 
-		$page->shouldReceive('getName')
+		$layout->shouldReceive('injectPrimary')
 			->once()
-			->withNoArgs()
-			->andReturn('default');
+			->with($this->rendererManager, $this->contentForm, [
+				Layout::POSITION_TOP => [],
+				Layout::POSITION_BOTTOM => [],
+				Layout::POSITION_LEFT => [],
+				Layout::POSITION_RIGHT => [],
+				Layout::POSITION_CENTER => []
+			]);
 
-		$this->page->setParent($page);
+		$layout->shouldReceive('setParent')
+			->once()
+			->with($this->page, 'layout');
 
-		$this->assertEquals('default.name', $this->page->getPath());
+		$layout->shouldReceive('beforeRender')
+			->once()
+			->withNoArgs();
+
+		$this->page->beforeRender();
 	}
+
+}
+
+
+class TestPage extends Page
+{
 
 }

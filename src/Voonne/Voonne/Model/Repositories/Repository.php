@@ -32,7 +32,7 @@ abstract class Repository extends EntityRepository
 	{
 		$result = parent::find($id, $lockMode, $lockVersion);
 
-		if($result === NULL) {
+		if ($result === null) {
 			throw new IOException('Not found', 404);
 		}
 
@@ -54,7 +54,7 @@ abstract class Repository extends EntityRepository
 	{
 		$result = parent::findOneBy($criteria, $orderBy);
 
-		if($result === NULL) {
+		if ($result === null) {
 			throw new IOException('Not found', 404);
 		}
 

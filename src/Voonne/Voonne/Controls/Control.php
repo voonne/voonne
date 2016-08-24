@@ -14,8 +14,6 @@ use Kdyby\Autowired\AutowireComponentFactories;
 use Kdyby\Autowired\AutowireProperties;
 use Nette\Application\AbortException;
 use Nette\ComponentModel\IComponent;
-use Nette\ComponentModel\IContainer;
-use Nette\Localization\ITranslator;
 use stdClass;
 
 
@@ -24,19 +22,6 @@ abstract class Control extends \Nette\Application\UI\Control
 
 	use AutowireProperties;
 	use AutowireComponentFactories;
-
-	/**
-	 * @var ITranslator
-	 */
-	protected $translator;
-
-
-	public function __construct(ITranslator $translator, IContainer $parent = null, $name = null)
-	{
-		parent::__construct($parent, $name);
-
-		$this->translator = $translator;
-	}
 
 
 	/**
@@ -59,11 +44,14 @@ abstract class Control extends \Nette\Application\UI\Control
 	 */
 	public function redirect($code, $destination = null, $args = [])
 	{
-		if(count(explode('.', $destination)) > 1) {
-			$args['destination'] = $destination;
+		$parts = explode('.', $destination);
+
+		if (count($parts) == 2) {
+			$args['groupName'] = $parts[0];
+			$args['pageName'] = $parts[1];
 
 			$this->getPresenter()->redirect('Content:default', $args);
-		} elseif($code == 'this') {
+		} elseif ($code == 'this') {
 			parent::redirect('this');
 		} else {
 			parent::redirect($code, $destination, $args);
@@ -79,8 +67,11 @@ abstract class Control extends \Nette\Application\UI\Control
 	 */
 	public function link($destination, $args = [])
 	{
-		if(count(explode('.', $destination)) > 1) {
-			$args['destination'] = $destination;
+		$parts = explode('.', $destination);
+
+		if (count($parts) == 2) {
+			$args['groupName'] = $parts[0];
+			$args['pageName'] = $parts[1];
 
 			return $this->getPresenter()->link('Content:default', $args);
 		} else {
@@ -92,8 +83,8 @@ abstract class Control extends \Nette\Application\UI\Control
 	/**
 	 * Saves the message to template, that can be displayed after redirect.
 	 *
-	 * @param  string
-	 * @param  string
+	 * @param string $message
+	 * @param string $type
 	 *
 	 * @return stdClass
 	 */
@@ -114,7 +105,7 @@ abstract class Control extends \Nette\Application\UI\Control
 	{
 		parent::addComponent($component, $name, $insertBefore);
 
-		if($component instanceof Control) {
+		if ($component instanceof Control) {
 			$component->beforeRender();
 		}
 

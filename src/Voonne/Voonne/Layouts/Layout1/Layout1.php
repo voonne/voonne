@@ -10,8 +10,6 @@
 
 namespace Voonne\Voonne\Layouts\Layout1;
 
-use Nette\Localization\ITranslator;
-use Voonne\Voonne\Content\ContentManager;
 use Voonne\Voonne\Layouts\Layout;
 
 
@@ -19,32 +17,19 @@ class Layout1 extends Layout
 {
 
 	/**
-	 * @var ContentManager
-	 */
-	private $contentManager;
-
-	/**
 	 * @var array
 	 */
-	private $elements;
-
-
-	public function __construct(ContentManager $contentManager, ITranslator $translator)
-	{
-		parent::__construct($translator);
-
-		$this->contentManager = $contentManager;
-	}
+	private $panels = [];
 
 
 	public function beforeRender()
 	{
-		$this->elements = $this->contentManager->getPanels($this->getPresenter()->destination);
+		$this->panels = $this->getPanels();
 
-		foreach($this->elements[ContentManager::POSITION_CENTER] as $name => $panel) {
-			$this->setupPanel($panel);
+		foreach($this->panels[self::POSITION_CENTER] as $name => $panel) {
+			$rendererFactory = $this->getRendererManager()->getRendererFactory($panel);
 
-			$this->addComponent($this->getPanelRendererFactory()->create($panel), $name);
+			$this->addComponent($rendererFactory->create($panel), $name);
 		}
 	}
 
@@ -53,7 +38,7 @@ class Layout1 extends Layout
 	{
 		$this->template->setFile(__DIR__ . '/Layout1.latte');
 
-		$this->template->elements = $this->elements;
+		$this->template->panels = $this->panels;
 
 		$this->template->render();
 	}

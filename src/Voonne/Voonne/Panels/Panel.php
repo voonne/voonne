@@ -18,20 +18,13 @@ abstract class Panel extends Control
 {
 
 	/**
-	 * Sets basic information about the panel.
-	 */
-	public function setupPanel()
-	{
-	}
-
-
-	/**
 	 * Adjusted ContentFrom for use in a panel.
 	 *
 	 * @param Form $form
 	 */
 	public function setupForm(Form $form)
 	{
+
 	}
 
 }

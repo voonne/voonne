@@ -10,8 +10,6 @@
 
 namespace Voonne\Voonne\Layouts\Layout21;
 
-use Nette\Localization\ITranslator;
-use Voonne\Voonne\Content\ContentManager;
 use Voonne\Voonne\Layouts\Layout;
 
 
@@ -19,38 +17,25 @@ class Layout21 extends Layout
 {
 
 	/**
-	 * @var ContentManager
-	 */
-	private $contentManager;
-
-	/**
 	 * @var array
 	 */
-	private $elements;
-
-
-	public function __construct(ContentManager $contentManager, ITranslator $translator)
-	{
-		parent::__construct($translator);
-
-		$this->contentManager = $contentManager;
-	}
+	private $panels;
 
 
 	public function beforeRender()
 	{
-		$this->elements = $this->contentManager->getPanels($this->getPresenter()->destination);
+		$this->panels = $this->getPanels();
 
-		foreach($this->elements[ContentManager::POSITION_LEFT] as $name => $panel) {
-			$this->setupPanel($panel);
+		foreach($this->panels[self::POSITION_LEFT] as $name => $panel) {
+			$rendererFactory = $this->getRendererManager()->getRendererFactory($panel);
 
-			$this->addComponent($this->getPanelRendererFactory()->create($panel), $name);
+			$this->addComponent($rendererFactory->create($panel), $name);
 		}
 
-		foreach($this->elements[ContentManager::POSITION_RIGHT] as $name => $panel) {
-			$this->setupPanel($panel);
+		foreach($this->panels[self::POSITION_RIGHT] as $name => $panel) {
+			$rendererFactory = $this->getRendererManager()->getRendererFactory($panel);
 
-			$this->addComponent($this->getPanelRendererFactory()->create($panel), $name);
+			$this->addComponent($rendererFactory->create($panel), $name);
 		}
 	}
 
@@ -59,7 +44,7 @@ class Layout21 extends Layout
 	{
 		$this->template->setFile(__DIR__ . '/Layout21.latte');
 
-		$this->template->elements = $this->elements;
+		$this->template->panels = $this->panels;
 
 		$this->template->render();
 	}

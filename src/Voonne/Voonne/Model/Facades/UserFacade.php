@@ -46,7 +46,7 @@ class UserFacade
 	 */
 	public function save(User $user)
 	{
-		if(!$this->userRepository->isEmailFree($user, $user->getEmail())) {
+		if (!$this->userRepository->isEmailFree($user, $user->getEmail())) {
 			throw new DuplicateEntryException('User with this email is already exists.');
 		}
 

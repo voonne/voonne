@@ -10,7 +10,6 @@
 
 namespace Voonne\Voonne\Controls\Menu;
 
-use Nette\Localization\ITranslator;
 use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\Pages\PageManager;
 
@@ -24,9 +23,9 @@ class MenuControl extends Control
 	private $pageManager;
 
 
-	public function __construct(PageManager $pageManager, ITranslator $translator)
+	public function __construct(PageManager $pageManager)
 	{
-		parent::__construct($translator);
+		parent::__construct();
 
 		$this->pageManager = $pageManager;
 	}

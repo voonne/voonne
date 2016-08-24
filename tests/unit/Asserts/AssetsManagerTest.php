@@ -131,3 +131,9 @@ class AssetsManagerTest extends Unit
 	}
 
 }
+
+
+function realpath($path)
+{
+	return $path;
+}

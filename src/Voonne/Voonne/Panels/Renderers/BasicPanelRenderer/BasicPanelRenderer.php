@@ -10,31 +10,30 @@
 
 namespace Voonne\Voonne\Panels\Renderers\BasicPanelRenderer;
 
-use Nette\Localization\ITranslator;
-use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\Panels\BasicPanel;
+use Voonne\Voonne\Panels\Renderers\PanelRenderer;
 
 
-class BasicPanelRenderer extends Control
+class BasicPanelRenderer extends PanelRenderer
 {
 
 	/**
 	 * @var BasicPanel
 	 */
-	private $basicPanel;
+	private $panel;
 
 
-	public function __construct(BasicPanel $basicPanel, ITranslator $translator)
+	public function __construct(BasicPanel $basicPanel)
 	{
-		parent::__construct($translator);
+		parent::__construct();
 
-		$this->basicPanel = $basicPanel;
+		$this->panel = $basicPanel;
 	}
 
 
 	public function beforeRender()
 	{
-		$this->addComponent($this->basicPanel, 'panel');
+		$this->addComponent($this->panel, 'panel');
 	}
 
 
@@ -42,7 +41,7 @@ class BasicPanelRenderer extends Control
 	{
 		$this->template->setFile(__DIR__ . '/BasicPanelRenderer.latte');
 
-		$this->template->panel = $this->basicPanel;
+		$this->template->panel = $this->panel;
 
 		$this->template->render();
 	}

@@ -21,7 +21,7 @@ class ContentForm extends Form
 	{
 		parent::__construct();
 
-		$this->form->setTranslator($translator);
+		$this->setTranslator($translator);
 	}
 
 }

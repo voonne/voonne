@@ -10,21 +10,28 @@
 
 namespace Voonne\Voonne\Layouts;
 
-use Nette\Application\UI\ITemplateFactory;
+use Nette\ComponentModel\IComponent;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Panels\Panel;
-use Voonne\Voonne\Panels\Renderers\PanelRenderer\PanelRendererFactory;
+use Voonne\Voonne\Panels\Renderers\PanelRenderer;
+use Voonne\Voonne\Panels\Renderers\RendererManager;
 
 
 abstract class Layout extends Control
 {
 
+	const POSITION_TOP = 'TOP';
+	const POSITION_BOTTOM = 'BOTTOM';
+	const POSITION_LEFT = 'LEFT';
+	const POSITION_RIGHT = 'RIGHT';
+	const POSITION_CENTER = 'CENTER';
+
 	/**
-	 * @var ITemplateFactory
+	 * @var RendererManager
 	 */
-	private $templateFactory;
+	private $rendererManager;
 
 	/**
 	 * @var ContentForm
@@ -32,17 +39,17 @@ abstract class Layout extends Control
 	private $contentForm;
 
 	/**
-	 * @var PanelRendererFactory
+	 * @var array
 	 */
-	private $panelRendererFactory;
+	private $panels = [];
 
 
 	/**
-	 * @return ITemplateFactory
+	 * @return RendererManager
 	 */
-	public function getTemplateFactory()
+	public function getRendererManager()
 	{
-		return $this->templateFactory;
+		return $this->rendererManager;
 	}
 
 
@@ -56,39 +63,47 @@ abstract class Layout extends Control
 
 
 	/**
-	 * @return PanelRendererFactory
+	 * @return array
 	 */
-	public function getPanelRendererFactory()
+	public function getPanels()
 	{
-		return $this->panelRendererFactory;
+		return $this->panels;
 	}
 
 
 	/**
-	 * @param ITemplateFactory $templateFactory
+	 * @param RendererManager $rendererManager
 	 * @param ContentForm $contentForm
-	 * @param PanelRendererFactory $panelRendererFactory
+	 * @param array $panels
 	 */
-	public function injectPrimary(ITemplateFactory $templateFactory, ContentForm $contentForm, PanelRendererFactory $panelRendererFactory)
+	public function injectPrimary(RendererManager $rendererManager, ContentForm $contentForm, array $panels)
 	{
-		if($this->templateFactory !== null) {
+		if($this->rendererManager !== null) {
 			throw new InvalidStateException('Method ' . __METHOD__ . ' is intended for initialization and should not be called more than once.');
 		}
 
-		$this->templateFactory = $templateFactory;
+		$this->rendererManager = $rendererManager;
 		$this->contentForm = $contentForm;
-		$this->panelRendererFactory = $panelRendererFactory;
+		$this->panels = $panels;
 	}
 
 
 	/**
-	 * @param Panel $panel
+	 * @param IComponent $component
+	 * @param string $name
+	 * @param string|null $insertBefore
+	 *
+	 * @return $this
 	 */
-	public function setupPanel(Panel $panel)
+	public function addComponent(IComponent $component, $name, $insertBefore = null)
 	{
-		$panel->setTemplateFactory($this->getTemplateFactory());
-		$panel->setupPanel();
-		$panel->setupForm($this->getContentForm());
+		if ($component instanceof PanelRenderer) {
+			$component->injectPrimary($this->getContentForm());
+		}
+
+		parent::addComponent($component, $name, $insertBefore);
+
+		return $this;
 	}
 
 }

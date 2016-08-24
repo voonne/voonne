@@ -10,36 +10,52 @@
 
 namespace Voonne\Voonne\Pages;
 
+use Nette\Utils\Strings;
+use ReflectionClass;
+use Voonne\Voonne\Content\ContentForm;
+use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\DuplicateEntryException;
-use Voonne\Voonne\Forms\Form;
 use Voonne\Voonne\InvalidArgumentException;
 use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Layouts\Layout;
 use Voonne\Voonne\Layouts\Layout1\Layout1;
+use Voonne\Voonne\Layouts\LayoutManager;
+use Voonne\Voonne\Panels\Panel;
+use Voonne\Voonne\Panels\Renderers\RendererManager;
 
 
-class Page
+abstract class Page extends Control
 {
 
 	/**
-	 * @var string
+	 * @var LayoutManager
 	 */
-	private $name;
+	private $layoutManager;
+
+	/**
+	 * @var RendererManager
+	 */
+	private $rendererManager;
+
+	/**
+	 * @var ContentForm
+	 */
+	private $contentForm;
 
 	/**
 	 * @var string
 	 */
-	private $title;
+	private $pageName;
+
+	/**
+	 * @var string
+	 */
+	private $pageTitle;
 
 	/**
 	 * @var bool
 	 */
 	private $visible = true;
-
-	/**
-	 * @var Page|Group|null
-	 */
-	private $parent;
 
 	/**
 	 * @var string
@@ -49,31 +65,33 @@ class Page
 	/**
 	 * @var array
 	 */
-	private $pages = [];
+	private $panels = [];
 
 
-	public function __construct($name, $title)
+	public function __construct($pageName, $pageTitle)
 	{
-		$this->name = $name;
-		$this->title = $title;
+		parent::__construct();
+
+		$this->pageName = $pageName;
+		$this->pageTitle = $pageTitle;
 	}
 
 
 	/**
 	 * @return string
 	 */
-	public function getName()
+	public function getPageName()
 	{
-		return $this->name;
+		return $this->pageName;
 	}
 
 
 	/**
 	 * @return string
 	 */
-	public function getTitle()
+	public function getPageTitle()
 	{
-		return $this->title;
+		return $this->pageTitle;
 	}
 
 
@@ -87,35 +105,6 @@ class Page
 
 
 	/**
-	 * Returns the parent if any.
-	 *
-	 * @return Page|Group|null
-	 */
-	public function getParent()
-	{
-		return $this->parent;
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getLayout()
-	{
-		return $this->layout;
-	}
-
-
-	/**
-	 * Sets as hide.
-	 */
-	public function hide()
-	{
-		$this->visible = false;
-	}
-
-
-	/**
 	 * Sets as visible.
 	 */
 	public function show()
@@ -125,26 +114,11 @@ class Page
 
 
 	/**
-	 * Checks whether the user is authorized to access this page.
-	 *
-	 * @return boolean
+	 * Sets as hide.
 	 */
-	public function checkAuthorization()
+	public function hide()
 	{
-		return true;
-	}
-
-
-	/**
-	 * Checks whether it is possible according to the parameters to access this page.
-	 *
-	 * @param array $parameters
-	 *
-	 * @return boolean
-	 */
-	public function checkRequirements(array $parameters)
-	{
-		return true;
+		$this->visible = false;
 	}
 
 
@@ -162,85 +136,97 @@ class Page
 
 
 	/**
-	 * Sets the parent of this items.
+	 * Adds a panel to the page.
 	 *
-	 * @param Page|Group $parent
+	 * @param Panel $panel
+	 * @param int $position
+	 * @param int $priority
 	 *
-	 * @throws InvalidStateException
 	 * @throws InvalidArgumentException
 	 */
-	public function setParent($parent)
+	public function addPanel(Panel $panel, $position, $priority = 100)
 	{
-		if(!empty($this->parent)) {
-			throw new InvalidStateException("Page '" . $this->getName() . "' already has a parent.");
+		if (!in_array($position, [Layout::POSITION_TOP, Layout::POSITION_BOTTOM, Layout::POSITION_LEFT, Layout::POSITION_RIGHT, Layout::POSITION_CENTER])) {
+			throw new InvalidArgumentException("Position must be '" . Layout::POSITION_TOP . "', '" . Layout::POSITION_BOTTOM . "', '" . Layout::POSITION_LEFT . "', '" . Layout::POSITION_RIGHT . "' or '" . Layout::POSITION_CENTER . "', '"  . $position . "' given.");
 		}
 
-		if(!($parent instanceof Page || $parent instanceof Group)) {
-			throw new InvalidArgumentException("Parent must be instance of " . Page::class . " or " . Group::class . ", " . gettype($parent) . " given.");
-		}
-
-		$this->parent = $parent;
-	}
-
-
-	/**
-	 * Adds a child item.
-	 *
-	 * @param Page $page
-	 * @param integer $priority
-	 *
-	 * @throws DuplicateEntryException
-	 */
-	public function addPage(Page $page, $priority = 100)
-	{
-		if(isset($this->getPages()[$page->getName()])) {
-			throw new DuplicateEntryException("Page with name '" . $page->getName() . "' already exists.");
-		}
-
-		$this->pages[$priority][$page->getName()] = $page;
-
-		$page->setParent($this);
-	}
-
-
-	/**
-	 * Returns all children.
-	 *
-	 * @return array
-	 */
-	public function getPages()
-	{
-		$pages = [];
-
-		krsort($this->pages);
-
-		foreach($this->pages as $priority) {
-			foreach($priority as $name => $page) {
-				$pages[$name] = $page;
+		foreach ($this->getPanels() as $position1) {
+			foreach ($position1 as $panel1) {
+				if($panel instanceof $panel1) {
+					throw new DuplicateEntryException("Panel named '" . get_class($panel) . "' is already exists.");
+				}
 			}
 		}
 
-		return $pages;
+		$reflectionClass = new ReflectionClass($panel);
+
+		$this->panels[$position][$priority][Strings::webalize($reflectionClass->getShortName())] = $panel;
 	}
 
 
 	/**
-	 * Returns full page path.
-	 *
-	 * @return string
+	 * @return array
 	 */
-	public function getPath()
+	public function getPanels()
 	{
-		$result = [];
-		$current = $this;
+		$panels = [
+			Layout::POSITION_TOP => [],
+			Layout::POSITION_BOTTOM => [],
+			Layout::POSITION_LEFT => [],
+			Layout::POSITION_RIGHT => [],
+			Layout::POSITION_CENTER => []
+		];
 
-		while(!($current instanceof Group)) {
-			$result[] = $current->getName();
+		foreach ($this->panels as $positionName => $position) {
+			krsort($position);
 
-			$current = $current->getParent();
+			foreach ($position as $priority) {
+				foreach ($priority as $panelName => $panel) {
+					$panels[$positionName][$panelName] = $panel;
+				}
+			}
 		}
 
-		return implode('.', array_reverse($result));
+		return $panels;
+	}
+
+
+	/**
+	 * @param LayoutManager $layoutManager
+	 * @param RendererManager $rendererManager
+	 * @param ContentForm $contentForm
+	 */
+	public function injectPrimary(LayoutManager $layoutManager, RendererManager $rendererManager, ContentForm $contentForm)
+	{
+		if($this->layoutManager !== null) {
+			throw new InvalidStateException('Method ' . __METHOD__ . ' is intended for initialization and should not be called more than once.');
+		}
+
+		$this->layoutManager = $layoutManager;
+		$this->rendererManager = $rendererManager;
+		$this->contentForm = $contentForm;
+	}
+
+
+	public function beforeRender()
+	{
+		$layout = $this->layoutManager->getLayout($this->layout);
+
+		$layout->injectPrimary(
+			$this->rendererManager,
+			$this->contentForm,
+			$this->getPanels()
+		);
+
+		$this->addComponent($layout, 'layout');
+	}
+
+
+	public function render()
+	{
+		$this->template->setFile(__DIR__ . '/Page.latte');
+
+		$this->template->render();
 	}
 
 }

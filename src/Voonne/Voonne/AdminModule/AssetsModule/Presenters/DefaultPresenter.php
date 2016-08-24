@@ -41,7 +41,7 @@ class DefaultPresenter extends Presenter
 
 			$this->response->setContentType($resource->getMimeType());
 			$this->sendResponse(new TextResponse($resource->getContent()));
-		} catch(FileNotFoundException $e) {
+		} catch (FileNotFoundException $e) {
 			throw new BadRequestException('Not found', 404);
 		}
 	}

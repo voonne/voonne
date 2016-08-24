@@ -4,8 +4,6 @@ namespace Voonne\Voonne\Panels;
 
 use Codeception\Test\Unit;
 use Mockery;
-use Mockery\MockInterface;
-use Nette\Localization\ITranslator;
 use UnitTester;
 
 
@@ -18,11 +16,6 @@ class BasicPanelTest extends Unit
 	protected $tester;
 
 	/**
-	 * @var MockInterface
-	 */
-	private $translator;
-
-	/**
 	 * @var BasicPanel
 	 */
 	private $basicPanel;
@@ -30,9 +23,7 @@ class BasicPanelTest extends Unit
 
 	protected function _before()
 	{
-		$this->translator = Mockery::mock(ITranslator::class);
-
-		$this->basicPanel = new TestBasicPanel($this->translator);
+		$this->basicPanel = new TestBasicPanel();
 	}
 
 
