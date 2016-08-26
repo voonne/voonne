@@ -11,11 +11,14 @@
 namespace Voonne\Voonne\Layouts;
 
 use Nette\DI\Container;
+use Nette\SmartObject;
 use Voonne\Voonne\NotRegisteredException;
 
 
 class LayoutManager
 {
+
+	use SmartObject;
 
 	const TAG_LAYOUT = 'voonne.layout';
 

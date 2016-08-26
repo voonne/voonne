@@ -10,11 +10,14 @@
 
 namespace Voonne\Voonne\Pages;
 
+use Nette\SmartObject;
 use Voonne\Voonne\DuplicateEntryException;
 
 
 class Group
 {
+
+	use SmartObject;
 
 	/**
 	 * @var string

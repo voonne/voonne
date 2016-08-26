@@ -11,6 +11,7 @@
 namespace Voonne\Voonne\Assets;
 
 use Defr\MimeType;
+use Nette\SmartObject;
 use Voonne\Voonne\DirectoryNotFoundException;
 use Voonne\Voonne\FileNotFoundException;
 use Voonne\Voonne\InvalidArgumentException;
@@ -19,8 +20,10 @@ use Voonne\Voonne\InvalidArgumentException;
 class AssetsManager
 {
 
+	use SmartObject;
+
 	/**
-	 * @var Resource[]
+	 * @var array
 	 */
 	public $assets  = [];
 
@@ -44,7 +47,7 @@ class AssetsManager
 	public function addAsset($name, $path)
 	{
 		if (file_exists($path)) {
-			$this->assets[$name] = new Resource($name, file_get_contents($path), MimeType::get($path));
+			$this->assets[$name] = new Asset($name, file_get_contents($path), MimeType::get($path));
 		} else {
 			throw new FileNotFoundException("File '$path' doesn't exist.");
 		}
@@ -95,7 +98,7 @@ class AssetsManager
 			$content .= file_get_contents($script) . PHP_EOL;
 		}
 
-		return new Resource('scripts/' . $name . '.js', $content, 'application/javascript');
+		return new Asset('scripts/' . $name . '.js', $content, 'application/javascript');
 	}
 
 
@@ -111,7 +114,7 @@ class AssetsManager
 			$content .= file_get_contents($style) . PHP_EOL;
 		}
 
-		return new Resource('styles/' . $name . '.css', $content, 'text/css');
+		return new Asset('styles/' . $name . '.css', $content, 'text/css');
 	}
 
 
@@ -120,7 +123,7 @@ class AssetsManager
 	 *
 	 * @param $name
 	 *
-	 * @return \Voonne\Voonne\Assets\Resource
+	 * @return \Voonne\Voonne\Assets\Asset
 	 *
 	 * @throws FileNotFoundException
 	 * @throws InvalidArgumentException

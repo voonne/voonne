@@ -10,12 +10,15 @@
 
 namespace Voonne\Voonne\Pages;
 
+use Nette\SmartObject;
 use Voonne\Voonne\DuplicateEntryException;
 use Voonne\Voonne\InvalidArgumentException;
 
 
 class PageManager
 {
+
+	use SmartObject;
 
 	/**
 	 * @var array

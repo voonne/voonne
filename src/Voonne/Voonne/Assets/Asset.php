@@ -10,9 +10,13 @@
 
 namespace Voonne\Voonne\Assets;
 
+use Nette\SmartObject;
 
-class Resource
+
+class Asset
 {
+
+	use SmartObject;
 
 	/**
 	 * @var string

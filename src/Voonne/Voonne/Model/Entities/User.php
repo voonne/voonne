@@ -14,6 +14,7 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Kdyby\Doctrine\Entities\Attributes\UniversallyUniqueIdentifier;
 use Nette\Security\Passwords;
+use Nette\SmartObject;
 
 
 /**
@@ -22,6 +23,7 @@ use Nette\Security\Passwords;
 class User
 {
 
+	use SmartObject;
 	use UniversallyUniqueIdentifier;
 
 	/**

@@ -10,6 +10,7 @@
 
 namespace Voonne\Voonne\Pages;
 
+use Nette\SmartObject;
 use Nette\Utils\Strings;
 use ReflectionClass;
 use Voonne\Voonne\Content\ContentForm;
@@ -26,6 +27,8 @@ use Voonne\Voonne\Panels\Renderers\RendererManager;
 
 abstract class Page extends Control
 {
+
+	use SmartObject;
 
 	/**
 	 * @var LayoutManager

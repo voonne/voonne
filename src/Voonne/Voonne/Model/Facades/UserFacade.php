@@ -12,6 +12,7 @@ namespace Voonne\Voonne\Model\Facades;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
+use Nette\SmartObject;
 use Voonne\Voonne\DuplicateEntryException;
 use Voonne\Voonne\Model\Entities\User;
 use Voonne\Voonne\Model\Repositories\UserRepository;
@@ -19,6 +20,8 @@ use Voonne\Voonne\Model\Repositories\UserRepository;
 
 class UserFacade
 {
+
+	use SmartObject;
 
 	/**
 	 * @var EntityManagerInterface
