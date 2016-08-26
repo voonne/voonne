@@ -13,6 +13,8 @@ namespace Voonne\Voonne\Routers;
 use Nette\Application\IRouter;
 use Nette\Application\Routers\Route;
 use Nette\Application\Routers\RouteList;
+use Nette\Http\Request;
+use Voonne\Voonne\Pages\PageManager;
 
 
 class RouterFactory
@@ -21,7 +23,7 @@ class RouterFactory
 	/**
 	 * @return IRouter
 	 */
-	public static function createRouter()
+	public static function createRouter(PageManager $structureManager, Request $request)
 	{
 		$router = new RouteList;
 
@@ -35,7 +37,7 @@ class RouterFactory
 
 		$assetsRouter[] = new Route('admin/assets/<name .+>', 'Default:default');
 
-		$frontRouter[] = new Route('admin/<groupName>/<pageName>/', 'Content:default');
+		$frontRouter[] = new ContentRoute($request);
 
 		return $router;
 	}

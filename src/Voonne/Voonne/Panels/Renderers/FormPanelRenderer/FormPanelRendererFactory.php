@@ -8,23 +8,24 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
-namespace Voonne\Voonne\Panels\Renderers\BasicPanelRenderer;
+namespace Voonne\Voonne\Panels\Renderers\FormPanelRenderer;
 
 use Nette\Localization\ITranslator;
 use Voonne\Voonne\Panels\BasicPanel;
+use Voonne\Voonne\Panels\FormPanel;
 
 
-class BasicPanelRendererFactory
+class FormPanelRendererFactory
 {
 
 	/**
-	 * @param BasicPanel $panel
+	 * @param FormPanel $panel
 	 *
-	 * @return BasicPanelRenderer
+	 * @return FormPanelRenderer
 	 */
-	public function create(BasicPanel $panel)
+	public function create(FormPanel $panel)
 	{
-		return new BasicPanelRenderer($panel);
+		return new FormPanelRenderer($panel);
 	}
 
 }

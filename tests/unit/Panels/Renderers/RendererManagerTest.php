@@ -9,9 +9,7 @@ use Nette\DI\Container;
 use UnitTester;
 use Voonne\Voonne\NotRegisteredException;
 use Voonne\Voonne\Panels\BasicPanel;
-use Voonne\Voonne\Panels\Renderers\BasicPanelRenderer\BasicPanelRenderer;
 use Voonne\Voonne\Panels\Renderers\BasicPanelRenderer\BasicPanelRendererFactory;
-use Voonne\Voonne\Panels\Renderers\BlankPanelRenderer\BlankPanelRenderer;
 use Voonne\Voonne\Panels\Renderers\BlankPanelRenderer\BlankPanelRendererFactory;
 
 

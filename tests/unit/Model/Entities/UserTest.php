@@ -41,4 +41,14 @@ class UserTest extends Unit
 		$this->assertInstanceOf(DateTime::class, $this->user->getCreatedAt());
 	}
 
+
+	public function testUpdaste()
+	{
+		$this->user->update('george@example.com');
+
+		$this->assertEquals('george@example.com', $this->user->getEmail());
+		$this->assertNotNull($this->user->getPassword());
+		$this->assertInstanceOf(DateTime::class, $this->user->getCreatedAt());
+	}
+
 }

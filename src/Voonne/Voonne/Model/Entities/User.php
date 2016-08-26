@@ -77,4 +77,13 @@ class User
 		return $this->createdAt;
 	}
 
+
+	/**
+	 * @param string $email
+	 */
+	public function update($email)
+	{
+		$this->email = $email;
+	}
+
 }

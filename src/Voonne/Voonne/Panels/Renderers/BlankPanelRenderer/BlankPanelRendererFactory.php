@@ -18,13 +18,13 @@ class BlankPanelRendererFactory
 {
 
 	/**
-	 * @param BlankPanel $blankPanel
+	 * @param BlankPanel $panel
 	 *
 	 * @return BlankPanelRenderer
 	 */
-	public function create(BlankPanel $blankPanel)
+	public function create(BlankPanel $panel)
 	{
-		return new BlankPanelRenderer($blankPanel);
+		return new BlankPanelRenderer($panel);
 	}
 
 }

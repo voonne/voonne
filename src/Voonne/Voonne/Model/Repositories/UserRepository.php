@@ -25,7 +25,7 @@ class UserRepository extends Repository
 	public function isEmailFree(User $user, $email)
 	{
 		return $this->createQuery('SELECT COUNT(u) FROM ' . User::class . ' u WHERE u.id != ?0 AND u.email = ?1')
-			->setParameters([$user->getId(), $email])
+			->setParameters([(string)$user->getId(), $email])
 			->getSingleScalarResult() == 0;
 	}
 

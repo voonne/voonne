@@ -44,7 +44,7 @@ abstract class Control extends \Nette\Application\UI\Control
 	 */
 	public function redirect($code, $destination = null, $args = [])
 	{
-		$parts = explode('.', $destination);
+		$parts = explode('.', $code);
 
 		if (count($parts) == 2) {
 			$args['groupName'] = $parts[0];

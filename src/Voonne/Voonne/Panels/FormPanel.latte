@@ -1,0 +1,26 @@
+{**
+ * This file is part of the Voonne platform (http://www.voonne.org)
+ *
+ * Copyright (c) 2016 Jan Lavička (mail@janlavicka.name)
+ *
+ * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
+ *}
+
+{foreach $formScope->getComponents() as $component}
+	{continueIf $component instanceof Nette\Forms\Controls\SubmitButton || !($component instanceof Nette\Forms\Controls\BaseControl)}
+	{var $name = $control->getFullName($component)}
+	<div class="form-group">
+		{label $name, class => 'col-sm-2 control-label'}
+		<div class="col-sm-10">
+			{input $name, class => 'form-control'}
+		</div>
+	</div>
+{/foreach}
+
+<div class="panel-footer">
+	{foreach $formScope->getComponents() as $component}
+		{continueIf !($component instanceof Nette\Forms\Controls\SubmitButton)}
+		{var $name = $control->getFullName($component)}
+		{input $name, class => 'btn btn-primary pull-right'}
+	{/foreach}
+</div>

@@ -37,6 +37,7 @@ use Voonne\Voonne\Pages\PageManager;
 use Voonne\Voonne\Panels\Panel;
 use Voonne\Voonne\Panels\Renderers\BasicPanelRenderer\BasicPanelRendererFactory;
 use Voonne\Voonne\Panels\Renderers\BlankPanelRenderer\BlankPanelRendererFactory;
+use Voonne\Voonne\Panels\Renderers\FormPanelRenderer\FormPanelRendererFactory;
 use Voonne\Voonne\Panels\Renderers\RendererManager;
 use Voonne\Voonne\Routers\RouterFactory;
 use Voonne\Voonne\Security\Authenticator;
@@ -89,7 +90,6 @@ class VoonneExtension extends CompilerExtension
 		$builder->addDefinition('voonne.pageManager')
 			->setClass(PageManager::class);
 
-
 		/* layouts */
 
 		$builder->addDefinition('voonne.layoutManager')
@@ -98,7 +98,6 @@ class VoonneExtension extends CompilerExtension
 		$builder->addDefinition('voonne.layout1Factory')
 				->setImplement(ILayout1Factory::class)
 				->addTag(LayoutManager::TAG_LAYOUT);
-
 
 		/* panels */
 
@@ -111,6 +110,10 @@ class VoonneExtension extends CompilerExtension
 
 		$builder->addDefinition('voonne.blankPanelRendererFactory')
 				->setClass(BlankPanelRendererFactory::class)
+				->addTag(RendererManager::TAG_RENDERER);
+
+		$builder->addDefinition('voonne.formPanelRendererFactory')
+				->setClass(FormPanelRendererFactory::class)
 				->addTag(RendererManager::TAG_RENDERER);
 
 		/* router */
