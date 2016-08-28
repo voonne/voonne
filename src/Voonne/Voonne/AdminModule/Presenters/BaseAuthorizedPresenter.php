@@ -12,10 +12,18 @@ namespace Voonne\Voonne\AdminModule\Presenters;
 
 use Voonne\Voonne\Controls\Menu\IMenuControlFactory;
 use Voonne\Voonne\Messages\FlashMessage;
+use Voonne\Voonne\Security\User;
 
 
 abstract class BaseAuthorizedPresenter extends BasePresenter
 {
+
+	/**
+	 * @var User
+	 * @inject
+	 */
+	public $securityUser;
+
 
 	protected function startup()
 	{
@@ -25,6 +33,8 @@ abstract class BaseAuthorizedPresenter extends BasePresenter
 			$this->flashMessage('voonne-common.authentication.unauthenticatedAccess', FlashMessage::INFO);
 			$this->redirect('Default:default');
 		}
+
+		$this->template->signedInUser = $this->securityUser->getUser();
 	}
 
 

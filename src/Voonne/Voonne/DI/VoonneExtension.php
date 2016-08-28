@@ -41,6 +41,7 @@ use Voonne\Voonne\Panels\Renderers\FormPanelRenderer\FormPanelRendererFactory;
 use Voonne\Voonne\Panels\Renderers\RendererManager;
 use Voonne\Voonne\Routers\RouterFactory;
 use Voonne\Voonne\Security\Authenticator;
+use Voonne\Voonne\Security\User;
 
 
 class VoonneExtension extends CompilerExtension
@@ -126,6 +127,9 @@ class VoonneExtension extends CompilerExtension
 
 		$builder->addDefinition('voonne.authenticator')
 			->setClass(Authenticator::class);
+
+		$builder->addDefinition('voonne.user')
+			->setClass(User::class);
 
 		/* assets */
 

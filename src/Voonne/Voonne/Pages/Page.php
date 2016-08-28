@@ -28,8 +28,6 @@ use Voonne\Voonne\Panels\Renderers\RendererManager;
 abstract class Page extends Control
 {
 
-	use SmartObject;
-
 	/**
 	 * @var LayoutManager
 	 */

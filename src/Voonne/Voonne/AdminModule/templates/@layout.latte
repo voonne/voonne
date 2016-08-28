@@ -30,7 +30,7 @@
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">John Smith <span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">{$signedInUser->getEmail()} <span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								{*<li><a href="#"><i class="fa fa-cog"></i> {('voonne-admin.personalSettings'|translate)}</a></li>*}
 								<li><a n:href="signOut!"><i class="fa fa-power-off"></i> {('voonne-admin.signOut'|translate)}</a></li>
