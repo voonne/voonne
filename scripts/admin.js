@@ -7,6 +7,10 @@
  */
 
 $(document).ready(function() {
+	$('[data-confirm]').click(function() {
+		return confirm($(this).attr('data-confirm'));
+	});
+
 	$('.navbar-toggle').click(function(e) {
 		e.preventDefault();
 

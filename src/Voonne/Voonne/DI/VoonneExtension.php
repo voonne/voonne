@@ -25,6 +25,7 @@ use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
 use Voonne\Voonne\Assets\AssetsManager;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\Latte\Engine;
+use Voonne\Voonne\Controls\DomainSelect\IDomainSelectControlFactory;
 use Voonne\Voonne\Controls\FlashMessage\IFlashMessageControlFactory;
 use Voonne\Voonne\Controls\FormError\IFormErrorControlFactory;
 use Voonne\Voonne\Controls\Menu\IMenuControlFactory;
@@ -32,6 +33,9 @@ use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Layouts\Layout1\ILayout1Factory;
 use Voonne\Voonne\Layouts\LayoutManager;
 use Voonne\Voonne\Model\Facades\UserFacade;
+use Voonne\Voonne\Model\Repositories\DomainLanguageRepository;
+use Voonne\Voonne\Model\Repositories\DomainRepository;
+use Voonne\Voonne\Model\Repositories\LanguageRepository;
 use Voonne\Voonne\Model\Repositories\UserRepository;
 use Voonne\Voonne\Pages\PageManager;
 use Voonne\Voonne\Panels\Panel;
@@ -58,6 +62,15 @@ class VoonneExtension extends CompilerExtension
 
 		/* repositories */
 
+		$builder->addDefinition('voonne.domainLanguageRepository')
+			->setClass(DomainLanguageRepository::class);
+
+		$builder->addDefinition('voonne.domainRepository')
+			->setClass(DomainRepository::class);
+
+		$builder->addDefinition('voonne.languageRepository')
+			->setClass(LanguageRepository::class);
+
 		$builder->addDefinition('voonne.userRepository')
 			->setClass(UserRepository::class);
 
@@ -67,6 +80,9 @@ class VoonneExtension extends CompilerExtension
 			->setClass(SignInFormFactory::class);
 
 		/* controls */
+
+		$builder->addDefinition('voonne.domainSelectControlFactory')
+			->setImplement(IDomainSelectControlFactory::class);
 
 		$builder->addDefinition('voonne.flashMessageControlFactory')
 			->setImplement(IFlashMessageControlFactory::class);

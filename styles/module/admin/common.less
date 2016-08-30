@@ -75,7 +75,8 @@ h1 {
 			left: auto;
 			right: 0;
 			position: absolute;
-			box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+			box-shadow: 0 6px 12px rgba(0, 0, 0, .15);
+			border-radius: 0;
 			background-color: @white;
 
 			& > li {
@@ -87,6 +88,17 @@ h1 {
 					}
 				}
 			}
+
+			& > a {
+				background-color: transparent;
+			}
+
+			& > .active {
+				& > a {
+					color: @dropdown-link-hover-color;
+					background-color: @dropdown-link-hover-bg;
+				}
+			}
 		}
 	}
 }
@@ -95,8 +107,15 @@ h1 {
 	float: right;
 }
 
+.navbar-collapse {
+	padding-right: 0;
+	border-top: none;
+}
+
 .nav {
 	& > li {
+		float: right;
+
 		& > a {
 			padding: 15px;
 			color: @menu;
@@ -104,6 +123,21 @@ h1 {
 			&:focus {
 				background-color: transparent;
 			}
+
+			&:hover {
+				background-color: lighten(@gray-base, 96%);
+			}
+
+			.fa {
+				font-size: 18px;
+			}
+		}
+	}
+
+
+	.open {
+		& > a, & > a:focus, & > a:hover {
+			background-color: lighten(@gray-base, 96%);
 		}
 	}
 }

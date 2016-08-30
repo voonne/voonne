@@ -10,6 +10,7 @@
 
 namespace Voonne\Voonne\AdminModule\Presenters;
 
+use Voonne\Voonne\Controls\DomainSelect\IDomainSelectControlFactory;
 use Voonne\Voonne\Controls\Menu\IMenuControlFactory;
 use Voonne\Voonne\Messages\FlashMessage;
 use Voonne\Voonne\Security\User;
@@ -48,6 +49,12 @@ abstract class BaseAuthorizedPresenter extends BasePresenter
 
 
 	protected function createComponentMenuControl(IMenuControlFactory $factory)
+	{
+		return $factory->create();
+	}
+
+
+	protected function createComponentDomainSelectControl(IDomainSelectControlFactory $factory)
 	{
 		return $factory->create();
 	}
