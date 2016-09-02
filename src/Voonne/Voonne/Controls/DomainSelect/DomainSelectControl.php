@@ -10,6 +10,8 @@
 
 namespace Voonne\Voonne\Controls\DomainSelect;
 
+use Nette\Caching\Cache;
+use Nette\Caching\IStorage;
 use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\IOException;
 use Voonne\Voonne\Messages\FlashMessage;
@@ -27,6 +29,11 @@ class DomainSelectControl extends Control
 	private $user;
 
 	/**
+	 * @var Cache
+	 */
+	private $cache;
+
+	/**
 	 * @var DomainRepository
 	 */
 	private $domainRepository;
@@ -39,6 +46,7 @@ class DomainSelectControl extends Control
 
 	public function __construct(
 		User $user,
+		IStorage $storage,
 		DomainRepository $domainRepository,
 		DomainLanguageRepository $domainLanguageRepository
 	)
@@ -46,6 +54,7 @@ class DomainSelectControl extends Control
 		parent::__construct();
 
 		$this->user = $user;
+		$this->cache = new Cache($storage);
 		$this->domainRepository = $domainRepository;
 		$this->domainLanguageRepository = $domainLanguageRepository;
 	}
@@ -57,14 +66,7 @@ class DomainSelectControl extends Control
 
 		$this->template->domains = $domains = $this->domainRepository->findAll();
 		$this->template->currentDomain = $this->user->getCurrentDomainLanguage();
-
-		$this->template->domainsCount = 0;
-
-		foreach($domains as $domain) {
-			foreach($domain->getDomainLanguages() as $domainLanguage) {
-				$this->template->domainsCount++;
-			}
-		}
+		$this->template->domainsCount = $this->domainLanguageRepository->countBy([]);
 
 		$this->template->render();
 	}
@@ -74,6 +76,8 @@ class DomainSelectControl extends Control
 	{
 		try {
 			$this->user->setCurrentDomainLanguage($this->domainLanguageRepository->find($id));
+
+			$this->cache->clean([Cache::TAGS => ['voonne.domainSelectControl']]);
 
 			$this->redirect('this');
 		} catch(IOException $e) {

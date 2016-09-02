@@ -56,7 +56,7 @@ abstract class Page extends Control
 	/**
 	 * @var bool
 	 */
-	private $visible = true;
+	private $visibleInMenu = true;
 
 	/**
 	 * @var string
@@ -99,27 +99,27 @@ abstract class Page extends Control
 	/**
 	 * @return bool
 	 */
-	public function isVisible()
+	public function isVisibleInMenu()
 	{
-		return $this->visible;
+		return $this->visibleInMenu;
 	}
 
 
 	/**
 	 * Sets as visible.
 	 */
-	public function show()
+	public function showInMenu()
 	{
-		$this->visible = true;
+		$this->visibleInMenu = true;
 	}
 
 
 	/**
 	 * Sets as hide.
 	 */
-	public function hide()
+	public function hideFromMenu()
 	{
-		$this->visible = false;
+		$this->visibleInMenu = false;
 	}
 
 

@@ -69,7 +69,7 @@ class PageTest extends Unit
 	{
 		$this->assertEquals('name', $this->page->getPageName());
 		$this->assertEquals('title', $this->page->getPageTitle());
-		$this->assertTrue($this->page->isVisible());
+		$this->assertTrue($this->page->isVisibleInMenu());
 
 		$this->expectException(InvalidStateException::class);
 		$this->page->injectPrimary($this->layoutManager, $this->rendererManager, $this->contentForm);
@@ -78,13 +78,13 @@ class PageTest extends Unit
 
 	public function testVisibility()
 	{
-		$this->page->hide();
+		$this->page->hideFromMenu();
 
-		$this->assertFalse($this->page->isVisible());
+		$this->assertFalse($this->page->isVisibleInMenu());
 
-		$this->page->show();
+		$this->page->showInMenu();
 
-		$this->assertTrue($this->page->isVisible());
+		$this->assertTrue($this->page->isVisibleInMenu());
 	}
 
 

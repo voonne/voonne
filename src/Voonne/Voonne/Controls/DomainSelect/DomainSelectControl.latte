@@ -6,6 +6,7 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  *}
 
+{cache 'voonne.domainSelectControl', tags => ['voonne.domainSelectControl']}
 <li class="dropdown" n:if="$domainsCount > 1">
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="hidden-xs">{$currentDomain->getDomain()->getName()} - {$currentDomain->getLanguage()->getName()}</span> <i class="fa fa-globe visible-xs-inline-block"></i>  <span class="caret"></span></a>
 	<ul class="dropdown-menu">
@@ -17,3 +18,4 @@
 		{/foreach}
 	</ul>
 </li>
+{/cache}

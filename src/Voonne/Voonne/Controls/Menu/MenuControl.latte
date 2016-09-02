@@ -7,7 +7,7 @@
  *}
 
 <ul class="sidebar-menu">
-	<li>
+	<li{ifCurrent Dashboard:default} class="active"{/ifCurrent}>
 		<a href="{plink Dashboard:default}">
 			<i class="fa fa-tachometer"></i>
 			{('voonne-admin.dashboard.title'|translate)}
@@ -24,7 +24,7 @@
 		</a>
 
 		<ul n:if="count($pages) > 1">
-			<li n:foreach="$pages as $page"{ifCurrent $group->getName() . '.' . $page->getPageName()} class="active"{/ifCurrent} n:if="$page->isVisible()">
+			<li n:foreach="$pages as $page"{ifCurrent $group->getName() . '.' . $page->getPageName()} class="active"{/ifCurrent} n:if="$page->isVisibleInMenu()">
 				<a n:href="$group->getName() . '.' . $page->getPageName()">{$page->getPageTitle()|translate}</a>
 			</li>
 		</ul>
