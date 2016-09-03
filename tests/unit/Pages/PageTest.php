@@ -140,6 +140,10 @@ class PageTest extends Unit
 			->once()
 			->with($this->page, 'layout');
 
+		$layout->shouldReceive('startup')
+			->once()
+			->withNoArgs();
+
 		$layout->shouldReceive('beforeRender')
 			->once()
 			->withNoArgs();

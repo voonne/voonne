@@ -98,6 +98,7 @@ abstract class Layout extends Control
 	public function addComponent(IComponent $component, $name, $insertBefore = null)
 	{
 		if ($component instanceof PanelRenderer) {
+			// INJECT
 			$component->injectPrimary($this->getContentForm());
 		}
 

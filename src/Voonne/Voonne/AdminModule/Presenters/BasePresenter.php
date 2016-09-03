@@ -116,6 +116,10 @@ abstract class BasePresenter extends Presenter
 		parent::addComponent($component, $name, $insertBefore);
 
 		if ($component instanceof Control) {
+			// STARTUP
+			$component->startup();
+
+			// BEFORE RENDER
 			$component->beforeRender();
 		}
 

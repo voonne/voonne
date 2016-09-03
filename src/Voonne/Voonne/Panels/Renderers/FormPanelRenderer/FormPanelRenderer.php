@@ -33,6 +33,8 @@ class FormPanelRenderer extends PanelRenderer
 
 	public function beforeRender()
 	{
+		parent::beforeRender();
+
 		$this->panel->injectPrimary($this->getContentForm());
 
 		$this->addComponent($this->panel, 'panel');

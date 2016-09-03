@@ -211,6 +211,8 @@ abstract class Page extends Control
 
 	public function beforeRender()
 	{
+		parent::beforeRender();
+
 		$layout = $this->layoutManager->getLayout($this->layout);
 
 		$layout->injectPrimary(

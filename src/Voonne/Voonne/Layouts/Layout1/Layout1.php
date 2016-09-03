@@ -24,6 +24,8 @@ class Layout1 extends Layout
 
 	public function beforeRender()
 	{
+		parent::beforeRender();
+
 		$this->panels = $this->getPanels();
 
 		foreach($this->panels[self::POSITION_CENTER] as $name => $panel) {

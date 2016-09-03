@@ -25,6 +25,17 @@ abstract class Control extends \Nette\Application\UI\Control
 
 
 	/**
+	 * Common startup method.
+	 *
+	 * @return void
+	 */
+	public function startup()
+	{
+
+	}
+
+
+	/**
 	 * Common render method.
 	 *
 	 * @return void
@@ -106,6 +117,10 @@ abstract class Control extends \Nette\Application\UI\Control
 		parent::addComponent($component, $name, $insertBefore);
 
 		if ($component instanceof Control) {
+			// STARTUP
+			$component->startup();
+
+			// BEFORE RENDER
 			$component->beforeRender();
 		}
 

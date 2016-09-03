@@ -59,6 +59,7 @@ abstract class PanelRenderer extends Control
 		parent::addComponent($component, $name, $insertBefore);
 
 		if ($component instanceof Panel) {
+			// FORM SETUP
 			$component->setupForm($this->getContentForm());
 		}
 

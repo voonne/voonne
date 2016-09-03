@@ -33,6 +33,8 @@ class BasicPanelRenderer extends PanelRenderer
 
 	public function beforeRender()
 	{
+		parent::beforeRender();
+
 		$this->addComponent($this->panel, 'panel');
 	}
 
