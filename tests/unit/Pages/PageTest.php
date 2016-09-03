@@ -8,6 +8,7 @@ use Mockery\MockInterface;
 use Nette\Utils\Strings;
 use ReflectionClass;
 use UnitTester;
+use Voonne\UsersModule\Panels\PanelManager;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\DuplicateEntryException;
 use Voonne\Voonne\InvalidArgumentException;
@@ -92,28 +93,16 @@ class PageTest extends Unit
 	{
 		$panel = Mockery::mock(Panel::class);
 
-		$reflectionClass = new ReflectionClass($panel);
-
-		$this->page->addPanel($panel, Layout::POSITION_CENTER);
-
-		$this->assertEquals([
-			Layout::POSITION_TOP => [],
-			Layout::POSITION_BOTTOM => [],
-			Layout::POSITION_LEFT => [],
-			Layout::POSITION_RIGHT => [],
-			Layout::POSITION_CENTER => [
-				Strings::webalize($reflectionClass->getShortName()) => $panel
-			]
-		], $this->page->getPanels());
+		$this->page->addPanel($panel, [Layout::POSITION_CENTER]);
 
 		$this->expectException(DuplicateEntryException::class);
-		$this->page->addPanel($panel, Layout::POSITION_CENTER);
+		$this->page->addPanel($panel, [Layout::POSITION_CENTER]);
 
 		$this->expectException(DuplicateEntryException::class);
-		$this->page->addPanel($panel, Layout::POSITION_TOP);
+		$this->page->addPanel($panel, [Layout::POSITION_TOP]);
 
 		$this->expectException(InvalidArgumentException::class);
-		$this->page->addPanel($panel, 'BAD_POSITION');
+		$this->page->addPanel($panel, ['BAD_POSITION']);
 	}
 
 
@@ -128,13 +117,7 @@ class PageTest extends Unit
 
 		$layout->shouldReceive('injectPrimary')
 			->once()
-			->with($this->rendererManager, $this->contentForm, [
-				Layout::POSITION_TOP => [],
-				Layout::POSITION_BOTTOM => [],
-				Layout::POSITION_LEFT => [],
-				Layout::POSITION_RIGHT => [],
-				Layout::POSITION_CENTER => []
-			]);
+			->withAnyArgs();
 
 		$layout->shouldReceive('setParent')
 			->once()

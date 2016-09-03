@@ -10,9 +10,7 @@
 
 namespace Voonne\Voonne\Pages;
 
-use Nette\SmartObject;
-use Nette\Utils\Strings;
-use ReflectionClass;
+use Voonne\UsersModule\Panels\PanelManager;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\DuplicateEntryException;
@@ -39,6 +37,11 @@ abstract class Page extends Control
 	private $rendererManager;
 
 	/**
+	 * @var PanelManager
+	 */
+	private $panelManager;
+
+	/**
 	 * @var ContentForm
 	 */
 	private $contentForm;
@@ -63,11 +66,6 @@ abstract class Page extends Control
 	 */
 	private $layout = Layout1::class;
 
-	/**
-	 * @var array
-	 */
-	private $panels = [];
-
 
 	public function __construct($pageName, $pageTitle)
 	{
@@ -75,6 +73,7 @@ abstract class Page extends Control
 
 		$this->pageName = $pageName;
 		$this->pageTitle = $pageTitle;
+		$this->panelManager = new PanelManager();
 	}
 
 
@@ -137,58 +136,16 @@ abstract class Page extends Control
 
 
 	/**
-	 * Adds a panel to the page.
-	 *
 	 * @param Panel $panel
-	 * @param int $position
+	 * @param array $tags
 	 * @param int $priority
 	 *
 	 * @throws InvalidArgumentException
+	 * @throws DuplicateEntryException
 	 */
-	public function addPanel(Panel $panel, $position, $priority = 100)
+	public function addPanel(Panel $panel, array $tags, $priority = 100)
 	{
-		if (!in_array($position, [Layout::POSITION_TOP, Layout::POSITION_BOTTOM, Layout::POSITION_LEFT, Layout::POSITION_RIGHT, Layout::POSITION_CENTER])) {
-			throw new InvalidArgumentException("Position must be '" . Layout::POSITION_TOP . "', '" . Layout::POSITION_BOTTOM . "', '" . Layout::POSITION_LEFT . "', '" . Layout::POSITION_RIGHT . "' or '" . Layout::POSITION_CENTER . "', '"  . $position . "' given.");
-		}
-
-		foreach ($this->getPanels() as $position1) {
-			foreach ($position1 as $panel1) {
-				if($panel instanceof $panel1) {
-					throw new DuplicateEntryException("Panel named '" . get_class($panel) . "' is already exists.");
-				}
-			}
-		}
-
-		$reflectionClass = new ReflectionClass($panel);
-
-		$this->panels[$position][$priority][Strings::webalize($reflectionClass->getShortName())] = $panel;
-	}
-
-
-	/**
-	 * @return array
-	 */
-	public function getPanels()
-	{
-		$panels = [
-			Layout::POSITION_TOP => [],
-			Layout::POSITION_BOTTOM => [],
-			Layout::POSITION_LEFT => [],
-			Layout::POSITION_RIGHT => [],
-			Layout::POSITION_CENTER => []
-		];
-
-		foreach ($this->panels as $positionName => $position) {
-			krsort($position);
-
-			foreach ($position as $priority) {
-				foreach ($priority as $panelName => $panel) {
-					$panels[$positionName][$panelName] = $panel;
-				}
-			}
-		}
-
-		return $panels;
+		$this->panelManager->addPanel($panel, $tags, $priority);
 	}
 
 
@@ -217,8 +174,8 @@ abstract class Page extends Control
 
 		$layout->injectPrimary(
 			$this->rendererManager,
-			$this->contentForm,
-			$this->getPanels()
+			$this->panelManager,
+			$this->contentForm
 		);
 
 		$this->addComponent($layout, 'layout');

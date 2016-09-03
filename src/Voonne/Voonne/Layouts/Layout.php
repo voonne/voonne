@@ -11,6 +11,7 @@
 namespace Voonne\Voonne\Layouts;
 
 use Nette\ComponentModel\IComponent;
+use Voonne\UsersModule\Panels\PanelManager;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\InvalidStateException;
@@ -22,11 +23,11 @@ use Voonne\Voonne\Panels\Renderers\RendererManager;
 abstract class Layout extends Control
 {
 
-	const POSITION_TOP = 'TOP';
-	const POSITION_BOTTOM = 'BOTTOM';
-	const POSITION_LEFT = 'LEFT';
-	const POSITION_RIGHT = 'RIGHT';
-	const POSITION_CENTER = 'CENTER';
+	const POSITION_TOP = 'top';
+	const POSITION_BOTTOM = 'bottom';
+	const POSITION_LEFT = 'left';
+	const POSITION_RIGHT = 'right';
+	const POSITION_CENTER = 'center';
 
 	/**
 	 * @var RendererManager
@@ -34,14 +35,14 @@ abstract class Layout extends Control
 	private $rendererManager;
 
 	/**
+	 * @var PanelManager
+	 */
+	private $panelManager;
+
+	/**
 	 * @var ContentForm
 	 */
 	private $contentForm;
-
-	/**
-	 * @var array
-	 */
-	private $panels = [];
 
 
 	/**
@@ -50,6 +51,15 @@ abstract class Layout extends Control
 	public function getRendererManager()
 	{
 		return $this->rendererManager;
+	}
+
+
+	/**
+	 * @return PanelManager
+	 */
+	public function getPanelManager()
+	{
+		return $this->panelManager;
 	}
 
 
@@ -63,28 +73,19 @@ abstract class Layout extends Control
 
 
 	/**
-	 * @return array
-	 */
-	public function getPanels()
-	{
-		return $this->panels;
-	}
-
-
-	/**
 	 * @param RendererManager $rendererManager
+	 * @param PanelManager $panelManager
 	 * @param ContentForm $contentForm
-	 * @param array $panels
 	 */
-	public function injectPrimary(RendererManager $rendererManager, ContentForm $contentForm, array $panels)
+	public function injectPrimary(RendererManager $rendererManager, PanelManager $panelManager, ContentForm $contentForm)
 	{
 		if($this->rendererManager !== null) {
 			throw new InvalidStateException('Method ' . __METHOD__ . ' is intended for initialization and should not be called more than once.');
 		}
 
 		$this->rendererManager = $rendererManager;
+		$this->panelManager = $panelManager;
 		$this->contentForm = $contentForm;
-		$this->panels = $panels;
 	}
 
 

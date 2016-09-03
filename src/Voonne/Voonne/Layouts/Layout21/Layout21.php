@@ -19,22 +19,29 @@ class Layout21 extends Layout
 	/**
 	 * @var array
 	 */
-	private $panels;
+	private $panelsLeft;
+
+	/**
+	 * @var array
+	 */
+	private $panelsRight;
 
 
 	public function beforeRender()
 	{
 		parent::beforeRender();
 
-		$this->panels = $this->getPanels();
+		$this->panelsLeft = $this->getPanelManager()->getByTag(self::POSITION_LEFT);
 
-		foreach($this->panels[self::POSITION_LEFT] as $name => $panel) {
+		foreach($this->panelsLeft as $name => $panel) {
 			$rendererFactory = $this->getRendererManager()->getRendererFactory($panel);
 
 			$this->addComponent($rendererFactory->create($panel), $name);
 		}
 
-		foreach($this->panels[self::POSITION_RIGHT] as $name => $panel) {
+		$this->panelsRight = $this->getPanelManager()->getByTag(self::POSITION_RIGHT);
+
+		foreach($this->panelsRight as $name => $panel) {
 			$rendererFactory = $this->getRendererManager()->getRendererFactory($panel);
 
 			$this->addComponent($rendererFactory->create($panel), $name);
@@ -46,7 +53,8 @@ class Layout21 extends Layout
 	{
 		$this->template->setFile(__DIR__ . '/Layout21.latte');
 
-		$this->template->panels = $this->panels;
+		$this->template->panelsLeft = $this->panelsLeft;
+		$this->template->panelsRight = $this->panelsRight;
 
 		$this->template->render();
 	}

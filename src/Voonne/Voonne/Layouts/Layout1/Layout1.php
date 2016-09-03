@@ -19,16 +19,16 @@ class Layout1 extends Layout
 	/**
 	 * @var array
 	 */
-	private $panels = [];
+	private $panelsCenter = [];
 
 
 	public function beforeRender()
 	{
 		parent::beforeRender();
 
-		$this->panels = $this->getPanels();
+		$this->panelsCenter = $this->getPanelManager()->getByTag(self::POSITION_CENTER);
 
-		foreach($this->panels[self::POSITION_CENTER] as $name => $panel) {
+		foreach($this->panelsCenter as $name => $panel) {
 			$rendererFactory = $this->getRendererManager()->getRendererFactory($panel);
 
 			$this->addComponent($rendererFactory->create($panel), $name);
@@ -40,7 +40,7 @@ class Layout1 extends Layout
 	{
 		$this->template->setFile(__DIR__ . '/Layout1.latte');
 
-		$this->template->panels = $this->panels;
+		$this->template->panelsCenter = $this->panelsCenter;
 
 		$this->template->render();
 	}
