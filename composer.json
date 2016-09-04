@@ -15,7 +15,7 @@
 		"issues": "https://github.com/voonne/voonne/issues"
 	},
 	"require": {
-		"php": ">= 5.6.0",
+		"php": ">= 5.6",
 		"nette/application": "~2.4",
 		"nette/bootstrap": "~2.4",
 		"nette/caching": "~2.5",
@@ -39,5 +39,8 @@
 		"codeception/codeception": "~2.1",
 		"mockery/mockery": "~0.9",
 		"mikey179/vfsStream": "~1.6"
+	},
+	"autoload": {
+		"classmap": ["src/"]
 	}
 }
