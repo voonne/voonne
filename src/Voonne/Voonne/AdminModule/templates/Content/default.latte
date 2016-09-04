@@ -10,7 +10,7 @@
 
 {block content}
 
-{form form, class => "form-horizontal"}
+{form form, class => "form-horizontal", novalidate => 'novalidate'}
 	<div class="row">
 		<div class="col-md-12 content-header">
 			<h1>{$title|translate}</h1>
@@ -18,6 +18,10 @@
 
 		<div class="col-md-12" n:ifcontent>
 			{control flashMessageControl, $flashes}
+		</div>
+
+		<div class="col-md-12" n:ifcontent>
+			{control formError, $form->getOwnErrors()}
 		</div>
 
 		{control page}

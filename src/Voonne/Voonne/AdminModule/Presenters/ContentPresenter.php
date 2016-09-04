@@ -12,6 +12,7 @@ namespace Voonne\Voonne\AdminModule\Presenters;
 
 use Nette\Application\BadRequestException;
 use Voonne\Voonne\Content\ContentForm;
+use Voonne\Voonne\Controls\FormError\IFormErrorControlFactory;
 use Voonne\Voonne\Layouts\LayoutManager;
 use Voonne\Voonne\Pages\Page;
 use Voonne\Voonne\Pages\PageManager;
@@ -84,6 +85,12 @@ class ContentPresenter extends BaseAuthorizedPresenter
 		/* content form */
 
 		$this->addComponent($this->contentForm, 'form');
+	}
+
+
+	protected function createComponentFormError(IFormErrorControlFactory $factory)
+	{
+		return $factory->create();
 	}
 
 }

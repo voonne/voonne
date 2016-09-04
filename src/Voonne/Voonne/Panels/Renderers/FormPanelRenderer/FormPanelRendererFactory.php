@@ -10,8 +10,6 @@
 
 namespace Voonne\Voonne\Panels\Renderers\FormPanelRenderer;
 
-use Nette\Localization\ITranslator;
-use Voonne\Voonne\Panels\BasicPanel;
 use Voonne\Voonne\Panels\FormPanel;
 
 

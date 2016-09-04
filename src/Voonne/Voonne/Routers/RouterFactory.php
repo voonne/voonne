@@ -14,7 +14,6 @@ use Nette\Application\IRouter;
 use Nette\Application\Routers\Route;
 use Nette\Application\Routers\RouteList;
 use Nette\Http\Request;
-use Voonne\Voonne\Pages\PageManager;
 
 
 class RouterFactory
@@ -23,7 +22,7 @@ class RouterFactory
 	/**
 	 * @return IRouter
 	 */
-	public static function createRouter(PageManager $structureManager, Request $request)
+	public static function createRouter(Request $request)
 	{
 		$router = new RouteList;
 

@@ -10,7 +10,6 @@
 
 namespace Voonne\Voonne\Panels\Renderers\BlankPanelRenderer;
 
-use Nette\Localization\ITranslator;
 use Voonne\Voonne\Panels\BlankPanel;
 
 

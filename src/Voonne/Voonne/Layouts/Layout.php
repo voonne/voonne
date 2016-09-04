@@ -15,7 +15,6 @@ use Voonne\UsersModule\Panels\PanelManager;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\InvalidStateException;
-use Voonne\Voonne\Panels\Panel;
 use Voonne\Voonne\Panels\Renderers\PanelRenderer;
 use Voonne\Voonne\Panels\Renderers\RendererManager;
 

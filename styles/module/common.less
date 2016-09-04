@@ -26,7 +26,7 @@
 /* forms */
 
 .form-control {
-	height: auto;
+	height: 34px;
 	padding: 7px 15px;
 	border-radius: 0;
 	box-shadow: none;
@@ -34,7 +34,33 @@
 }
 
 label {
-	color: #505050;
+	color: @text;
+
+	.optional {
+		font-size: .9em;
+		font-weight: normal;
+		color: lighten(@text, 20%);
+	}
+}
+
+.has-error {
+	margin-bottom: 10px;
+
+	.control-label {
+		color: @text;
+	}
+
+	.help-block {
+		color: @text;
+	}
+
+	.error-block {
+		color: @state-danger-text;
+	}
+}
+
+.help-block {
+	margin: 5px 0 0;
 }
 
 /* alerts */

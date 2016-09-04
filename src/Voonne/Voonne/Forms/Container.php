@@ -24,8 +24,31 @@ use Voonne\Voonne\Forms\Controls\TextInput;
 use Voonne\Voonne\Forms\Controls\UploadControl;
 
 
-class Form extends \Nette\Application\UI\Form
+class Container extends \Nette\Forms\Container
 {
+
+	/**
+	 * @var string|null
+	 */
+	private $label;
+
+
+	public function __construct($label = null)
+	{
+		parent::__construct();
+
+		$this->label = $label;
+	}
+
+
+	/**
+	 * @return string|null
+	 */
+	public function getLabel()
+	{
+		return $this->label;
+	}
+
 
 	/**
 	 * Adds single-line text input control to the form.
