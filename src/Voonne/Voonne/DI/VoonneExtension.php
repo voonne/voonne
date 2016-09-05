@@ -11,6 +11,7 @@
 namespace Voonne\Voonne\DI;
 
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
+use Kdyby\Console\DI\ConsoleExtension;
 use Kdyby\Doctrine\Mapping\AnnotationDriver;
 use Kdyby\Translation\Translator;
 use Nette\Application\IPresenterFactory;
@@ -23,6 +24,7 @@ use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
 use Voonne\Voonne\Assets\AssetsManager;
+use Voonne\Voonne\Console\InstallCommand;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\Latte\Engine;
 use Voonne\Voonne\Controls\DomainSelect\IDomainSelectControlFactory;
@@ -138,6 +140,12 @@ class VoonneExtension extends CompilerExtension
 		$builder->addDefinition('voonne.router')
 			->setFactory(RouterFactory::class . '::createRouter')
 			->setAutowired(false);
+
+		/* commands */
+
+		$builder->addDefinition('voonne.cli.install')
+				->setClass(InstallCommand::class)
+				->addTag(ConsoleExtension::TAG_COMMAND);
 
 		/* authentication and authorization */
 

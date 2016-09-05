@@ -1,7 +1,7 @@
 {
 	"name": "voonne/voonne",
 	"type": "library",
-	"description": "Powerful platform based on Nette Framework for building CMS, CRM, IS and other systems",
+	"description": "Powerful platform based on Nette Framework for building CMS, CRM, IS and other systems.",
 	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
 	"authors": [
 		{
