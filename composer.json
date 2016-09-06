@@ -7,7 +7,7 @@
 		{
 			"name": "Jan Lavička",
 			"email": "mail@janlavicka.name",
-			"homepage": "http://www.janlavicka.name"
+			"homepage": "https://www.janlavicka.name"
 		}
 	],
 	"support": {
@@ -33,7 +33,8 @@
 		"kdyby/autowired": "@dev",
 		"kdyby/doctrine": "~3.1",
 		"kdyby/translation": "~2.3",
-		"dfridrich/php-mime-type": "~1.0"
+		"dfridrich/php-mime-type": "~1.0",
+		"voonne/messages": "@var"
 	},
 	"require-dev": {
 		"codeception/codeception": "~2.1",

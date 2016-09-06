@@ -10,9 +10,9 @@
 
 namespace Voonne\Voonne\AdminModule\Presenters;
 
+use Voonne\Messages\FlashMessage;
 use Voonne\Voonne\Controls\DomainSelect\IDomainSelectControlFactory;
 use Voonne\Voonne\Controls\Menu\IMenuControlFactory;
-use Voonne\Voonne\Messages\FlashMessage;
 use Voonne\Voonne\Security\User;
 
 

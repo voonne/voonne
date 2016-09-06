@@ -10,10 +10,10 @@
 
 namespace Voonne\Voonne\AdminModule\Presenters;
 
+use Voonne\Messages\FlashMessage;
 use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
 use Voonne\Voonne\AuthenticationException;
 use Voonne\Voonne\Forms\Form;
-use Voonne\Voonne\Messages\FlashMessage;
 
 
 class DefaultPresenter extends BasePresenter
