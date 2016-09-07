@@ -12,10 +12,10 @@ namespace Voonne\Voonne\AdminModule\AssetsModule\Presenters;
 
 use Nette\Application\Responses\TextResponse;
 use Nette\Http\Response;
-use Voonne\Voonne\Assets\AssetsManager;
-use Voonne\Voonne\FileNotFoundException;
+use Voonne\Assets\AssetsManager;
 use Nette\Application\BadRequestException;
 use Nette\Application\UI\Presenter;
+use Voonne\Assets\FileNotFoundException;
 
 
 class DefaultPresenter extends Presenter

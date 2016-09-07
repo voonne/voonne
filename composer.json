@@ -16,7 +16,6 @@
 	},
 	"require": {
 		"php": ">= 5.6",
-		"dfridrich/php-mime-type": "~1.0",
 		"kdyby/autowired": "@dev",
 		"kdyby/doctrine": "~3.1",
 		"kdyby/translation": "~2.3",
@@ -34,6 +33,7 @@
 		"nette/security": "~2.4",
 		"nette/utils": "~2.4",
 		"tracy/tracy": "~2.4",
+		"voonne/assets": "@dev",
 		"voonne/controls": "@dev",
 		"voonne/messages": "@dev",
 		"voonne/model": "@dev",
@@ -41,10 +41,14 @@
 	},
 	"require-dev": {
 		"codeception/codeception": "~2.1",
-		"mikey179/vfsStream": "~1.6",
 		"mockery/mockery": "~0.9"
 	},
 	"autoload": {
-		"classmap": ["src/"]
+		"psr-4": {
+			"Voonne\\Voonne\\": "src/"
+		},
+		"files": [
+			"src/exceptions.php"
+		]
 	}
 }

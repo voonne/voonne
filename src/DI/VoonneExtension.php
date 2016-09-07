@@ -22,10 +22,10 @@ use Nette\Bridges\ApplicationLatte\TemplateFactory;
 use Nette\DI\CompilerExtension;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
+use Voonne\Assets\AssetsManager;
 use Voonne\Security\Authenticator;
 use Voonne\Security\User;
 use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
-use Voonne\Voonne\Assets\AssetsManager;
 use Voonne\Voonne\Console\InstallCommand;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\Latte\Engine;
@@ -227,7 +227,7 @@ class VoonneExtension extends CompilerExtension
 		$this->getContainerBuilder()->addDefinition('voonne.doctrine.annotations')
 			->setClass('Doctrine\Common\Persistence\Mapping\Driver\MappingDriver')
 			->setFactory(AnnotationDriver::class, [
-				0 => [0 => __DIR__ . '/..'],
+				0 => [0 => __DIR__ . '/src'],
 				2 => '@doctrine.cache.default.metadata'
 			])
 			->setAutowired(false);
