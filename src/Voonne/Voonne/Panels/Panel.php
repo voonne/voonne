@@ -10,7 +10,7 @@
 
 namespace Voonne\Voonne\Panels;
 
-use Voonne\Voonne\Controls\Control;
+use Voonne\Controls\Control;
 use Voonne\Voonne\Forms\Form;
 
 

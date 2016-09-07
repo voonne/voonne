@@ -10,7 +10,7 @@
 
 namespace Voonne\Voonne\Controls\Menu;
 
-use Voonne\Voonne\Controls\Control;
+use Voonne\Controls\Control;
 use Voonne\Voonne\Pages\PageManager;
 
 

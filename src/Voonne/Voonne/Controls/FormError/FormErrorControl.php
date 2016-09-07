@@ -10,7 +10,7 @@
 
 namespace Voonne\Voonne\Controls\FormError;
 
-use Voonne\Voonne\Controls\Control;
+use Voonne\Controls\Control;
 
 
 class FormErrorControl extends Control

@@ -10,8 +10,8 @@
 namespace Voonne\Voonne\Panels\Renderers;
 
 use Nette\ComponentModel\IComponent;
+use Voonne\Controls\Control;
 use Voonne\Voonne\Content\ContentForm;
-use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Panels\Panel;
 

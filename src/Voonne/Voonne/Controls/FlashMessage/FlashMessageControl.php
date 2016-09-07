@@ -10,7 +10,7 @@
 
 namespace Voonne\Voonne\Controls\FlashMessage;
 
-use Voonne\Voonne\Controls\Control;
+use Voonne\Controls\Control;
 
 
 class FlashMessageControl extends Control

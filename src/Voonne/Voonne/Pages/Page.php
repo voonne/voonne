@@ -10,9 +10,9 @@
 
 namespace Voonne\Voonne\Pages;
 
+use Voonne\Controls\Control;
 use Voonne\UsersModule\Panels\PanelManager;
 use Voonne\Voonne\Content\ContentForm;
-use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\DuplicateEntryException;
 use Voonne\Voonne\InvalidArgumentException;
 use Voonne\Voonne\InvalidStateException;
