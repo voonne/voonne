@@ -1,6 +1,6 @@
 <?php
 
-namespace Voonne\Voonne\Panels;
+namespace Voonne\TestVoonne\Panels;
 
 use Codeception\Test\Unit;
 use Mockery;
@@ -11,6 +11,8 @@ use Voonne\UsersModule\Panels\PanelManager;
 use Voonne\Voonne\DuplicateEntryException;
 use Voonne\Voonne\InvalidArgumentException;
 use Voonne\Voonne\Layouts\Layout;
+use Voonne\Voonne\Panels\BasicPanel;
+use Voonne\Voonne\Panels\BlankPanel;
 
 
 class PanelManagerTest extends Unit

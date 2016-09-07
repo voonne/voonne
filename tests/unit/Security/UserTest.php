@@ -1,6 +1,6 @@
 <?php
 
-namespace Voonne\Voonne\Security;
+namespace Voonne\TestVoonne\Security;
 
 use Codeception\Test\Unit;
 use Mockery;
@@ -8,10 +8,10 @@ use Mockery\MockInterface;
 use Nette\Http\Session;
 use UnitTester;
 use Voonne\Voonne\InvalidStateException;
-use Voonne\Voonne\Model\Entities\Domain;
 use Voonne\Voonne\Model\Entities\DomainLanguage;
 use Voonne\Voonne\Model\Repositories\DomainLanguageRepository;
 use Voonne\Voonne\Model\Repositories\UserRepository;
+use Voonne\Voonne\Security\User;
 
 
 class UserTest extends Unit

@@ -1,10 +1,11 @@
 <?php
 
-namespace Voonne\Voonne\Assets;
+namespace Voonne\TestVoonne\Assets;
 
 use Codeception\Test\Unit;
 use Mockery;
 use UnitTester;
+use Voonne\Voonne\Assets\Asset;
 
 
 class AssetTest extends Unit

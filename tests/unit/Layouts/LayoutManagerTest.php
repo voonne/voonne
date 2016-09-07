@@ -1,6 +1,6 @@
 <?php
 
-namespace Voonne\Voonne\Layouts;
+namespace Voonne\TestVoonne\Layouts;
 
 use Codeception\Test\Unit;
 use Mockery;
@@ -11,6 +11,7 @@ use Voonne\Voonne\Layouts\Layout1\ILayout1Factory;
 use Voonne\Voonne\Layouts\Layout1\Layout1;
 use Voonne\Voonne\Layouts\Layout21\ILayout21Factory;
 use Voonne\Voonne\Layouts\Layout21\Layout21;
+use Voonne\Voonne\Layouts\LayoutManager;
 use Voonne\Voonne\NotRegisteredException;
 
 

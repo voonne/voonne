@@ -1,6 +1,6 @@
 <?php
 
-namespace Voonne\Voonne\Layouts;
+namespace Voonne\TestVoonne\Layouts;
 
 use Codeception\Test\Unit;
 use Mockery;
@@ -9,6 +9,7 @@ use UnitTester;
 use Voonne\UsersModule\Panels\PanelManager;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\InvalidStateException;
+use Voonne\Voonne\Layouts\Layout;
 use Voonne\Voonne\Panels\Renderers\RendererManager;
 
 

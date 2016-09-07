@@ -1,6 +1,6 @@
 <?php
 
-namespace Voonne\Voonne\Panels\Renderers;
+namespace Voonne\TestVoonne\Panels\Renderers;
 
 use Codeception\Test\Unit;
 use Mockery;
@@ -11,6 +11,7 @@ use Voonne\Voonne\NotRegisteredException;
 use Voonne\Voonne\Panels\BasicPanel;
 use Voonne\Voonne\Panels\Renderers\BasicPanelRenderer\BasicPanelRendererFactory;
 use Voonne\Voonne\Panels\Renderers\BlankPanelRenderer\BlankPanelRendererFactory;
+use Voonne\Voonne\Panels\Renderers\RendererManager;
 
 
 class RendererManagerTest extends Unit

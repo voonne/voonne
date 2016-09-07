@@ -1,10 +1,13 @@
 <?php
 
-namespace Voonne\Voonne\Model\Entities;
+namespace Voonne\TestVoonne\Model\Entities;
 
 use Codeception\Test\Unit;
 use Mockery;
 use UnitTester;
+use Voonne\Voonne\Model\Entities\Domain;
+use Voonne\Voonne\Model\Entities\DomainLanguage;
+use Voonne\Voonne\Model\Entities\Language;
 
 
 class DomainLanguageTest extends Unit

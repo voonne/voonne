@@ -1,10 +1,11 @@
 <?php
 
-namespace Voonne\Voonne\Model\Entities;
+namespace Voonne\TestVoonne\Model\Entities;
 
 use Codeception\Test\Unit;
 use Mockery;
 use UnitTester;
+use Voonne\Voonne\Model\Entities\Language;
 
 
 class LanguageTest extends Unit

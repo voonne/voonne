@@ -1,6 +1,6 @@
 <?php
 
-namespace Model\Facades;
+namespace Voonne\TestVoonne\Model\Facades;
 
 use Codeception\Test\Unit;
 use Doctrine\ORM\EntityManagerInterface;

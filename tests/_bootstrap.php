@@ -1,7 +1,7 @@
 <?php
-// This is global bootstrap for autoloading
 
 (new \Nette\Loaders\RobotLoader())
+	->setCacheStorage(new \Nette\Caching\Storages\FileStorage(__DIR__ . '/_output'))
 	->addDirectory(__DIR__ . '/../src')
 	->register();
 

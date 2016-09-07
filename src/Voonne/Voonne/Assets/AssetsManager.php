@@ -63,7 +63,7 @@ class AssetsManager
 	public function addScript($name, $path)
 	{
 		if (file_exists($path)) {
-			$this->scripts[$name][] = realpath($path);
+			$this->scripts[$name][] = $path;
 		} else {
 			throw new FileNotFoundException("File '$path' doesn't exist.");
 		}
@@ -79,7 +79,7 @@ class AssetsManager
 	public function addStyle($name, $path)
 	{
 		if (file_exists($path)) {
-			$this->styles[$name][] = realpath($path);
+			$this->styles[$name][] = $path;
 		} else {
 			throw new FileNotFoundException("File '$path' doesn't exist.");
 		}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Voonne\Voonne\Routers;
+namespace Voonne\TestVoonne\Routers;
 
 use Codeception\Test\Unit;
 use Mockery;
@@ -9,6 +9,7 @@ use Nette\Application\Request;
 use Nette\Http\Url;
 use Nette\Http\UrlScript;
 use UnitTester;
+use Voonne\Voonne\Routers\ContentRoute;
 
 
 class ContentRouteTest extends Unit

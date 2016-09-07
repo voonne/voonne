@@ -1,11 +1,12 @@
 <?php
 
-namespace Voonne\Voonne\Model\Entities;
+namespace Voonne\TestVoonne\Model\Entities;
 
 use Codeception\Test\Unit;
 use Doctrine\Common\Collections\ArrayCollection;
 use Mockery;
 use UnitTester;
+use Voonne\Voonne\Model\Entities\Domain;
 
 
 class DomainTest extends Unit

@@ -1,14 +1,15 @@
 <?php
 
-namespace Voonne\Voonne\Security;
+namespace Voonne\TestVoonne\Security;
 
 use Codeception\Test\Unit;
 use Mockery;
 use Mockery\MockInterface;
 use UnitTester;
+use Voonne\Model\IOException;
 use Voonne\Voonne\AuthenticationException;
-use Voonne\Voonne\IOException;
 use Voonne\Voonne\Model\Repositories\UserRepository;
+use Voonne\Voonne\Security\Authenticator;
 
 
 class AuthenticatorTest extends Unit

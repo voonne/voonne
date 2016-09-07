@@ -1,8 +1,7 @@
-composer.lock
 vendor
+composer.lock
 node_modules
 bower_components
 
+tests/_support/_generated
 tests/_output/*
-tests/_support/_generated/*
-codeception.yml

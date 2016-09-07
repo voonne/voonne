@@ -1,12 +1,13 @@
 <?php
 
-namespace Voonne\Voonne\Assets;
+namespace Voonne\TestVoonne\Assets;
 
 use Codeception\Test\Unit;
 use Mockery;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use UnitTester;
+use Voonne\Voonne\Assets\AssetsManager;
 use Voonne\Voonne\FileNotFoundException;
 
 
@@ -130,10 +131,4 @@ class AssetsManagerTest extends Unit
 		$this->assetsManager->addScript('admin', $this->root->url() . '/doNotExist.css');
 	}
 
-}
-
-
-function realpath($path)
-{
-	return $path;
 }

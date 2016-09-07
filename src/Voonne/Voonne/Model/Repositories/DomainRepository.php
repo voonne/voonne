@@ -10,8 +10,10 @@
 
 namespace Voonne\Voonne\Model\Repositories;
 
+use Voonne\Model\EntityRepository;
 
-class DomainRepository extends Repository
+
+class DomainRepository extends EntityRepository
 {
 
 }

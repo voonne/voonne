@@ -13,8 +13,8 @@ namespace Voonne\Voonne\Security;
 use Nette\Security\Identity;
 use Nette\Security\Passwords;
 use Nette\SmartObject;
+use Voonne\Model\IOException;
 use Voonne\Voonne\AuthenticationException;
-use Voonne\Voonne\IOException;
 use Voonne\Voonne\Model\Repositories\UserRepository;
 
 

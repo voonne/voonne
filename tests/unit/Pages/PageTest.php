@@ -1,14 +1,11 @@
 <?php
 
-namespace Voonne\Voonne\Pages;
+namespace Voonne\TestVoonne\Pages;
 
 use Codeception\Test\Unit;
 use Mockery;
 use Mockery\MockInterface;
-use Nette\Utils\Strings;
-use ReflectionClass;
 use UnitTester;
-use Voonne\UsersModule\Panels\PanelManager;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\DuplicateEntryException;
 use Voonne\Voonne\InvalidArgumentException;
@@ -16,6 +13,7 @@ use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Layouts\Layout;
 use Voonne\Voonne\Layouts\Layout1\Layout1;
 use Voonne\Voonne\Layouts\LayoutManager;
+use Voonne\Voonne\Pages\Page;
 use Voonne\Voonne\Panels\Panel;
 use Voonne\Voonne\Panels\Renderers\RendererManager;
 

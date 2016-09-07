@@ -1,11 +1,13 @@
 <?php
 
-namespace Voonne\Voonne\Pages;
+namespace Voonne\TestVoonne\Pages;
 
 use Codeception\Test\Unit;
 use Mockery;
 use UnitTester;
 use Voonne\Voonne\DuplicateEntryException;
+use Voonne\Voonne\Pages\Group;
+use Voonne\Voonne\Pages\Page;
 
 
 class GroupTest extends Unit

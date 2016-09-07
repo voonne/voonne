@@ -10,10 +10,11 @@
 
 namespace Voonne\Voonne\Model\Repositories;
 
+use Voonne\Model\EntityRepository;
 use Voonne\Voonne\Model\Entities\User;
 
 
-class UserRepository extends Repository
+class UserRepository extends EntityRepository
 {
 
 	/**
