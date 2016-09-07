@@ -15,10 +15,10 @@ use Kdyby\Autowired\AutowireProperties;
 use Kdyby\Translation\Translator;
 use Nette\Application\UI\Presenter;
 use Nette\ComponentModel\IComponent;
+use Voonne\Security\Authenticator;
 use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\Controls\FlashMessage\IFlashMessageControlFactory;
 use Voonne\Voonne\Controls\FormError\IFormErrorControlFactory;
-use Voonne\Voonne\Security\Authenticator;
 
 
 abstract class BasePresenter extends Presenter

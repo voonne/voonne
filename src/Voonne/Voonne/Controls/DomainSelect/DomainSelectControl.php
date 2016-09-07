@@ -14,10 +14,10 @@ use Nette\Caching\Cache;
 use Nette\Caching\IStorage;
 use Voonne\Messages\FlashMessage;
 use Voonne\Model\IOException;
+use Voonne\Security\User;
 use Voonne\Voonne\Controls\Control;
 use Voonne\Voonne\Model\Repositories\DomainLanguageRepository;
 use Voonne\Voonne\Model\Repositories\DomainRepository;
-use Voonne\Voonne\Security\User;
 
 
 class DomainSelectControl extends Control

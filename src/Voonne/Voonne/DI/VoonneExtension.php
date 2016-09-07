@@ -22,6 +22,8 @@ use Nette\Bridges\ApplicationLatte\TemplateFactory;
 use Nette\DI\CompilerExtension;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
+use Voonne\Security\Authenticator;
+use Voonne\Security\User;
 use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
 use Voonne\Voonne\Assets\AssetsManager;
 use Voonne\Voonne\Console\InstallCommand;
@@ -46,8 +48,6 @@ use Voonne\Voonne\Panels\Renderers\BlankPanelRenderer\BlankPanelRendererFactory;
 use Voonne\Voonne\Panels\Renderers\FormPanelRenderer\FormPanelRendererFactory;
 use Voonne\Voonne\Panels\Renderers\RendererManager;
 use Voonne\Voonne\Routers\RouterFactory;
-use Voonne\Voonne\Security\Authenticator;
-use Voonne\Voonne\Security\User;
 
 
 class VoonneExtension extends CompilerExtension

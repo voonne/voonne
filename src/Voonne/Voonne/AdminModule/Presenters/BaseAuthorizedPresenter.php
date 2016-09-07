@@ -11,9 +11,9 @@
 namespace Voonne\Voonne\AdminModule\Presenters;
 
 use Voonne\Messages\FlashMessage;
+use Voonne\Security\User;
 use Voonne\Voonne\Controls\DomainSelect\IDomainSelectControlFactory;
 use Voonne\Voonne\Controls\Menu\IMenuControlFactory;
-use Voonne\Voonne\Security\User;
 
 
 abstract class BaseAuthorizedPresenter extends BasePresenter

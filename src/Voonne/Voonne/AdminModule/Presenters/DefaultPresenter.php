@@ -11,8 +11,8 @@
 namespace Voonne\Voonne\AdminModule\Presenters;
 
 use Voonne\Messages\FlashMessage;
+use Voonne\Security\AuthenticationException;
 use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
-use Voonne\Voonne\AuthenticationException;
 use Voonne\Voonne\Forms\Form;
 
 
@@ -53,7 +53,7 @@ class DefaultPresenter extends BasePresenter
 			$this->flashMessage('voonne-common.authentication.signedIn', FlashMessage::INFO);
 			$this->redirect('Dashboard:default');
 		} catch(AuthenticationException $e) {
-			$form->addError($e->getMessage());
+			$form->addError('voonne-common.authentication.wrongEmailOrPassword');
 		}
 	}
 
