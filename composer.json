@@ -36,8 +36,11 @@
 		"voonne/assets": "@dev",
 		"voonne/controls": "@dev",
 		"voonne/forms": "@dev",
+		"voonne/layouts": "@dev",
 		"voonne/messages": "@dev",
 		"voonne/model": "@dev",
+		"voonne/pages": "@dev",
+		"voonne/panels": "@dev",
 		"voonne/security": "@dev"
 	},
 	"require-dev": {

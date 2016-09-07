@@ -23,6 +23,15 @@ use Nette\DI\CompilerExtension;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use Voonne\Assets\AssetsManager;
+use Voonne\Layouts\Layout1\ILayout1Factory;
+use Voonne\Layouts\Layout21\ILayout21Factory;
+use Voonne\Layouts\LayoutManager;
+use Voonne\Pages\PageManager;
+use Voonne\Panels\Panel;
+use Voonne\Panels\Renderers\BasicPanelRenderer\BasicPanelRendererFactory;
+use Voonne\Panels\Renderers\BlankPanelRenderer\BlankPanelRendererFactory;
+use Voonne\Panels\Renderers\FormPanelRenderer\FormPanelRendererFactory;
+use Voonne\Panels\Renderers\RendererManager;
 use Voonne\Security\Authenticator;
 use Voonne\Security\User;
 use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
@@ -34,19 +43,11 @@ use Voonne\Voonne\Controls\FlashMessage\IFlashMessageControlFactory;
 use Voonne\Voonne\Controls\FormError\IFormErrorControlFactory;
 use Voonne\Voonne\Controls\Menu\IMenuControlFactory;
 use Voonne\Voonne\InvalidStateException;
-use Voonne\Voonne\Layouts\Layout1\ILayout1Factory;
-use Voonne\Voonne\Layouts\LayoutManager;
 use Voonne\Voonne\Model\Facades\UserFacade;
 use Voonne\Voonne\Model\Repositories\DomainLanguageRepository;
 use Voonne\Voonne\Model\Repositories\DomainRepository;
 use Voonne\Voonne\Model\Repositories\LanguageRepository;
 use Voonne\Voonne\Model\Repositories\UserRepository;
-use Voonne\Voonne\Pages\PageManager;
-use Voonne\Voonne\Panels\Panel;
-use Voonne\Voonne\Panels\Renderers\BasicPanelRenderer\BasicPanelRendererFactory;
-use Voonne\Voonne\Panels\Renderers\BlankPanelRenderer\BlankPanelRendererFactory;
-use Voonne\Voonne\Panels\Renderers\FormPanelRenderer\FormPanelRendererFactory;
-use Voonne\Voonne\Panels\Renderers\RendererManager;
 use Voonne\Voonne\Routers\RouterFactory;
 
 
@@ -112,28 +113,32 @@ class VoonneExtension extends CompilerExtension
 		/* layouts */
 
 		$builder->addDefinition('voonne.layoutManager')
-				->setClass(LayoutManager::class);
+			->setClass(LayoutManager::class);
 
 		$builder->addDefinition('voonne.layout1Factory')
-				->setImplement(ILayout1Factory::class)
-				->addTag(LayoutManager::TAG_LAYOUT);
+			->setImplement(ILayout1Factory::class)
+			->addTag(LayoutManager::TAG_LAYOUT);
+
+		$builder->addDefinition('voonne.layout21Factory')
+			->setImplement(ILayout21Factory::class)
+			->addTag(LayoutManager::TAG_LAYOUT);
 
 		/* panels */
 
 		$builder->addDefinition('voonne.rendererManager')
-				->setClass(RendererManager::class);
+			->setClass(RendererManager::class);
 
 		$builder->addDefinition('voonne.basicPanelRendererFactory')
-				->setClass(BasicPanelRendererFactory::class)
-				->addTag(RendererManager::TAG_RENDERER);
+			->setClass(BasicPanelRendererFactory::class)
+			->addTag(RendererManager::TAG_RENDERER);
 
 		$builder->addDefinition('voonne.blankPanelRendererFactory')
-				->setClass(BlankPanelRendererFactory::class)
-				->addTag(RendererManager::TAG_RENDERER);
+			->setClass(BlankPanelRendererFactory::class)
+			->addTag(RendererManager::TAG_RENDERER);
 
 		$builder->addDefinition('voonne.formPanelRendererFactory')
-				->setClass(FormPanelRendererFactory::class)
-				->addTag(RendererManager::TAG_RENDERER);
+			->setClass(FormPanelRendererFactory::class)
+			->addTag(RendererManager::TAG_RENDERER);
 
 		/* router */
 

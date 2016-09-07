@@ -11,12 +11,12 @@
 namespace Voonne\Voonne\AdminModule\Presenters;
 
 use Nette\Application\BadRequestException;
+use Voonne\Layouts\LayoutManager;
+use Voonne\Pages\Page;
+use Voonne\Pages\PageManager;
+use Voonne\Panels\Renderers\RendererManager;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Controls\FormError\IFormErrorControlFactory;
-use Voonne\Voonne\Layouts\LayoutManager;
-use Voonne\Voonne\Pages\Page;
-use Voonne\Voonne\Pages\PageManager;
-use Voonne\Voonne\Panels\Renderers\RendererManager;
 
 
 class ContentPresenter extends BaseAuthorizedPresenter

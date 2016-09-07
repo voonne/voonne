@@ -11,7 +11,7 @@
 namespace Voonne\Voonne\Controls\Menu;
 
 use Voonne\Controls\Control;
-use Voonne\Voonne\Pages\PageManager;
+use Voonne\Pages\PageManager;
 
 
 class MenuControl extends Control
