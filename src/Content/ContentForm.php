@@ -11,7 +11,7 @@
 namespace Voonne\Voonne\Content;
 
 use Nette\Localization\ITranslator;
-use Voonne\Voonne\Forms\Form;
+use Voonne\Forms\Form;
 
 
 class ContentForm extends Form
@@ -21,6 +21,7 @@ class ContentForm extends Form
 	{
 		parent::__construct();
 
+		$this->getElementPrototype()->setAttribute('novalidate', 'novalidate');
 		$this->setTranslator($translator);
 	}
 

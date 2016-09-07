@@ -1,6 +1,6 @@
 <?php
 
-namespace Voonne\UsersModule\Panels;
+namespace Voonne\Voonne\Panels;
 
 use Nette\SmartObject;
 use Nette\Utils\Strings;
@@ -8,8 +8,6 @@ use ReflectionClass;
 use Voonne\Voonne\DuplicateEntryException;
 use Voonne\Voonne\InvalidArgumentException;
 use Voonne\Voonne\Layouts\Layout;
-use Voonne\Voonne\Panels\Panel;
-
 
 class PanelManager
 {

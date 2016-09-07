@@ -12,9 +12,9 @@ namespace Voonne\Voonne\Layouts;
 
 use Nette\ComponentModel\IComponent;
 use Voonne\Controls\Control;
-use Voonne\UsersModule\Panels\PanelManager;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\InvalidStateException;
+use Voonne\Voonne\Panels\PanelManager;
 use Voonne\Voonne\Panels\Renderers\PanelRenderer;
 use Voonne\Voonne\Panels\Renderers\RendererManager;
 

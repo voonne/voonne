@@ -6,24 +6,11 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  *}
 
-{*control formError, $formScope->getOwnErrors()*}
-
-{*foreach $formScope->getComponents() as $component}
-	{continueIf $component instanceof Nette\Forms\Controls\SubmitButton || !($component instanceof Nette\Forms\Controls\BaseControl)}
-	{var $name = $control->getFullName($component)}
-	<div class="form-group">
-		{label $name, class => 'col-sm-2 control-label'}
-		<div class="col-sm-10">
-			{input $name, class => 'form-control'}
-		</div>
-	</div>
-{/foreach*}
-
 {include #container, component => $formScope}
 
 <div class="panel-footer">
 	{foreach $formScope->getComponents() as $component}
-		{continueIf !($component instanceof Voonne\Voonne\Forms\Controls\SubmitButton)}
+		{continueIf !($component instanceof Voonne\Forms\Controls\SubmitButton)}
 		{var $name = $control->getFullName($component)}
 
 		{input $name, class => 'btn btn-primary pull-right'}
@@ -32,16 +19,16 @@
 
 {define container}
 	{foreach $component->getComponents() as $component}
-		{continueIf $component instanceof Voonne\Voonne\Forms\Controls\SubmitButton}
+		{continueIf $component instanceof Voonne\Forms\Controls\SubmitButton}
 
-		{if $component instanceof Voonne\Voonne\Forms\Container}
-			{if $component instanceof Voonne\Voonne\Forms\Container}
+		{if $component instanceof Voonne\Forms\Container}
+			{if $component instanceof Voonne\Forms\Container}
 				<h4 n:ifcontent>{$component->getLabel()|translate}</h4>
 				<hr>
 			{/if}
 
 			{include #container, component => $component}
-		{elseif $component instanceof Voonne\Voonne\Forms\Controls\TextInput || $component instanceof Voonne\Voonne\Forms\Controls\Password}
+		{elseif $component instanceof Voonne\Forms\Controls\TextInput || $component instanceof Voonne\Forms\Controls\Password}
 			{var $name = $control->getFullName($component)}
 
 			<div class="form-group{if $component->hasErrors()} has-error{/if}">
@@ -54,7 +41,7 @@
 					<span class="help-block" n:ifcontent>{$component->getDescription()|translate}</span>
 				</div>
 			</div>
-		{elseif $component instanceof Voonne\Voonne\Forms\Controls\TextArea}
+		{elseif $component instanceof Voonne\Forms\Controls\TextArea}
 			{var $name = $control->getFullName($component)}
 
 			<div class="form-group{if $component->hasErrors()} has-error{/if}">
@@ -65,7 +52,7 @@
 					<span class="help-block" n:ifcontent>{$component->getDescription()|translate}</span>
 				</div>
 			</div>
-		{elseif $component instanceof Voonne\Voonne\Forms\Controls\UploadControl}
+		{elseif $component instanceof Voonne\Forms\Controls\UploadControl}
 			{var $name = $control->getFullName($component)}
 
 			<div class="form-group{if $component->hasErrors()} has-error{/if}">
@@ -76,7 +63,7 @@
 					<span class="help-block" n:ifcontent>{$component->getDescription()|translate}</span>
 				</div>
 			</div>
-		{elseif $component instanceof Voonne\Voonne\Forms\Controls\Checkbox}
+		{elseif $component instanceof Voonne\Forms\Controls\Checkbox}
 			{var $name = $control->getFullName($component)}
 
 			<div class="form-group{if $component->hasErrors()} has-error{/if}">
@@ -88,7 +75,7 @@
 					<span class="help-block" n:ifcontent>{$component->getDescription()|translate}</span>
 				</div>
 			</div>
-		{elseif $component instanceof Voonne\Voonne\Forms\Controls\RadioList}
+		{elseif $component instanceof Voonne\Forms\Controls\RadioList}
 			{var $name = $control->getFullName($component)}
 
 			<div class="form-group{if $component->hasErrors()} has-error{/if}">
@@ -101,7 +88,7 @@
 					</div>
 				</div>
 			</div>
-		{elseif $component instanceof Voonne\Voonne\Forms\Controls\CheckboxList}
+		{elseif $component instanceof Voonne\Forms\Controls\CheckboxList}
 			{var $name = $control->getFullName($component)}
 
 			<div class="form-group{if $component->hasErrors()} has-error{/if}">
@@ -114,7 +101,7 @@
 					</div>
 				</div>
 			</div>
-		{elseif $component instanceof Voonne\Voonne\Forms\Controls\SelectBox || $component instanceof Voonne\Voonne\Forms\Controls\MultiSelectBox}
+		{elseif $component instanceof Voonne\Forms\Controls\SelectBox || $component instanceof Voonne\Forms\Controls\MultiSelectBox}
 			{var $name = $control->getFullName($component)}
 
 			<div class="form-group{if $component->hasErrors()} has-error{/if}">
@@ -125,7 +112,7 @@
 					<span class="help-block" n:ifcontent>{$component->getDescription()|translate}</span>
 				</div>
 			</div>
-		{elseif $component instanceof Voonne\Voonne\Forms\Controls\Button}
+		{elseif $component instanceof Voonne\Forms\Controls\Button}
 			{var $name = $control->getFullName($component)}
 
 			<div class="form-group">
@@ -133,7 +120,7 @@
 					{input $name, class => 'btn btn-default'}
 				</div>
 			</div>
-		{elseif $component instanceof Voonne\Voonne\Forms\Controls\ImageButton}
+		{elseif $component instanceof Voonne\Forms\Controls\ImageButton}
 			{var $name = $control->getFullName($component)}
 
 			<div class="form-group">
@@ -143,8 +130,6 @@
 			</div>
 		{else}
 			{var $name = $control->getFullName($component)}
-
-			{dump $component}
 
 			<div class="form-group{if $component->hasErrors()} has-error{/if}">
 				{label $name, class => 'col-sm-3 control-label'/}

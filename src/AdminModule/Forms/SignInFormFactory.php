@@ -10,7 +10,7 @@
 
 namespace Voonne\Voonne\AdminModule\Forms;
 
-use Voonne\Voonne\Forms\FormFactory;
+use Voonne\Forms\FormFactory;
 
 
 class SignInFormFactory extends FormFactory

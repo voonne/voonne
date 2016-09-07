@@ -35,6 +35,7 @@
 		"tracy/tracy": "~2.4",
 		"voonne/assets": "@dev",
 		"voonne/controls": "@dev",
+		"voonne/forms": "@dev",
 		"voonne/messages": "@dev",
 		"voonne/model": "@dev",
 		"voonne/security": "@dev"

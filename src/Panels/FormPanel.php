@@ -12,8 +12,8 @@ namespace Voonne\Voonne\Panels;
 
 use Nette\Forms\Container;
 use Nette\Forms\Controls\BaseControl;
+use Voonne\Forms\Form;
 use Voonne\Voonne\Content\ContentForm;
-use Voonne\Voonne\Forms\Form;
 use Voonne\Voonne\InvalidArgumentException;
 use Voonne\Voonne\InvalidStateException;
 

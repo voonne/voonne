@@ -11,7 +11,6 @@
 namespace Voonne\Voonne\Pages;
 
 use Voonne\Controls\Control;
-use Voonne\UsersModule\Panels\PanelManager;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\DuplicateEntryException;
 use Voonne\Voonne\InvalidArgumentException;
@@ -20,6 +19,7 @@ use Voonne\Voonne\Layouts\Layout;
 use Voonne\Voonne\Layouts\Layout1\Layout1;
 use Voonne\Voonne\Layouts\LayoutManager;
 use Voonne\Voonne\Panels\Panel;
+use Voonne\Voonne\Panels\PanelManager;
 use Voonne\Voonne\Panels\Renderers\RendererManager;
 
 

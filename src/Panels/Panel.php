@@ -11,7 +11,7 @@
 namespace Voonne\Voonne\Panels;
 
 use Voonne\Controls\Control;
-use Voonne\Voonne\Forms\Form;
+use Voonne\Forms\Form;
 
 
 abstract class Panel extends Control
