@@ -11,6 +11,12 @@
 namespace Voonne\Voonne;
 
 
+class AssertionException extends \Exception
+{
+
+}
+
+
 class InvalidStateException extends \RuntimeException
 {
 
@@ -21,7 +27,6 @@ class DuplicateEntryException extends \RuntimeException
 {
 
 }
-
 
 
 class InvalidArgumentException extends \InvalidArgumentException

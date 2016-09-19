@@ -32,9 +32,11 @@ class RouterFactory
 
 		$frontRouter[] = new Route('admin/dashboard/', 'Dashboard:default');
 
-		$frontRouter[] = $assetsRouter = new RouteList('Assets');
+		$frontRouter[] = $apiRouter = new RouteList('Api');
 
-		$assetsRouter[] = new Route('admin/assets/<name .+>', 'Default:default');
+		$apiRouter[] = new Route('admin/api/v1/assets/<name .+>', 'Assets:default');
+
+		$apiRouter[] = new Route('admin/api/v1/files/<directoryName>/<fileName .+>', 'Files:default');
 
 		$frontRouter[] = new ContentRoute($request);
 

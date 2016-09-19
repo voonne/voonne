@@ -20,6 +20,7 @@ use Nette\Application\Routers\RouteList;
 use Nette\Bridges\ApplicationLatte\ILatteFactory;
 use Nette\Bridges\ApplicationLatte\TemplateFactory;
 use Nette\DI\CompilerExtension;
+use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use Voonne\Assets\AssetsManager;
@@ -34,7 +35,10 @@ use Voonne\Panels\Renderers\FormPanelRenderer\FormPanelRendererFactory;
 use Voonne\Panels\Renderers\RendererManager;
 use Voonne\Security\Authenticator;
 use Voonne\Security\User;
+use Voonne\Storage\Adapters\FileSystemAdapter;
+use Voonne\Storage\StorageManager;
 use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
+use Voonne\Voonne\AssertionException;
 use Voonne\Voonne\Console\InstallCommand;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\Latte\Engine;
@@ -54,115 +58,130 @@ use Voonne\Voonne\Routers\RouterFactory;
 class VoonneExtension extends CompilerExtension
 {
 
+
+	public $defaults = [
+		'storageProvider' => null
+	];
+
 	public function loadConfiguration()
 	{
 		$builder = $this->getContainerBuilder();
+		$config = $this->getConfig($this->defaults);
 
 		/* facades */
 
-		$builder->addDefinition('voonne.userFacade')
+		$builder->addDefinition($this->name . '.userFacade')
 			->setClass(UserFacade::class);
 
 		/* repositories */
 
-		$builder->addDefinition('voonne.domainLanguageRepository')
+		$builder->addDefinition($this->name . '.domainLanguageRepository')
 			->setClass(DomainLanguageRepository::class);
 
-		$builder->addDefinition('voonne.domainRepository')
+		$builder->addDefinition($this->name . '.domainRepository')
 			->setClass(DomainRepository::class);
 
-		$builder->addDefinition('voonne.languageRepository')
+		$builder->addDefinition($this->name . '.languageRepository')
 			->setClass(LanguageRepository::class);
 
-		$builder->addDefinition('voonne.userRepository')
+		$builder->addDefinition($this->name . '.userRepository')
 			->setClass(UserRepository::class);
 
 		/* forms */
 
-		$builder->addDefinition('voonne.signInFormFactory')
+		$builder->addDefinition($this->name . '.signInFormFactory')
 			->setClass(SignInFormFactory::class);
 
 		/* controls */
 
-		$builder->addDefinition('voonne.domainSelectControlFactory')
+		$builder->addDefinition($this->name . '.domainSelectControlFactory')
 			->setImplement(IDomainSelectControlFactory::class);
 
-		$builder->addDefinition('voonne.flashMessageControlFactory')
+		$builder->addDefinition($this->name . '.flashMessageControlFactory')
 			->setImplement(IFlashMessageControlFactory::class);
 
-		$builder->addDefinition('voonne.formErrorControlFactory')
+		$builder->addDefinition($this->name . '.formErrorControlFactory')
 			->setImplement(IFormErrorControlFactory::class);
 
-		$builder->addDefinition('voonne.menuControlFactory')
+		$builder->addDefinition($this->name . '.menuControlFactory')
 			->setImplement(IMenuControlFactory::class);
 
 		/* content */
 
-		$builder->addDefinition('voonne.contentForm')
+		$builder->addDefinition($this->name . '.contentForm')
 			->setClass(ContentForm::class);
 
-		$builder->addDefinition('voonne.templateFactory')
-			->setClass(TemplateFactory::class, ['@voonne.latteFactory'])
+		$builder->addDefinition($this->name . '.templateFactory')
+			->setClass(TemplateFactory::class, ['@' . $this->name . '.latteFactory'])
 			->setAutowired(false);
 
 		/* pages */
 
-		$builder->addDefinition('voonne.pageManager')
+		$builder->addDefinition($this->name . '.pageManager')
 			->setClass(PageManager::class);
 
 		/* layouts */
 
-		$builder->addDefinition('voonne.layoutManager')
+		$builder->addDefinition($this->name . '.layoutManager')
 			->setClass(LayoutManager::class);
 
-		$builder->addDefinition('voonne.layout1Factory')
+		$builder->addDefinition($this->name . '.layout1Factory')
 			->setImplement(ILayout1Factory::class)
 			->addTag(LayoutManager::TAG_LAYOUT);
 
-		$builder->addDefinition('voonne.layout21Factory')
+		$builder->addDefinition($this->name . '.layout21Factory')
 			->setImplement(ILayout21Factory::class)
 			->addTag(LayoutManager::TAG_LAYOUT);
 
 		/* panels */
 
-		$builder->addDefinition('voonne.rendererManager')
+		$builder->addDefinition($this->name . '.rendererManager')
 			->setClass(RendererManager::class);
 
-		$builder->addDefinition('voonne.basicPanelRendererFactory')
+		$builder->addDefinition($this->name . '.basicPanelRendererFactory')
 			->setClass(BasicPanelRendererFactory::class)
 			->addTag(RendererManager::TAG_RENDERER);
 
-		$builder->addDefinition('voonne.blankPanelRendererFactory')
+		$builder->addDefinition($this->name . '.blankPanelRendererFactory')
 			->setClass(BlankPanelRendererFactory::class)
 			->addTag(RendererManager::TAG_RENDERER);
 
-		$builder->addDefinition('voonne.formPanelRendererFactory')
+		$builder->addDefinition($this->name . '.formPanelRendererFactory')
 			->setClass(FormPanelRendererFactory::class)
 			->addTag(RendererManager::TAG_RENDERER);
 
 		/* router */
 
-		$builder->addDefinition('voonne.router')
+		$builder->addDefinition($this->name . '.router')
 			->setFactory(RouterFactory::class . '::createRouter')
 			->setAutowired(false);
 
 		/* commands */
 
-		$builder->addDefinition('voonne.cli.install')
-				->setClass(InstallCommand::class)
-				->addTag(ConsoleExtension::TAG_COMMAND);
+		$builder->addDefinition($this->name . '.cli.install')
+			->setClass(InstallCommand::class)
+			->addTag(ConsoleExtension::TAG_COMMAND);
+
+		/* storage */
+
+		if (empty($config['storageProvider'])) {
+			throw new AssertionException("Please configure 'storageProvider' for the Voonne extensions using the section '{$this->name}:' in your config file.");
+		}
+
+		$builder->addDefinition($this->name . '.storageManager')
+			->setClass(StorageManager::class, [$config['storageProvider']]);
 
 		/* authentication and authorization */
 
-		$builder->addDefinition('voonne.authenticator')
+		$builder->addDefinition($this->name . '.authenticator')
 			->setClass(Authenticator::class);
 
-		$builder->addDefinition('voonne.user')
+		$builder->addDefinition($this->name . '.user')
 			->setClass(User::class);
 
 		/* assets */
 
-		$builder->addDefinition('voonne.assetsManager')
+		$builder->addDefinition($this->name . '.assetsManager')
 			->setClass(AssetsManager::class)
 			->addSetup('addScript', ['admin', __DIR__ . '/../../dist/scripts/admin.js'])
 			->addSetup('addScript', ['sign-in', __DIR__ . '/../../dist/scripts/sign-in.js'])
@@ -192,15 +211,15 @@ class VoonneExtension extends CompilerExtension
 
 		// inspired by: https://github.com/kdyby/console/blob/master/src/Kdyby/Console/DI/ConsoleExtension.php
 		$routerServiceName = $builder->getByType(IRouter::class) ? : 'router';
-		$builder->addDefinition('voonne.originalRouter', $builder->getDefinition($routerServiceName))
+		$builder->addDefinition($this->name . '.originalRouter', $builder->getDefinition($routerServiceName))
 			->setAutowired(false);
 
 		$builder->removeDefinition($routerServiceName);
 
 		$builder->addDefinition($routerServiceName)
 			->setClass(RouteList::class)
-			->addSetup('offsetSet', [NULL, '@voonne.router'])
-			->addSetup('offsetSet', [NULL, '@voonne.originalRouter']);
+			->addSetup('offsetSet', [NULL, '@' . $this->name . '.router'])
+			->addSetup('offsetSet', [NULL, '@' . $this->name . '.originalRouter']);
 
 		/* translator */
 
@@ -229,7 +248,7 @@ class VoonneExtension extends CompilerExtension
 		}
 
 		// inspired by: https://github.com/Kdyby/Doctrine/blob/master/src/Kdyby/Doctrine/DI/OrmExtension.php
-		$this->getContainerBuilder()->addDefinition('voonne.doctrine.annotations')
+		$this->getContainerBuilder()->addDefinition($this->name . '.doctrine.annotations')
 			->setClass('Doctrine\Common\Persistence\Mapping\Driver\MappingDriver')
 			->setFactory(AnnotationDriver::class, [
 				0 => [0 => __DIR__ . '/..'],
@@ -237,12 +256,12 @@ class VoonneExtension extends CompilerExtension
 			])
 			->setAutowired(false);
 
-		$metadataDriver->addSetup('addDriver', ['@voonne.doctrine.annotations', 'Voonne\Voonne']);
+		$metadataDriver->addSetup('addDriver', ['@' . $this->name . '.doctrine.annotations', 'Voonne\Voonne']);
 
 		/* content */
 
-		$latteFactoryDefinition = $builder->addDefinition('voonne.latteFactory')
-			->setClass(Engine::class, ['@voonne.contentForm'])
+		$latteFactoryDefinition = $builder->addDefinition('' . $this->name . '.latteFactory')
+			->setClass(Engine::class, ['@' . $this->name . '.contentForm'])
 			->setImplement(ILatteFactory::class)
 			->setAutowired(false);
 
@@ -252,7 +271,7 @@ class VoonneExtension extends CompilerExtension
 
 		foreach ($builder->getDefinitions() as $definition) {
 			if(is_subclass_of($definition->getClass(), Panel::class)) {
-				$definition->addSetup('setTemplateFactory', ['@voonne.templateFactory']);
+				$definition->addSetup('setTemplateFactory', ['@' . $this->name . '.templateFactory']);
 			}
 		}
 	}

@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
-namespace Voonne\Voonne\AdminModule\AssetsModule\Presenters;
+namespace Voonne\Voonne\AdminModule\ApiModule\Presenters;
 
 use Nette\Application\Responses\TextResponse;
 use Nette\Http\Response;
@@ -18,7 +18,7 @@ use Nette\Application\UI\Presenter;
 use Voonne\Assets\FileNotFoundException;
 
 
-class DefaultPresenter extends Presenter
+class AssetsPresenter extends Presenter
 {
 
 	/**
