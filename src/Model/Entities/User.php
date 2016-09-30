@@ -42,7 +42,7 @@ class User
 	 * @ORM\Column(type="datetime", nullable=false)
 	 * @var DateTime
 	 */
-	protected $createdAt;
+	private $createdAt;
 
 
 	public function __construct($email, $password)
@@ -86,6 +86,15 @@ class User
 	public function update($email)
 	{
 		$this->email = $email;
+	}
+
+
+	/**
+	 * @param string $password
+	 */
+	public function changePassword($password)
+	{
+		$this->password = Passwords::hash($password);
 	}
 
 }

@@ -1,0 +1,5 @@
+lostPassword:
+	title: 'Voonne Platform obnovení hesla'
+	p1: 'Vyžádali jste si nové heslo pro váš účet.'
+	p2: 'Pokud jste o obnovení hesla nežádali, tak tento email ignorujte.'
+	p3: 'Nové heslo nastavíte po kliknutí na tento odkaz:'

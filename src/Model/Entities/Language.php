@@ -29,19 +29,19 @@ class Language
 	 * @ORM\Column(type="string", length=100, nullable=false)
 	 * @var string
 	 */
-	protected $name;
+	private $name;
 
 	/**
 	 * @ORM\Column(type="string", length=2, unique=true, nullable=false)
 	 * @var string
 	 */
-	protected $isoCode;
+	private $isoCode;
 
 	/**
 	 * @ORM\OneToMany(targetEntity="DomainLanguage", mappedBy="language")
 	 * @var ArrayCollection
 	 */
-	protected $domainLanguages;
+	private $domainLanguages;
 
 
 	public function __construct($name, $isoCode)

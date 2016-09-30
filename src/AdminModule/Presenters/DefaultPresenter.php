@@ -11,13 +11,34 @@
 namespace Voonne\Voonne\AdminModule\Presenters;
 
 use Voonne\Messages\FlashMessage;
-use Voonne\Security\AuthenticationException;
+use Voonne\Model\IOException;
+use Voonne\Voonne\AdminModule\Forms\LostPasswordFormFactory;
+use Voonne\Voonne\AdminModule\Forms\NewPasswordFormFactory;
 use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
-use Voonne\Forms\Form;
+use Voonne\Voonne\Model\Entities\LostPassword;
+use Voonne\Voonne\Model\Repositories\LostPasswordRepository;
 
 
 class DefaultPresenter extends BasePresenter
 {
+
+	/**
+	 * @var LostPasswordRepository
+	 * @inject
+	 */
+	public $lostPasswordRepository;
+
+	/**
+	 * @var LostPassword
+	 */
+	private $lostPassword;
+
+	/**
+	 * @var string
+	 * @persistent
+	 */
+	public $code;
+
 
 	protected function startup()
 	{
@@ -29,32 +50,53 @@ class DefaultPresenter extends BasePresenter
 	}
 
 
+	public function actionNewPassword($code)
+	{
+		try {
+			$this->lostPassword = $this->lostPasswordRepository->findOneBy(['code' => $code]);
+		} catch (IOException $e) {
+			$this->flashMessage('voonne-signIn.newPassword.notFound', FlashMessage::ERROR);
+			$this->redirect('Default:default');
+		}
+	}
+
+
 	protected function createComponentSignInForm(SignInFormFactory $factory)
 	{
 		$form = $factory->create();
 
-		$form->onSuccess[] = [$this, 'signInSuccess'];
+		$factory->onSuccess[] = function() {
+			$this->flashMessage('voonne-common.authentication.signedIn', FlashMessage::INFO);
+			$this->redirect('Dashboard:default');
+		};
 
 		return $form;
 	}
 
 
-	public function signInSuccess(Form $form, $values)
+	protected function createComponentLostPasswordForm(LostPasswordFormFactory $factory)
 	{
-		try {
-			if ($values->stayLoggedIn) {
-				$this->getUser()->setExpiration('14 days', false);
-			} else {
-				$this->getUser()->setExpiration('20 minutes', true);
-			}
+		$form = $factory->create();
 
-			$this->authenticator->authenticate($values->email, $values->password);
+		$factory->onSuccess[] = function() {
+			$this->flashMessage('voonne-signIn.lostPassword.emailSend', FlashMessage::SUCCESS);
+			$this->redirect('this');
+		};
 
-			$this->flashMessage('voonne-common.authentication.signedIn', FlashMessage::INFO);
-			$this->redirect('Dashboard:default');
-		} catch(AuthenticationException $e) {
-			$form->addError('voonne-common.authentication.wrongEmailOrPassword');
-		}
+		return $form;
+	}
+
+
+	protected function createComponentNewPasswordForm(NewPasswordFormFactory $factory)
+	{
+		$form = $factory->create($this->lostPassword);
+
+		$factory->onSuccess[] = function() {
+			$this->flashMessage('voonne-signIn.newPassword.completed', FlashMessage::SUCCESS);
+			$this->redirect('Default:default', ['code' => null]);
+		};
+
+		return $form;
 	}
 
 }

@@ -1,5 +1,5 @@
-optional: "volitelné"
+optional: 'volitelné'
 
 rules:
-	required: "Prosím, vyplňte tuto položku."
-	email: "Prosím, vyplňte tuto položku ve formátu xx@xx.xx."
+	required: 'Prosím, vyplňte tuto položku.'
+	email: 'Prosím, vyplňte tuto položku ve formátu xx@xx.xx.'

@@ -1,7 +1,27 @@
 signIn:
-	title: "Sign in"
-	email: "Email"
-	password: "Password"
-	stayLoggedIn: "Stay logged in"
-	submit: "Sign in"
-	lostPassword: "Lost your password?"
+	title: 'Sign in'
+	email: 'Email'
+	emailFill: 'Please fill in your email.'
+	password: 'Password'
+	passwordFill: 'Please fill in your password.'
+	stayLoggedIn: 'Stay logged in'
+	submit: 'Sign in'
+	lostPassword: 'Lost your password?'
+
+lostPassword:
+	title: 'Lost password'
+	email: 'Email'
+	emailFill: 'Please fill in your email.'
+	submit: 'Get new password'
+	back: 'Back to sign in'
+	emailSend: 'Password reset link was sent to you by email.'
+	userNotFound: 'A user with this email was not found.'
+
+newPassword:
+	title: 'New password'
+	password: 'new password'
+	passwordFill: 'Please fill in your new password.'
+	passwordFormat: 'Please fill in the password at least 8 characters long, contains number, small and capital letter.'
+	submit: 'Set new password'
+	completed: 'The password was successfully set. You can now sign in.'
+	notFound: 'The code entered was not found. Probably they were already used.'

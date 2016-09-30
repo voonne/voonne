@@ -9,12 +9,12 @@ use Mockery;
 use Mockery\MockInterface;
 use UnitTester;
 use Voonne\Voonne\DuplicateEntryException;
-use Voonne\Voonne\Model\Entities\User;
-use Voonne\Voonne\Model\Facades\UserFacade;
-use Voonne\Voonne\Model\Repositories\UserRepository;
+use Voonne\Voonne\Model\Entities\LostPassword;
+use Voonne\Voonne\Model\Facades\LostPasswordFacade;
+use Voonne\Voonne\Model\Repositories\LostPasswordRepository;
 
 
-class UserFacadeTest extends Unit
+class LostPasswordFacadeTest extends Unit
 {
 
 	/**
@@ -30,52 +30,52 @@ class UserFacadeTest extends Unit
 	/**
 	 * @var MockInterface
 	 */
-	private $userRepository;
+	private $lostPasswordRepository;
 
 	/**
-	 * @var UserFacade
+	 * @var LostPasswordFacade
 	 */
-	private $userFacade;
+	private $lostPasswordFacade;
 
 
 	protected function _before()
 	{
 		$this->entityManager = Mockery::mock(EntityManagerInterface::class);
-		$this->userRepository = Mockery::mock(UserRepository::class);
+		$this->lostPasswordRepository = Mockery::mock(LostPasswordRepository::class);
 
-		$this->userFacade = new UserFacade($this->entityManager, $this->userRepository);
+		$this->lostPasswordFacade = new LostPasswordFacade($this->entityManager, $this->lostPasswordRepository);
 	}
 
 
 	protected function _after()
 	{
-		Mockery::close();
+		Mockery::mock();
 	}
 
 
 	public function testSave()
 	{
-		$user = Mockery::mock(User::class);
+		$lostPassword = Mockery::mock(LostPassword::class);
 		$unitOfWork = Mockery::mock(UnitOfWork::class);
 
-		$user->shouldReceive('getEmail')
+		$lostPassword->shouldReceive('getCode')
 			->once()
 			->withNoArgs()
-			->andReturn('new@example.com');
+			->andReturn('1234567890');
 
 		$unitOfWork->shouldReceive('getEntityState')
 			->once()
-			->with($user)
+			->with($lostPassword)
 			->andReturn(UnitOfWork::STATE_NEW);
 
-		$this->userRepository->shouldReceive('isEmailFree')
+		$this->lostPasswordRepository->shouldReceive('countBy')
 			->once()
-			->with($user, 'new@example.com')
-			->andReturn(true);
+			->with(['code' => '1234567890'])
+			->andReturn(0);
 
 		$this->entityManager->shouldReceive('persist')
 			->once()
-			->with($user);
+			->with($lostPassword);
 
 		$this->entityManager->shouldReceive('flush')
 			->once()
@@ -86,29 +86,30 @@ class UserFacadeTest extends Unit
 			->withNoArgs()
 			->andReturn($unitOfWork);
 
-		$this->userFacade->save($user);
+		$this->lostPasswordFacade->save($lostPassword);
 	}
 
 
 	public function testSaveDuplicateEntry()
 	{
-		$user = Mockery::mock(User::class);
+		$lostPassword = Mockery::mock(LostPassword::class);
 		$unitOfWork = Mockery::mock(UnitOfWork::class);
 
-		$user->shouldReceive('getEmail')
+		$lostPassword->shouldReceive('getCode')
 			->once()
 			->withNoArgs()
-			->andReturn('new@example.com');
+			->andReturn('1234567890');
 
 		$unitOfWork->shouldReceive('getEntityState')
 			->once()
-			->with($user)
+			->with($lostPassword)
 			->andReturn(UnitOfWork::STATE_NEW);
 
-		$this->userRepository->shouldReceive('isEmailFree')
+		$this->lostPasswordRepository->shouldReceive('countBy')
 			->once()
-			->with($user, 'new@example.com')
-			->andReturn(false);
+			->with(['code' => '1234567890'])
+			->andReturn(1);
+
 
 		$this->entityManager->shouldReceive('getUnitOfWork')
 			->once()
@@ -116,23 +117,23 @@ class UserFacadeTest extends Unit
 			->andReturn($unitOfWork);
 
 		$this->expectException(DuplicateEntryException::class);
-		$this->userFacade->save($user);
+		$this->lostPasswordFacade->save($lostPassword);
 	}
 
 
 	public function testRemove()
 	{
-		$user = Mockery::mock(User::class);
+		$lostPassword = Mockery::mock(LostPassword::class);
 
 		$this->entityManager->shouldReceive('remove')
 			->once()
-			->with($user);
+			->with($lostPassword);
 
 		$this->entityManager->shouldReceive('flush')
 			->once()
 			->withNoArgs();
 
-		$this->userFacade->remove($user);
+		$this->lostPasswordFacade->remove($lostPassword);
 	}
 
 }

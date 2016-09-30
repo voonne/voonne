@@ -1,7 +1,27 @@
 signIn:
-	title: "Přihlášení"
-	email: "Email"
-	password: "Heslo"
-	stayLoggedIn: "Zapamatovat si mě"
-	submit: "Přihlásit se"
-	lostPassword: "Zapoměli jste heslo?"
+	title: 'Přihlášení'
+	email: 'Email'
+	emailFill: 'Prosím vyplňte email.'
+	password: 'Heslo'
+	passwordFill: 'Prosím vyplňte heslo.'
+	stayLoggedIn: 'Zapamatovat si mě'
+	submit: 'Přihlásit se'
+	lostPassword: 'Zapoměli jste heslo?'
+
+lostPassword:
+	title: 'Zapomenuté heslo'
+	email: 'Email'
+	emailFill: 'Prosím vyplňte email.'
+	submit: 'Získat nové heslo'
+	back: 'Zpět na přihlášení'
+	emailSend: 'Odkaz pro obnovení hesla vám byl zaslán na email.'
+	userNotFound: 'Uživatel s tímto emailem nebyl nalezen.'
+
+newPassword:
+	title: 'Nové heslo'
+	password: 'Nové heslo'
+	passwordFill: 'Prosím vyplňte nové heslo.'
+	passwordFormat: 'Prosím, vyplňte heslo dlouhé alespoň 8 znaků, obsahující číslo, velké a méle písmeno.'
+	submit: 'Nastavit nové heslo'
+	completed: 'Heslo bylo úspěšně nastaveno. Nyní se můžete přihlásit.'
+	notFound: 'Zadaný kód nebyl nalezen. Nejspíš se ho již využili.'

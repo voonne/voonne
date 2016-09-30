@@ -30,6 +30,10 @@ class RouterFactory
 
 		$frontRouter[] = new Route('admin/', 'Default:default');
 
+		$frontRouter[] = new Route('admin/lost-password/', 'Default:lostPassword');
+
+		$frontRouter[] = new Route('admin/new-password/<code>/', 'Default:newPassword');
+
 		$frontRouter[] = new Route('admin/dashboard/', 'Dashboard:default');
 
 		$frontRouter[] = $apiRouter = new RouteList('Api');

@@ -1,9 +1,9 @@
 operation:
-	removeConfirm: "Opravdu chcete smazat tuto položku?"
-	error: "Při operaci došlo k chybě. Zkuste to prosím později."
+	removeConfirm: 'Opravdu chcete smazat tuto položku?'
+	error: 'Při operaci došlo k chybě. Zkuste to prosím později.'
 
 authentication:
-	wrongEmailOrPassword: "Chybně zadané heslo nebo email."
-	signedIn: "Byly jste úspěšně přihlášeni."
-	signedOut: "Byly jste úspěšně odhlášeni."
-	unauthenticatedAccess: "Pro přístup do této sekce musíte být přihlášeni."
+	wrongEmailOrPassword: 'Chybně zadané heslo nebo email.'
+	signedIn: 'Byly jste úspěšně přihlášeni.'
+	signedOut: 'Byly jste úspěšně odhlášeni.'
+	unauthenticatedAccess: 'Pro přístup do této sekce musíte být přihlášeni.'
