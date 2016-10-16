@@ -11,7 +11,6 @@
 namespace Voonne\Voonne\Model\Facades;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\UnitOfWork;
 use Nette\SmartObject;
 use Voonne\Voonne\DuplicateEntryException;
