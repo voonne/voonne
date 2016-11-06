@@ -29,13 +29,13 @@ class Domain
 	 * @ORM\Column(type="string", length=100, nullable=false)
 	 * @var string
 	 */
-	private $name;
+	protected $name;
 
 	/**
 	 * @ORM\OneToMany(targetEntity="DomainLanguage", mappedBy="domain")
 	 * @var ArrayCollection
 	 */
-	private $domainLanguages;
+	protected $domainLanguages;
 
 
 	public function __construct($name)

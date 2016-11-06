@@ -15,6 +15,7 @@ use Nette\Application\LinkGenerator;
 use Nette\Localization\ITranslator;
 use Nette\Mail\IMailer;
 use Nette\Mail\Message;
+use Voonne\Voonne\AdminModule\Forms\LostPasswordFormFactory;
 use Voonne\Voonne\Model\Entities\LostPassword;
 use Voonne\Voonne\Model\Facades\LostPasswordFacade;
 
@@ -49,7 +50,7 @@ class EmailListener implements Subscriber
 	function getSubscribedEvents()
 	{
 		return [
-			LostPasswordFacade::class . '::onCreate' => 'onCreateLostPassword'
+			LostPasswordFormFactory::class . '::onSuccess' => 'onCreateLostPassword'
 		];
 	}
 

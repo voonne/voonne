@@ -85,10 +85,10 @@ class UserFacade
 	 */
 	public function remove(User $user)
 	{
+		$this->onRemove($user);
+
 		$this->entityManager->remove($user);
 		$this->entityManager->flush();
-
-		$this->onRemove();
 	}
 
 }

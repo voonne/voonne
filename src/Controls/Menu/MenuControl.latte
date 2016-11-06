@@ -15,7 +15,7 @@
 	</li>
 	{foreach $groups as $group}
 	{var $pages = $group->getVisiblePages()}
-	<li {foreach $pages as $page}{ifCurrent $group->getName() . '.' . $page->getPageName()} class="active"{/ifCurrent}{/foreach}>
+	<li {foreach $group->getPages() as $page}{ifCurrent $group->getName() . '.' . $page->getPageName()} class="active"{/ifCurrent}{/foreach}>
 		{php reset($pages)}
 		<a {if empty($pages)}href="#"{else}href="{link $group->getName() . '.' . current($pages)->getPageName()}"{/if}>
 			<i class="fa fa-{if !empty($group->getIcon())}{$group->getIcon()}{else}circle{/if}"></i>

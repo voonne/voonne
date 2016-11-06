@@ -16,6 +16,7 @@ use Voonne\Forms\FormFactory;
 use Voonne\Model\IOException;
 use Voonne\Voonne\DuplicateEntryException;
 use Voonne\Voonne\Model\Entities\LostPassword;
+use Voonne\Voonne\Model\Entities\User;
 use Voonne\Voonne\Model\Facades\LostPasswordFacade;
 use Voonne\Voonne\Model\Repositories\UserRepository;
 
@@ -71,13 +72,14 @@ class LostPasswordFormFactory extends FormFactory
 	public function success(Form $form, $values)
 	{
 		try {
+			/** @var User $user */
 			$user = $this->userRepository->findOneBy(['email' => $values->email]);
 
 			$lostPassword = new LostPassword($user);
 
 			$this->lostPasswordFacade->save($lostPassword);
 
-			$this->onSuccess();
+			$this->onSuccess($lostPassword);
 		} catch (IOException $e) {
 			$form->addError('voonne-signIn.lostPassword.userNotFound');
 		} catch (DuplicateEntryException $e) {

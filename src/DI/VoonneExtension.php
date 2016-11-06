@@ -199,12 +199,12 @@ class VoonneExtension extends CompilerExtension
 
 		/* storage */
 
-		if (empty($config['storageProvider'])) {
-			throw new AssertionException("Please configure 'storageProvider' for the Voonne extensions using the section '{$this->name}:' in your config file.");
+		if (empty($config['storageAdapter'])) {
+			throw new AssertionException("Please configure 'storageAdapter' for the Voonne extensions using the section '{$this->name}:' in your config file.");
 		}
 
-		$builder->addDefinition($this->prefix('storageManager'))
-			->setClass(StorageManager::class, [$config['storageProvider']]);
+		$builder->addDefinition($this->prefix('storageAdapter'))
+			->setClass(StorageManager::class, [$config['storageAdapter']]);
 
 		/* authentication and authorization */
 

@@ -78,7 +78,7 @@ class NewPasswordFormFactory extends FormFactory
 		$this->lostPasswordFacade->remove($this->lostPassword);
 		$this->userFacade->save($user);
 
-		$this->onSuccess();
+		$this->onSuccess($user);
 	}
 
 }

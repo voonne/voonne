@@ -30,19 +30,19 @@ class User
 	 * @ORM\Column(type="string", length=200, nullable=false, unique=true)
 	 * @var string
 	 */
-	private $email;
+	protected $email;
 
 	/**
 	 * @ORM\Column(type="string", length=60, nullable=false)
 	 * @var string
 	 */
-	private $password;
+	protected $password;
 
 	/**
 	 * @ORM\Column(type="datetime", nullable=false)
 	 * @var DateTime
 	 */
-	private $createdAt;
+	protected $createdAt;
 
 
 	public function __construct($email, $password)

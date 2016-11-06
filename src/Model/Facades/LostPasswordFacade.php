@@ -85,10 +85,10 @@ class LostPasswordFacade
 	 */
 	public function remove(LostPassword $lostPassword)
 	{
+		$this->onRemove($lostPassword);
+
 		$this->entityManager->remove($lostPassword);
 		$this->entityManager->flush();
-
-		$this->onRemove();
 	}
 
 }
