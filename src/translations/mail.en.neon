@@ -1,5 +1,5 @@
 lostPassword:
-	title: 'Voonne Platform password recovery'
-	p1: 'You have requested a new password for your account.'
-	p2: 'If you are not asked to reset the password, so ignore this email.'
-	p3: 'New password set by this link:'
+	title: "Voonne Platform password recovery"
+	p1: "You have requested a new password for your account."
+	p2: "If you are not asked to reset the password, so ignore this email."
+	p3: "New password set by this link:"

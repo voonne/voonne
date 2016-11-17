@@ -1,9 +1,9 @@
 operation:
-	removeConfirm: 'Do you really want to delete this item?'
-	error: 'When an operation error. Please try again later.'
+	removeConfirm: "Do you really want to delete this item?"
+	error: "When an operation error. Please try again later."
 
 authentication:
-	wrongEmailOrPassword: 'Email or password has been filled incorrectly.'
-	signedIn: 'You have been successfully signed in.'
-	signedOut: 'You've been sign out.'
-	unauthenticatedAccess: 'To access this section you must be signed in.'
+	wrongEmailOrPassword: "Email or password has been filled incorrectly."
+	signedIn: "You have been successfully signed in."
+	signedOut: "You've been sign out."
+	unauthenticatedAccess: "To access this section you must be signed in."
