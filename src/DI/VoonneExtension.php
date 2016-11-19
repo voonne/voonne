@@ -28,11 +28,12 @@ use Voonne\Layouts\Layout1\ILayout1Factory;
 use Voonne\Layouts\Layout21\ILayout21Factory;
 use Voonne\Layouts\LayoutManager;
 use Voonne\Pages\PageManager;
-use Voonne\Panels\Panel;
-use Voonne\Panels\Renderers\BasicPanelRenderer\BasicPanelRendererFactory;
-use Voonne\Panels\Renderers\BlankPanelRenderer\BlankPanelRendererFactory;
-use Voonne\Panels\Renderers\FormPanelRenderer\FormPanelRendererFactory;
+use Voonne\Panels\Panels\Panel;
+use Voonne\Panels\Renderers\BasicPanelRenderer\BasicRendererFactory;
+use Voonne\Panels\Renderers\BlankPanelRenderer\BlankRendererFactory;
+use Voonne\Panels\Renderers\FormPanelRenderer\FormRendererFactory;
 use Voonne\Panels\Renderers\RendererManager;
+use Voonne\Panels\Renderers\TablePanelRenderer\TableRendererFactory;
 use Voonne\Security\Authenticator;
 use Voonne\Security\User;
 use Voonne\Storage\StorageManager;
@@ -165,16 +166,20 @@ class VoonneExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('rendererManager'))
 			->setClass(RendererManager::class);
 
-		$builder->addDefinition($this->prefix('basicPanelRendererFactory'))
-			->setClass(BasicPanelRendererFactory::class)
+		$builder->addDefinition($this->prefix('basicRendererFactory'))
+			->setClass(BasicRendererFactory::class)
 			->addTag(RendererManager::TAG_RENDERER);
 
-		$builder->addDefinition($this->prefix('blankPanelRendererFactory'))
-			->setClass(BlankPanelRendererFactory::class)
+		$builder->addDefinition($this->prefix('blankRendererFactory'))
+			->setClass(BlankRendererFactory::class)
 			->addTag(RendererManager::TAG_RENDERER);
 
-		$builder->addDefinition($this->prefix('formPanelRendererFactory'))
-			->setClass(FormPanelRendererFactory::class)
+		$builder->addDefinition($this->prefix('formRendererFactory'))
+			->setClass(FormRendererFactory::class)
+			->addTag(RendererManager::TAG_RENDERER);
+
+		$builder->addDefinition($this->prefix('tableRendererFactory'))
+			->setClass(TableRendererFactory::class)
 			->addTag(RendererManager::TAG_RENDERER);
 
 		/* router */

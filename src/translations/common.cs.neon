@@ -1,3 +1,6 @@
+yes: 'Ano'
+ne: 'Ne'
+
 operation:
 	removeConfirm: "Opravdu chcete smazat tuto položku?"
 	error: "Při operaci došlo k chybě. Zkuste to prosím později."

@@ -56,19 +56,9 @@ class ContentRoute extends Route
 
 		// when is current url same as constructed, then add current parameters
 		if($url == $this->request->getUrl()->getPath()) {
-			$parameters = array_merge($refUrl->getQueryParameters(), $parameters);
-
-			if(isset($refUrl->getQueryParameters()['do'])) {
-				unset($parameters['do']);
-			}
-
-			if(isset($refUrl->getQueryParameters()['_fid'])) {
-				unset($parameters['_fid']);
-			}
-
-			foreach ($parameters as $key => $value) { // remove components parameters
-				if(strpos($key, '-') !== false && isset($this->request->getUrl()->getQueryParameters()[$key])) {
-					unset($parameters[$key]);
+			foreach ($refUrl->getQueryParameters() as $key => $value) {
+				if(strpos($key, '-') == false && !in_array($key, ['do', '_fid']) && !isset($parameters[$key])) {
+					$parameters[$key] = $value;
 				}
 			}
 		}

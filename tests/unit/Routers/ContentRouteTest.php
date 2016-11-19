@@ -147,7 +147,7 @@ class ContentRouteTest extends Unit
 			->andReturn('admin/group1/page1/');
 
 		$this->refUrl->shouldReceive('getQueryParameters')
-			->times(3)
+			->once()
 			->withNoArgs()
 			->andReturn(['id' => '1']);
 
@@ -175,7 +175,7 @@ class ContentRouteTest extends Unit
 			->andReturn('');
 
 		$this->request->shouldReceive('getUrl')
-			->times(3)
+			->once()
 			->withNoArgs()
 			->andReturn($urlScript);
 
@@ -184,17 +184,12 @@ class ContentRouteTest extends Unit
 			->withNoArgs()
 			->andReturn('admin/group1/page1/');
 
-		$urlScript->shouldReceive('getQueryParameters')
-			->twice()
-			->withNoArgs()
-			->andReturn(['component-id' => '1']);
-
 		$this->refUrl->shouldReceive('getQueryParameters')
-			->times(3)
+			->once()
 			->withNoArgs()
 			->andReturn(['id' => '1', 'component-id' => '1', 'component1-id' => '1']);
 
-		$this->assertEquals('admin/group1/page1/?id=1&component1-id=1', $this->contentRoute->constructUrl($this->appRequest, $this->refUrl));
+		$this->assertEquals('admin/group1/page1/?id=1', $this->contentRoute->constructUrl($this->appRequest, $this->refUrl));
 	}
 
 }
