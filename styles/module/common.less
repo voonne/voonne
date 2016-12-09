@@ -106,3 +106,24 @@ label {
 .alert-danger {
 	border-left: 5px solid @state-danger-border;
 }
+
+/* pagination */
+
+.pagination {
+	border-radius: 0;
+	margin: 0;
+
+	&>li {
+		&:first-child {
+			&>a, &>span {
+				border-radius: 0;
+			}
+		}
+
+		&:last-child {
+			&>a, &>span {
+				border-radius: 0;
+			}
+		}
+	}
+}
