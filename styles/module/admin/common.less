@@ -6,7 +6,12 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
-html, body {
+html {
+	background-color: @background;
+	font-size: 100%;
+}
+
+body {
 	background-color: @background;
 	font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	color: @text;
@@ -274,8 +279,8 @@ h1 {
 	}
 
 	.row {
-		margin-left: -10px;
-		margin-right: -10px;
+		margin-left: -1rem;
+		margin-right: -1rem;
 	}
 
 	.col-lg-1,
@@ -318,7 +323,7 @@ h1 {
 	.col-xs-2,
 	.col-xs-3,
 	.col-xs-4,
-	.col-xs-5
+	.col-xs-5,
 	.col-xs-6,
 	.col-xs-7,
 	.col-xs-8,
@@ -326,28 +331,31 @@ h1 {
 	.col-xs-10,
 	.col-xs-11,
 	.col-xs-12 {
-		padding-left: 10px;
-		padding-right: 10px;
+		padding-left: 1rem;
+		padding-right: 1rem;
 	}
 }
 
 .panel {
 	border-radius: 2px;
-	margin-bottom: 20px;
-	background-color: @white;
+	border: none;
+	margin-bottom: 1rem;
 
-	.panel-header {
-		padding: 10px 15px;
+	.panel-heading {
+		padding: .5rem 1rem;
 		border-bottom: 1px solid #e9e9e9;
-
-		h3 {
-			margin: 0;
-			font-size: 1.3em;
-		}
+		background-color: transparent;
+		font-size: 1.3em;
+		font-weight: 500;
 	}
 
 	.panel-body {
-		padding: 15px 20px;
+		padding: .8rem 1rem;
+
+		.panel-footer {
+			margin: 0 -1rem -.8rem -1rem;
+			background-color: transparent;
+		}
 
 		p {
 			font-size: 1em;
@@ -356,20 +364,12 @@ h1 {
 		hr {
 			margin-top: 0;
 		}
-
-		.btn {
-			padding: 0;
-		}
-
-		.btn-default {
-			padding: 7px 10px;
-		}
 	}
 
 	.panel-footer {
-		padding: 10px 15px;
+		padding: .8rem 1rem;
 		border-top: 1px solid #e9e9e9;
-		margin: 0 -20px -15px;
+		background-color: transparent;
 
 		&:after, &:before {
 			content: " ";
@@ -378,8 +378,7 @@ h1 {
 		}
 
 		.btn {
-			padding: 7px 10px;
-			margin-left: 10px;
+			margin-left: .5rem;
 		}
 	}
 }

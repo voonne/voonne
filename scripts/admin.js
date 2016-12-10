@@ -35,4 +35,18 @@ $(document).ready(function() {
 			});
 		}
 	});
+
+	$('.date-picker').datetimepicker({
+		format: 'L',
+		locale: 'cs'
+	});
+
+	$('.time-picker').datetimepicker({
+		format: 'LT',
+		locale: 'cs'
+	});
+
+	$('.datetime-picker').datetimepicker({
+		locale: 'cs'
+	});
 });

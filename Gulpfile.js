@@ -45,7 +45,10 @@ gulp.task('styles', function () {
 gulp.task('admin-script', function() {
 	return gulp.src([
 		'./bower_components/jquery/dist/jquery.js',
+		'./bower_components/moment/min/moment.min.js',
+		'./bower_components/moment/min/locales.min.js',
 		'./bower_components/bootstrap/dist/js/bootstrap.js',
+		'./bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 		'./scripts/admin.js'])
 		.pipe(concat('admin.js'))
 		.pipe(gulp.dest('./dist/scripts'))
