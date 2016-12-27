@@ -42,7 +42,8 @@
 		"voonne/pages": "@dev",
 		"voonne/panels": "@dev",
 		"voonne/security": "@dev",
-		"voonne/storage": "@dev"
+		"voonne/storage": "@dev",
+		"voonne/widgets": "@dev"
 	},
 	"require-dev": {
 		"codeception/codeception": "~2.1",

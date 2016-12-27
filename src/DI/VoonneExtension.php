@@ -61,6 +61,7 @@ use Voonne\Voonne\Model\Repositories\LanguageRepository;
 use Voonne\Voonne\Model\Repositories\LostPasswordRepository;
 use Voonne\Voonne\Model\Repositories\UserRepository;
 use Voonne\Voonne\Routers\RouterFactory;
+use Voonne\Widgets\WidgetManager;
 
 
 class VoonneExtension extends CompilerExtension
@@ -183,6 +184,11 @@ class VoonneExtension extends CompilerExtension
 			->setClass(TableRendererFactory::class)
 			->addTag(RendererManager::TAG_RENDERER);
 
+		/* widgets */
+
+		$builder->addDefinition($this->prefix('widgetManager'))
+			->setClass(WidgetManager::class);
+
 		/* router */
 
 		$builder->addDefinition($this->prefix('router'))
@@ -195,16 +201,16 @@ class VoonneExtension extends CompilerExtension
 			->setClass(StateHelper::class)
 			->addTag(ConsoleExtension::TAG_HELPER);
 
-		$builder->addDefinition($this->prefix('cli.user.create'))
-			->setClass(UserCreateCommand::class)
+		$builder->addDefinition($this->prefix('cli.domain.create'))
+			->setClass(DomainCreateCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
 		$builder->addDefinition($this->prefix('cli.install'))
 			->setClass(InstallCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
-		$builder->addDefinition($this->prefix('cli.domain.create'))
-			->setClass(DomainCreateCommand::class)
+		$builder->addDefinition($this->prefix('cli.user.create'))
+			->setClass(UserCreateCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
 		/* storage */
