@@ -41,9 +41,10 @@ use Voonne\Voonne\AdminModule\Forms\LostPasswordFormFactory;
 use Voonne\Voonne\AdminModule\Forms\NewPasswordFormFactory;
 use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
 use Voonne\Voonne\AssertionException;
+use Voonne\Voonne\Console\DomainCreateCommand;
 use Voonne\Voonne\Console\Helpers\StateHelper;
 use Voonne\Voonne\Console\InstallCommand;
-use Voonne\Voonne\Console\UsersCreateCommand;
+use Voonne\Voonne\Console\UserCreateCommand;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\Latte\Engine;
 use Voonne\Voonne\Controls\DomainSelect\IDomainSelectControlFactory;
@@ -194,12 +195,16 @@ class VoonneExtension extends CompilerExtension
 			->setClass(StateHelper::class)
 			->addTag(ConsoleExtension::TAG_HELPER);
 
+		$builder->addDefinition($this->prefix('cli.user.create'))
+			->setClass(UserCreateCommand::class)
+			->addTag(ConsoleExtension::TAG_COMMAND);
+
 		$builder->addDefinition($this->prefix('cli.install'))
 			->setClass(InstallCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
-		$builder->addDefinition($this->prefix('cli.user.create'))
-			->setClass(UsersCreateCommand::class)
+		$builder->addDefinition($this->prefix('cli.domain.create'))
+			->setClass(DomainCreateCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
 		/* storage */

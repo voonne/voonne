@@ -20,7 +20,7 @@ use Voonne\Voonne\Model\Entities\User;
 use Voonne\Voonne\Model\Facades\UserFacade;
 
 
-class UsersCreateCommand extends Command
+class UserCreateCommand extends Command
 {
 
 	/**
@@ -32,13 +32,13 @@ class UsersCreateCommand extends Command
 	/**
 	 * @var string
 	 */
-	private $name = 'voonne:users:create';
+	private $name = 'voonne:user:create';
 
 
 	protected function configure()
 	{
 		$this->setName($this->name);
-		$this->setDescription('Creates new user.');
+		$this->setDescription('Adds new user.');
 
 		$this->setDefinition([
 			new InputArgument('email', InputArgument::REQUIRED),
@@ -58,7 +58,7 @@ class UsersCreateCommand extends Command
 		}
 
 		if(!$this->getHelper('state')->isInstalled()) {
-			$output->writeln('<error> The Voonne Platform must be installed on the first place. Please use command voonne:install. </error>');
+			$output->writeln('<error> The Voonne Platform must be installed in the first place. Please use command voonne:install. </error>');
 			return 1;
 		}
 
@@ -66,9 +66,11 @@ class UsersCreateCommand extends Command
 			$this->userFacade->save(new User($email, $password));
 
 			$output->writeln('<info> The new user was created successfully. </info>');
+
 			return 0;
 		} catch (DuplicateEntryException $e) {
 			$output->writeln('<error> ' . $e->getMessage() . ' </error>');
+
 			return 1;
 		}
 	}

@@ -14,7 +14,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaValidator;
 use Kdyby\Doctrine\Tools\CacheCleaner;
 use PDOException;
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -60,7 +59,7 @@ class InstallCommand extends Command
 
 		$this->setDefinition([
 			new InputArgument('domain', InputArgument::REQUIRED),
-			new InputArgument('domainLanguage', InputArgument::REQUIRED)
+			new InputArgument('language', InputArgument::REQUIRED)
 		]);
 	}
 
@@ -70,7 +69,7 @@ class InstallCommand extends Command
 		$this->cacheCleaner->invalidate();
 
 		$domainArgument = $input->getArgument('domain');
-		$domainLanguageArgument = $input->getArgument('domainLanguage');
+		$languageArgument = $input->getArgument('language');
 
 		$validator = new SchemaValidator($this->entityManager);
 
@@ -85,7 +84,7 @@ class InstallCommand extends Command
 		}
 
 		try {
-			$this->getLanguage($domainLanguageArgument);
+			$this->getLanguage($languageArgument);
 		} catch (InvalidArgumentException $e) {
 			$output->writeln('<error> Domain language must be valid ISO code. </error>');
 			return 1;
@@ -99,17 +98,17 @@ class InstallCommand extends Command
 			$this->entityManager->flush();
 
 			$this->entityManager->persist(new DomainLanguage(new Domain($domainArgument),
-				$this->languageRepository->findOneBy(['isoCode' => $domainLanguageArgument])));
+				$this->languageRepository->findOneBy(['isoCode' => $languageArgument])));
 			$this->entityManager->flush();
 
 			$output->writeln('<info> The Voonne Platform has been successfully installed. </info>');
+
+			return 1;
 		} catch (PDOException $e) {
 			$output->writeln('<error> error! </error>');
 
-			throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
+			return 0;
 		}
-
-		return 0;
 	}
 
 
