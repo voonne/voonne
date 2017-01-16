@@ -14,8 +14,8 @@
 
 		<title>{ifset $title}{$title|translate} - {/ifset}Voonne</title>
 
-		<link rel="stylesheet" type="text/css" href="{plink :Admin:Api:Assets:default, name => 'styles/admin.css'}">
-		<script src="{plink :Admin:Api:Assets:default, name => 'scripts/admin.js'}"></script>
+		<link href="{assetLink styles/admin.css}" rel="stylesheet" type="text/css">
+		<script src="{assetLink scripts/admin.js}"></script>
 	</head>
 	<body>
 		<div class="navbar navbar-fixed-top">
