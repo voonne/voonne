@@ -68,11 +68,14 @@ class ContentPresenter extends BaseAuthorizedPresenter
 	{
 		$groups = $this->pageManager->getGroups();
 
-		if (!isset($groups[$this->groupName]) || !isset($groups[$this->groupName]->getPages()[$this->pageName])) {
+		$groupName = lcfirst(str_replace(' ', '', ucwords(str_replace('-', ' ', $this->groupName))));
+		$pageName = lcfirst(str_replace(' ', '', ucwords(str_replace('-', ' ', $this->pageName))));
+
+		if (!isset($groups[$groupName]) || !isset($groups[$groupName]->getPages()[$pageName])) {
 			throw new BadRequestException('Not found', 404);
 		}
 
-		$this->template->page = $this->page = $groups[$this->groupName]->getPages()[$this->pageName];
+		$this->template->page = $this->page = $groups[$groupName]->getPages()[$pageName];
 
 		$this->page->injectPrimary(
 			$this->layoutManager,

@@ -50,7 +50,7 @@ class ContentRoute extends Route
 			return null;
 		}
 
-		$url = $refUrl->getBasePath() . 'admin/' . $parameters['groupName'] . '/' . $parameters['pageName']. '/';
+		$url = $refUrl->getBasePath() . 'admin/' . strtolower(preg_replace('/[A-Z]/', '-$0', $parameters['groupName'])) . '/' . strtolower(preg_replace('/[A-Z]/', '-$0', $parameters['pageName'])) . '/';
 
 		unset($parameters['groupName'], $parameters['pageName'], $parameters['action']);
 

@@ -117,6 +117,39 @@ class ContentRouteTest extends Unit
 	}
 
 
+	public function testConstructMultiWordUrl()
+	{
+		$urlScript = Mockery::mock(UrlScript::class);
+
+		$this->appRequest->shouldReceive('getPresenterName')
+			->once()
+			->withNoArgs()
+			->andReturn('Content');
+
+		$this->appRequest->shouldReceive('getParameters')
+			->once()
+			->withNoArgs()
+			->andReturn(['groupName' => 'groupGroup1', 'pageName' => 'pagePage1']);
+
+		$this->refUrl->shouldReceive('getBasePath')
+			->once()
+			->withNoArgs()
+			->andReturn('');
+
+		$this->request->shouldReceive('getUrl')
+			->once()
+			->withNoArgs()
+			->andReturn($urlScript);
+
+		$urlScript->shouldReceive('getPath')
+			->once()
+			->withNoArgs()
+			->andReturn('admin/group2/page2/');
+
+		$this->assertEquals('admin/group-group1/page-page1/', $this->contentRoute->constructUrl($this->appRequest, $this->refUrl));
+	}
+
+
 	public function testConstructUrlPersistentParameters()
 	{
 		$urlScript = Mockery::mock(UrlScript::class);
