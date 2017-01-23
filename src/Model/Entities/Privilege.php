@@ -18,38 +18,45 @@ use Nette\SmartObject;
 
 
 /**
- * @ORM\Entity(repositoryClass="Voonne\Voonne\Model\Repositories\LanguageRepository")
+ * @ORM\Entity(repositoryClass="Voonne\Voonne\Model\Repositories\PrivilegeRepository")
  */
-class Language
+class Privilege
 {
 
 	use SmartObject;
 	use UniversallyUniqueIdentifier;
 
 	/**
-	 * @ORM\Column(type="string", length=100, nullable=false)
+	 * @ORM\Column(type="string", nullable=false)
 	 * @var string
 	 */
-	protected $name;
+	private $name;
 
 	/**
-	 * @ORM\Column(type="string", length=2, unique=true, nullable=false)
+	 * @ORM\Column(type="string", nullable=false)
 	 * @var string
 	 */
-	protected $isoCode;
+	private $description;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="DomainLanguage", mappedBy="language")
+	 * @ORM\ManyToOne(targetEntity="Resource", inversedBy="privileges", cascade={"persist"})
+	 * @var Resource
+	 */
+	private $resource;
+
+	/**
+	 * @ORM\ManyToMany(targetEntity="Role", mappedBy="privileges")
 	 * @var ArrayCollection
 	 */
-	protected $domainLanguages;
+	private $roles;
 
 
-	public function __construct($name, $isoCode)
+	public function __construct($name, $description, Resource $resource)
 	{
 		$this->name = $name;
-		$this->isoCode = $isoCode;
-		$this->domainLanguages = new ArrayCollection();
+		$this->description = $description;
+		$this->resource = $resource;
+		$this->roles = new ArrayCollection();
 	}
 
 
@@ -65,18 +72,27 @@ class Language
 	/**
 	 * @return string
 	 */
-	public function getIsoCode()
+	public function getDescription()
 	{
-		return $this->isoCode;
+		return $this->description;
+	}
+
+
+	/**
+	 * @return Resource
+	 */
+	public function getResource()
+	{
+		return $this->resource;
 	}
 
 
 	/**
 	 * @return ReadOnlyCollectionWrapper
 	 */
-	public function getDomainLanguages()
+	public function getRoles()
 	{
-		return new ReadOnlyCollectionWrapper($this->domainLanguages);
+		return new ReadOnlyCollectionWrapper($this->roles);
 	}
 
 }

@@ -6,10 +6,10 @@ use Codeception\Test\Unit;
 use Kdyby\Doctrine\Collections\ReadOnlyCollectionWrapper;
 use Mockery;
 use UnitTester;
-use Voonne\Voonne\Model\Entities\Domain;
+use Voonne\Voonne\Model\Entities\Zone;
 
 
-class DomainTest extends Unit
+class ZoneTest extends Unit
 {
 
 	/**
@@ -18,14 +18,14 @@ class DomainTest extends Unit
 	protected $tester;
 
 	/**
-	 * @var Domain
+	 * @var Zone
 	 */
-	private $domain;
+	private $zone;
 
 
 	protected function _before()
 	{
-		$this->domain = new Domain('example.com');
+		$this->zone = new Zone('admin', 'Administration');
 	}
 
 
@@ -37,8 +37,9 @@ class DomainTest extends Unit
 
 	public function testInitialize()
 	{
-		$this->assertEquals('example.com', $this->domain->getName());
-		$this->assertInstanceOf(ReadOnlyCollectionWrapper::class, $this->domain->getDomainLanguages());
+		$this->assertEquals('admin', $this->zone->getName());
+		$this->assertEquals('Administration', $this->zone->getDescription());
+		$this->assertInstanceOf(ReadOnlyCollectionWrapper::class, $this->zone->getResources());
 	}
 
 }

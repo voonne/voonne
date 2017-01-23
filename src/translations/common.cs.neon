@@ -10,3 +10,5 @@ authentication:
 	signedIn: "Byly jste úspěšně přihlášeni."
 	signedOut: "Byly jste úspěšně odhlášeni."
 	unauthenticatedAccess: "Pro přístup do této sekce musíte být přihlášeni."
+	unauthorizedAccess: "Pro přístup do této sekce nemáte dostatečné oprávnění."
+	unauthorizedAction: "Pro provedení této akce nemáte dostatečné oprávnění."

@@ -35,6 +35,7 @@ use Voonne\Panels\Renderers\FormRenderer\FormRendererFactory;
 use Voonne\Panels\Renderers\RendererManager;
 use Voonne\Panels\Renderers\TableRenderer\TableRendererFactory;
 use Voonne\Security\Authenticator;
+use Voonne\Security\Authorizator;
 use Voonne\Security\User;
 use Voonne\Storage\Latte\Macros;
 use Voonne\Storage\StorageManager;
@@ -56,10 +57,14 @@ use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Listeners\EmailListener;
 use Voonne\Voonne\Model\Facades\LostPasswordFacade;
 use Voonne\Voonne\Model\Facades\UserFacade;
+use Voonne\Voonne\Model\Repositories\ZoneRepository;
 use Voonne\Voonne\Model\Repositories\DomainLanguageRepository;
 use Voonne\Voonne\Model\Repositories\DomainRepository;
 use Voonne\Voonne\Model\Repositories\LanguageRepository;
 use Voonne\Voonne\Model\Repositories\LostPasswordRepository;
+use Voonne\Voonne\Model\Repositories\PrivilegeRepository;
+use Voonne\Voonne\Model\Repositories\ResourceRepository;
+use Voonne\Voonne\Model\Repositories\RoleRepository;
 use Voonne\Voonne\Model\Repositories\UserRepository;
 use Voonne\Voonne\Routers\RouterFactory;
 use Voonne\Widgets\WidgetManager;
@@ -103,8 +108,20 @@ class VoonneExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('lostPasswordRepository'))
 			->setClass(LostPasswordRepository::class);
 
+		$builder->addDefinition($this->prefix('PrivilegeRepository'))
+			->setClass(PrivilegeRepository::class);
+
+		$builder->addDefinition($this->prefix('resourceRepository'))
+			->setClass(ResourceRepository::class);
+
+		$builder->addDefinition($this->prefix('roleRepository'))
+			->setClass(RoleRepository::class);
+
 		$builder->addDefinition($this->prefix('userRepository'))
 			->setClass(UserRepository::class);
+
+		$builder->addDefinition($this->prefix('zoneRepository'))
+			->setClass(ZoneRepository::class);
 
 		/* forms */
 
@@ -223,9 +240,6 @@ class VoonneExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('storageAdapter'))
 			->setClass(StorageManager::class, [$config['storageAdapter']]);
 
-		/*$builder->addDefinition($this->prefix('storage.macros'))
-			->setClass(Macros::class);*/
-
 		$builder->getDefinition('latte.latteFactory')
 			->addSetup('?->onCompile[] = function($engine) { ' . Macros::class . '::install($engine->getCompiler()); }', ['@self']);
 
@@ -234,8 +248,13 @@ class VoonneExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('authenticator'))
 			->setClass(Authenticator::class);
 
+		$builder->addDefinition($this->prefix('authorizator'))
+			->setClass(Authorizator::class);
+
 		$builder->addDefinition($this->prefix('user'))
 			->setClass(User::class);
+
+
 
 		/* assets */
 

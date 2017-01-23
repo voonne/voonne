@@ -11,7 +11,9 @@
 namespace Voonne\Voonne\Model\Entities;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Kdyby\Doctrine\Collections\ReadOnlyCollectionWrapper;
 use Kdyby\Doctrine\Entities\Attributes\UniversallyUniqueIdentifier;
 use Nette\Security\Passwords;
 use Nette\SmartObject;
@@ -27,7 +29,7 @@ class User
 	use UniversallyUniqueIdentifier;
 
 	/**
-	 * @ORM\Column(type="string", length=200, nullable=false, unique=true)
+	 * @ORM\Column(type="string", nullable=false, unique=true)
 	 * @var string
 	 */
 	protected $email;
@@ -44,12 +46,19 @@ class User
 	 */
 	protected $createdAt;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity="Role", inversedBy="users", cascade={"persist"})
+	 * @var ArrayCollection
+	 */
+	private $roles;
+
 
 	public function __construct($email, $password)
 	{
 		$this->email = $email;
 		$this->password = Passwords::hash($password);
 		$this->createdAt = new DateTime();
+		$this->roles = new ArrayCollection();
 	}
 
 
@@ -81,6 +90,15 @@ class User
 
 
 	/**
+	 * @return ReadOnlyCollectionWrapper
+	 */
+	public function getRoles()
+	{
+		return new ReadOnlyCollectionWrapper($this->roles);
+	}
+
+
+	/**
 	 * @param string $email
 	 */
 	public function update($email)
@@ -95,6 +113,24 @@ class User
 	public function changePassword($password)
 	{
 		$this->password = Passwords::hash($password);
+	}
+
+
+	/**
+	 * @param Role $role
+	 */
+	public function addRole(Role $role)
+	{
+		$this->roles->add($role);
+	}
+
+
+	/**
+	 * @param Role $role
+	 */
+	public function removeRole(Role $role)
+	{
+		$this->roles->removeElement($role);
 	}
 
 }

@@ -12,6 +12,7 @@ namespace Voonne\Voonne\AdminModule\Presenters;
 
 use Nette\Application\BadRequestException;
 use Voonne\Layouts\LayoutManager;
+use Voonne\Messages\FlashMessage;
 use Voonne\Pages\Page;
 use Voonne\Pages\PageManager;
 use Voonne\Panels\Renderers\RendererManager;
@@ -27,18 +28,6 @@ class ContentPresenter extends BaseAuthorizedPresenter
 	 * @inject
 	 */
 	public $pageManager;
-
-	/**
-	 * @var LayoutManager
-	 * @inject
-	 */
-	public $layoutManager;
-
-	/**
-	 * @var RendererManager
-	 * @inject
-	 */
-	public $rendererManager;
 
 	/**
 	 * @var ContentForm
@@ -77,11 +66,10 @@ class ContentPresenter extends BaseAuthorizedPresenter
 
 		$this->template->page = $this->page = $groups[$groupName]->getPages()[$pageName];
 
-		$this->page->injectPrimary(
-			$this->layoutManager,
-			$this->rendererManager,
-			$this->contentForm
-		);
+		if (!$this->page->isAuthorized()) {
+			$this->flashMessage('voonne-common.authentication.unauthorizedAccess', FlashMessage::ERROR);
+			$this->redirect('Dashboard:default');
+		}
 
 		$this->addComponent($this->page, 'page');
 

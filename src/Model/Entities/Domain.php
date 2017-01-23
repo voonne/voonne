@@ -12,6 +12,7 @@ namespace Voonne\Voonne\Model\Entities;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Kdyby\Doctrine\Collections\ReadOnlyCollectionWrapper;
 use Kdyby\Doctrine\Entities\Attributes\UniversallyUniqueIdentifier;
 use Nette\SmartObject;
 
@@ -55,11 +56,11 @@ class Domain
 
 
 	/**
-	 * @return ArrayCollection
+	 * @return ReadOnlyCollectionWrapper
 	 */
 	public function getDomainLanguages()
 	{
-		return $this->domainLanguages;
+		return new ReadOnlyCollectionWrapper($this->domainLanguages);
 	}
 
 }
