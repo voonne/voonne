@@ -66,16 +66,22 @@ class ContentPresenter extends BaseAuthorizedPresenter
 
 		$this->template->page = $this->page = $groups[$groupName]->getPages()[$pageName];
 
+		// check authorization
 		if (!$this->page->isAuthorized()) {
 			$this->flashMessage('voonne-common.authentication.unauthorizedAccess', FlashMessage::ERROR);
 			$this->redirect('Dashboard:default');
 		}
 
-		$this->addComponent($this->page, 'page');
+		// generate form containers
+		foreach ($this->page->getPanelManager()->getPanels() as $name => $panel) {
+			$this->contentForm->addContainer($name);
+		}
 
-		/* content form */
-
+		// attach content form
 		$this->addComponent($this->contentForm, 'form');
+
+		// attach page
+		$this->addComponent($this->page, 'page');
 	}
 
 

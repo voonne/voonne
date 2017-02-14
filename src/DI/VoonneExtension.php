@@ -254,8 +254,6 @@ class VoonneExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('user'))
 			->setClass(User::class);
 
-
-
 		/* assets */
 
 		$builder->addDefinition($this->prefix('assetsManager'))
