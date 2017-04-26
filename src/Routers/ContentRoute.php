@@ -12,7 +12,9 @@ namespace Voonne\Voonne\Routers;
 
 use Nette\Application\Request;
 use Nette\Application\Routers\Route;
+use Nette\Http\IRequest;
 use Nette\Http\Url;
+use Tracy\Debugger;
 
 
 class ContentRoute extends Route
@@ -26,9 +28,33 @@ class ContentRoute extends Route
 
 	public function __construct(\Nette\Http\Request $request)
 	{
-		parent::__construct('admin/<groupName>/<pageName>/', 'Content:default', 0);
+		parent::__construct('admin/<groupName>/<pageName>', 'Content:default', 0);
 
 		$this->request = $request;
+	}
+
+
+	/**
+	 * @param IRequest $httpRequest
+	 *
+	 * @return Request|NULL
+	 */
+	function match(IRequest $httpRequest)
+	{
+		$appRequest = parent::match($httpRequest);
+
+		if ($appRequest instanceof Request) {
+			$parameters = $appRequest->getParameters();
+
+			$parameters['groupName'] = lcfirst(str_replace(' ', '', ucwords(str_replace('-', ' ', $parameters['groupName']))));
+			$parameters['pageName'] = lcfirst(str_replace(' ', '', ucwords(str_replace('-', ' ', $parameters['pageName']))));
+
+			$appRequest->setParameters($parameters);
+
+			return $appRequest;
+		} else {
+			return null;
+		}
 	}
 
 
@@ -50,7 +76,10 @@ class ContentRoute extends Route
 			return null;
 		}
 
-		$url = $refUrl->getBasePath() . 'admin/' . strtolower(preg_replace('/[A-Z]/', '-$0', $parameters['groupName'])) . '/' . strtolower(preg_replace('/[A-Z]/', '-$0', $parameters['pageName'])) . '/';
+		$parameters['groupName'] = strtolower(preg_replace('/[A-Z]/', '-$0', $parameters['groupName']));
+		$parameters['pageName'] = strtolower(preg_replace('/[A-Z]/', '-$0', $parameters['pageName']));
+
+		$url = $refUrl->getBasePath() . 'admin/' . $parameters['groupName'] . '/' . $parameters['pageName'];
 
 		unset($parameters['groupName'], $parameters['pageName'], $parameters['action']);
 
@@ -70,5 +99,8 @@ class ContentRoute extends Route
 
 		return $url;
 	}
+
+
+
 
 }

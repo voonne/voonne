@@ -28,21 +28,21 @@ class RouterFactory
 
 		$router[] = $frontRouter = new RouteList('Admin');
 
-		$frontRouter[] = new Route('admin/', 'Default:default');
+		$frontRouter[] = new Route('admin', 'Default:default');
 
-		$frontRouter[] = new Route('admin/lost-password/', 'Default:lostPassword');
+		$frontRouter[] = new Route('admin/lost-password', 'Default:lostPassword');
 
-		$frontRouter[] = new Route('admin/new-password/<code>/', 'Default:newPassword');
+		$frontRouter[] = new Route('admin/new-password/<code>', 'Default:newPassword');
 
-		$frontRouter[] = new Route('admin/dashboard/', 'Dashboard:default');
+		$frontRouter[] = new Route('admin/dashboard', 'Dashboard:default');
+
+		$frontRouter[] = new ContentRoute($request);
 
 		$frontRouter[] = $apiRouter = new RouteList('Api');
 
 		$apiRouter[] = new Route('admin/api/v1/assets/<name .+>', 'Assets:default');
 
 		$apiRouter[] = new Route('admin/api/v1/files/<directoryName>/<fileName .+>', 'Files:default');
-
-		$frontRouter[] = new ContentRoute($request);
 
 		return $router;
 	}

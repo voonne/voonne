@@ -111,9 +111,9 @@ class ContentRouteTest extends Unit
 		$urlScript->shouldReceive('getPath')
 			->once()
 			->withNoArgs()
-			->andReturn('admin/group2/page2/');
+			->andReturn('admin/group2/page2');
 
-		$this->assertEquals('admin/group1/page1/', $this->contentRoute->constructUrl($this->appRequest, $this->refUrl));
+		$this->assertEquals('admin/group1/page1', $this->contentRoute->constructUrl($this->appRequest, $this->refUrl));
 	}
 
 
@@ -144,9 +144,9 @@ class ContentRouteTest extends Unit
 		$urlScript->shouldReceive('getPath')
 			->once()
 			->withNoArgs()
-			->andReturn('admin/group2/page2/');
+			->andReturn('admin/group2/page2');
 
-		$this->assertEquals('admin/group-group1/page-page1/', $this->contentRoute->constructUrl($this->appRequest, $this->refUrl));
+		$this->assertEquals('admin/group-group1/page-page1', $this->contentRoute->constructUrl($this->appRequest, $this->refUrl));
 	}
 
 
@@ -177,14 +177,14 @@ class ContentRouteTest extends Unit
 		$urlScript->shouldReceive('getPath')
 			->once()
 			->withNoArgs()
-			->andReturn('admin/group1/page1/');
+			->andReturn('admin/group1/page1');
 
 		$this->refUrl->shouldReceive('getQueryParameters')
 			->once()
 			->withNoArgs()
 			->andReturn(['id' => '1']);
 
-		$this->assertEquals('admin/group1/page1/?id=1', $this->contentRoute->constructUrl($this->appRequest, $this->refUrl));
+		$this->assertEquals('admin/group1/page1?id=1', $this->contentRoute->constructUrl($this->appRequest, $this->refUrl));
 	}
 
 
@@ -215,14 +215,14 @@ class ContentRouteTest extends Unit
 		$urlScript->shouldReceive('getPath')
 			->once()
 			->withNoArgs()
-			->andReturn('admin/group1/page1/');
+			->andReturn('admin/group1/page1');
 
 		$this->refUrl->shouldReceive('getQueryParameters')
 			->once()
 			->withNoArgs()
 			->andReturn(['id' => '1', 'component-id' => '1', 'component1-id' => '1']);
 
-		$this->assertEquals('admin/group1/page1/?id=1', $this->contentRoute->constructUrl($this->appRequest, $this->refUrl));
+		$this->assertEquals('admin/group1/page1?id=1', $this->contentRoute->constructUrl($this->appRequest, $this->refUrl));
 	}
 
 }
