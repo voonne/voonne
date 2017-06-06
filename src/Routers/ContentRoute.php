@@ -14,7 +14,6 @@ use Nette\Application\Request;
 use Nette\Application\Routers\Route;
 use Nette\Http\IRequest;
 use Nette\Http\Url;
-use Tracy\Debugger;
 
 
 class ContentRoute extends Route
@@ -99,8 +98,5 @@ class ContentRoute extends Route
 
 		return $url;
 	}
-
-
-
 
 }

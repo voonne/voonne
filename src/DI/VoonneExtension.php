@@ -12,6 +12,7 @@ namespace Voonne\Voonne\DI;
 
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Kdyby\Console\DI\ConsoleExtension;
+use Kdyby\Doctrine\DI\OrmExtension;
 use Kdyby\Doctrine\Mapping\AnnotationDriver;
 use Kdyby\Events\DI\EventsExtension;
 use Kdyby\Translation\Translator;
@@ -36,7 +37,6 @@ use Voonne\Panels\Renderers\RendererManager;
 use Voonne\Panels\Renderers\TableRenderer\TableRendererFactory;
 use Voonne\Security\Authenticator;
 use Voonne\Security\Authorizator;
-use Voonne\Security\User;
 use Voonne\Storage\Latte\Macros;
 use Voonne\Storage\StorageManager;
 use Voonne\Voonne\AdminModule\Forms\LostPasswordFormFactory;
@@ -55,6 +55,15 @@ use Voonne\Voonne\Controls\FormError\IFormErrorControlFactory;
 use Voonne\Voonne\Controls\Menu\IMenuControlFactory;
 use Voonne\Voonne\InvalidStateException;
 use Voonne\Voonne\Listeners\EmailListener;
+use Voonne\Voonne\Model\Entities\Domain;
+use Voonne\Voonne\Model\Entities\DomainLanguage;
+use Voonne\Voonne\Model\Entities\Language;
+use Voonne\Voonne\Model\Entities\LostPassword;
+use Voonne\Voonne\Model\Entities\Privilege;
+use Voonne\Voonne\Model\Entities\Resource;
+use Voonne\Voonne\Model\Entities\Role;
+use Voonne\Voonne\Model\Entities\User;
+use Voonne\Voonne\Model\Entities\Zone;
 use Voonne\Voonne\Model\Facades\LostPasswordFacade;
 use Voonne\Voonne\Model\Facades\UserFacade;
 use Voonne\Voonne\Model\Repositories\ZoneRepository;
@@ -97,31 +106,40 @@ class VoonneExtension extends CompilerExtension
 		/* repositories */
 
 		$builder->addDefinition($this->prefix('domainLanguageRepository'))
-			->setClass(DomainLanguageRepository::class);
+			->setClass(DomainLanguageRepository::class)
+			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => DomainLanguage::class]);
 
 		$builder->addDefinition($this->prefix('domainRepository'))
-			->setClass(DomainRepository::class);
+			->setClass(DomainRepository::class)
+			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => Domain::class]);
 
 		$builder->addDefinition($this->prefix('languageRepository'))
-			->setClass(LanguageRepository::class);
+			->setClass(LanguageRepository::class)
+			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => Language::class]);
 
 		$builder->addDefinition($this->prefix('lostPasswordRepository'))
-			->setClass(LostPasswordRepository::class);
+			->setClass(LostPasswordRepository::class)
+			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => LostPassword::class]);
 
 		$builder->addDefinition($this->prefix('PrivilegeRepository'))
-			->setClass(PrivilegeRepository::class);
+			->setClass(PrivilegeRepository::class)
+			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => Privilege::class]);
 
 		$builder->addDefinition($this->prefix('resourceRepository'))
-			->setClass(ResourceRepository::class);
+			->setClass(ResourceRepository::class)
+			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => Resource::class]);
 
 		$builder->addDefinition($this->prefix('roleRepository'))
-			->setClass(RoleRepository::class);
+			->setClass(RoleRepository::class)
+			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => Role::class]);
 
 		$builder->addDefinition($this->prefix('userRepository'))
-			->setClass(UserRepository::class);
+			->setClass(UserRepository::class)
+			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => User::class]);
 
 		$builder->addDefinition($this->prefix('zoneRepository'))
-			->setClass(ZoneRepository::class);
+			->setClass(ZoneRepository::class)
+			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => Zone::class]);
 
 		/* forms */
 
@@ -252,7 +270,7 @@ class VoonneExtension extends CompilerExtension
 			->setClass(Authorizator::class);
 
 		$builder->addDefinition($this->prefix('user'))
-			->setClass(User::class);
+			->setClass(\Voonne\Security\User::class);
 
 		/* assets */
 
