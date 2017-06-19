@@ -16,6 +16,7 @@ use Kdyby\Translation\Translator;
 use Nette\Application\UI\Presenter;
 use Nette\ComponentModel\IComponent;
 use Voonne\Controls\Control;
+use Voonne\Domains\DomainManager;
 use Voonne\Security\Authenticator;
 use Voonne\Voonne\Controls\FlashMessage\IFlashMessageControlFactory;
 use Voonne\Voonne\Controls\FormError\IFormErrorControlFactory;
@@ -124,6 +125,12 @@ abstract class BasePresenter extends Presenter
 		}
 
 		return $this;
+	}
+
+
+	public function injectSynchronize(DomainManager $domainManager)
+	{
+		$domainManager->synchronize();
 	}
 
 }

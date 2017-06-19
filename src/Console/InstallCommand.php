@@ -18,6 +18,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Voonne\Domains\DomainManager;
 use Voonne\Voonne\InvalidArgumentException;
 use Voonne\Voonne\Model\Entities\Domain;
 use Voonne\Voonne\Model\Entities\DomainLanguage;
@@ -47,6 +48,12 @@ class InstallCommand extends Command
 	public $languageRepository;
 
 	/**
+	 * @var DomainManager
+	 * @inject
+	 */
+	public $domainManager;
+
+	/**
 	 * @var string
 	 */
 	private $name = 'voonne:install';
@@ -56,20 +63,12 @@ class InstallCommand extends Command
 	{
 		$this->setName($this->name);
 		$this->setDescription('Installs the Voonne Platform.');
-
-		$this->setDefinition([
-			new InputArgument('domain', InputArgument::REQUIRED),
-			new InputArgument('language', InputArgument::REQUIRED)
-		]);
 	}
 
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		$this->cacheCleaner->invalidate();
-
-		$domainArgument = $input->getArgument('domain');
-		$languageArgument = $input->getArgument('language');
 
 		$validator = new SchemaValidator($this->entityManager);
 
@@ -79,14 +78,7 @@ class InstallCommand extends Command
 		}
 
 		if($this->languageRepository->countBy([]) != 0) {
-			$output->writeln('<error> The Voonne Platform is already installed. </error>');
-			return 1;
-		}
-
-		try {
-			$this->getLanguage($languageArgument);
-		} catch (InvalidArgumentException $e) {
-			$output->writeln('<error> Domain language must be valid ISO code. </error>');
+			$output->writeln('<error>The Voonne Platform is already installed.</error>');
 			return 1;
 		}
 
@@ -97,38 +89,16 @@ class InstallCommand extends Command
 
 			$this->entityManager->flush();
 
-			$this->entityManager->persist(new DomainLanguage(new Domain($domainArgument),
-				$this->languageRepository->findOneBy(['isoCode' => $languageArgument])));
-			$this->entityManager->flush();
+			$this->domainManager->synchronize();
 
-			$output->writeln('<info> The Voonne Platform has been successfully installed. </info>');
+			$output->writeln('<info>The Voonne Platform has been successfully installed.</info>');
 
 			return 1;
 		} catch (PDOException $e) {
-			$output->writeln('<error> error! </error>');
+			$output->writeln('<error>error!</error>');
 
 			return 0;
 		}
-	}
-
-
-	/**
-	 * @param string $isoCode
-	 *
-	 * @return Language
-	 *
-	 * @throws InvalidArgumentException
-	 */
-	private function getLanguage($isoCode)
-	{
-		foreach ($this->getLanguages() as $language) {
-			/** @var Language $language */
-			if ($language->getIsoCode() == $isoCode) {
-				return $language;
-			}
-		}
-
-		throw new InvalidArgumentException();
 	}
 
 

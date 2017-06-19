@@ -25,6 +25,7 @@ use Nette\DI\CompilerExtension;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use Voonne\Assets\AssetsManager;
+use Voonne\Domains\DomainManager;
 use Voonne\Layouts\Layout1\ILayout1Factory;
 use Voonne\Layouts\Layout21\ILayout21Factory;
 use Voonne\Layouts\LayoutManager;
@@ -43,7 +44,6 @@ use Voonne\Voonne\AdminModule\Forms\LostPasswordFormFactory;
 use Voonne\Voonne\AdminModule\Forms\NewPasswordFormFactory;
 use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
 use Voonne\Voonne\AssertionException;
-use Voonne\Voonne\Console\DomainCreateCommand;
 use Voonne\Voonne\Console\Helpers\StateHelper;
 use Voonne\Voonne\Console\InstallCommand;
 use Voonne\Voonne\Console\UserCreateCommand;
@@ -237,10 +237,6 @@ class VoonneExtension extends CompilerExtension
 			->setClass(StateHelper::class)
 			->addTag(ConsoleExtension::TAG_HELPER);
 
-		$builder->addDefinition($this->prefix('cli.domain.create'))
-			->setClass(DomainCreateCommand::class)
-			->addTag(ConsoleExtension::TAG_COMMAND);
-
 		$builder->addDefinition($this->prefix('cli.install'))
 			->setClass(InstallCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
@@ -248,6 +244,11 @@ class VoonneExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('cli.user.create'))
 			->setClass(UserCreateCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
+
+		/* domains */
+
+		$builder->addDefinition($this->prefix('domainManager'))
+			->setClass(DomainManager::class);
 
 		/* storage */
 
