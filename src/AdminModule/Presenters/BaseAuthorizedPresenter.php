@@ -35,7 +35,7 @@ abstract class BaseAuthorizedPresenter extends BasePresenter
 			$this->redirect('Default:default');
 		}
 
-		if (!$this->securityUser->haveArea('admin')) {
+		if (!$this->securityUser->haveZone('admin')) {
 			$this->getUser()->logout(true);
 
 			$this->flashMessage('voonne-common.authentication.unauthorizedAccess', FlashMessage::INFO);

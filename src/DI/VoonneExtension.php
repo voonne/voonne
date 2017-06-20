@@ -38,6 +38,7 @@ use Voonne\Panels\Renderers\RendererManager;
 use Voonne\Panels\Renderers\TableRenderer\TableRendererFactory;
 use Voonne\Security\Authenticator;
 use Voonne\Security\Authorizator;
+use Voonne\Security\PermissionManager;
 use Voonne\Storage\Latte\Macros;
 use Voonne\Storage\StorageManager;
 use Voonne\Voonne\AdminModule\Forms\LostPasswordFormFactory;
@@ -262,13 +263,17 @@ class VoonneExtension extends CompilerExtension
 		$builder->getDefinition('latte.latteFactory')
 			->addSetup('?->onCompile[] = function($engine) { ' . Macros::class . '::install($engine->getCompiler()); }', ['@self']);
 
-		/* authentication and authorization */
+		/* security */
 
 		$builder->addDefinition($this->prefix('authenticator'))
 			->setClass(Authenticator::class);
 
 		$builder->addDefinition($this->prefix('authorizator'))
 			->setClass(Authorizator::class);
+
+		$builder->addDefinition($this->prefix('permissionManager'))
+			->setClass(PermissionManager::class)
+			->addSetup('addZone', ['admin', 'Administration']);
 
 		$builder->addDefinition($this->prefix('user'))
 			->setClass(\Voonne\Security\User::class);
