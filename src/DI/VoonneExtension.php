@@ -48,6 +48,7 @@ use Voonne\Voonne\AssertionException;
 use Voonne\Voonne\Console\Helpers\StateHelper;
 use Voonne\Voonne\Console\InstallCommand;
 use Voonne\Voonne\Console\RoleCreateCommand;
+use Voonne\Voonne\Console\RoleListCommand;
 use Voonne\Voonne\Console\UserCreateCommand;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\Latte\Engine;
@@ -249,6 +250,10 @@ class VoonneExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('cli.role.create'))
 			->setClass(RoleCreateCommand::class)
+			->addTag(ConsoleExtension::TAG_COMMAND);
+
+		$builder->addDefinition($this->prefix('cli.role.list'))
+			->setClass(RoleListCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
 		$builder->addDefinition($this->prefix('cli.user.create'))
