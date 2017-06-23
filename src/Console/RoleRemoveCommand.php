@@ -10,17 +10,24 @@
 
 namespace Voonne\Voonne\Console;
 
+use PDOException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Voonne\Voonne\DuplicateEntryException;
-use Voonne\Voonne\Model\Entities\Role;
+use Voonne\Model\IOException;
 use Voonne\Voonne\Model\Facades\RoleFacade;
+use Voonne\Voonne\Model\Repositories\RoleRepository;
 
 
-class RoleCreateCommand extends Command
+class RoleRemoveCommand extends Command
 {
+
+	/**
+	 * @var RoleRepository
+	 * @inject
+	 */
+	public $roleRepository;
 
 	/**
 	 * @var RoleFacade
@@ -31,13 +38,13 @@ class RoleCreateCommand extends Command
 	/**
 	 * @var string
 	 */
-	private $name = 'voonne:role:create';
+	private $name = 'voonne:role:remove';
 
 
 	protected function configure()
 	{
 		$this->setName($this->name);
-		$this->setDescription('Creates a new role.');
+		$this->setDescription('Removes a role.');
 
 		$this->setDefinition([
 			new InputArgument('name', InputArgument::REQUIRED)
@@ -56,12 +63,20 @@ class RoleCreateCommand extends Command
 		}
 
 		try {
-			$this->roleFacade->save(new Role($name));
+			$role = $this->roleRepository->findOneBy(['name' => $name]);
+		} catch (IOException $e) {
+			$output->writeln('<error>  A role with this name was not found.  </error>');
 
-			$output->writeln('The new role was created successfully.');
+			return 1;
+		}
+
+		try {
+			$this->roleFacade->remove($role);
+
+			$output->writeln('The role has been successfully removed.');
 
 			return 0;
-		} catch (DuplicateEntryException $e) {
+		} catch (PDOException $e) {
 			$output->writeln(sprintf('<error>  %s  </error>', $e->getMessage()));
 
 			return 1;

@@ -21,7 +21,7 @@ class UserRepository extends EntityRepository
 	 * @param User $user
 	 * @param string $email
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEmailFree(User $user, $email)
 	{

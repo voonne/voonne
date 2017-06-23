@@ -68,10 +68,10 @@ class RoleFacadeTest extends Unit
 			->with($role)
 			->andReturn(UnitOfWork::STATE_NEW);
 
-		$this->roleRepository->shouldReceive('countBy')
+		$this->roleRepository->shouldReceive('isNameFree')
 			->once()
-			->with(['name' => 'Admin'])
-			->andReturn(0);
+			->with($role, 'Admin')
+			->andReturn(true);
 
 		$this->entityManager->shouldReceive('persist')
 			->once()
@@ -105,10 +105,10 @@ class RoleFacadeTest extends Unit
 			->with($role)
 			->andReturn(UnitOfWork::STATE_NEW);
 
-		$this->roleRepository->shouldReceive('countBy')
+		$this->roleRepository->shouldReceive('isNameFree')
 			->once()
-			->with(['name' => 'Admin'])
-			->andReturn(1);
+			->with($role, 'Admin')
+			->andReturn(false);
 
 		$this->entityManager->shouldReceive('getUnitOfWork')
 			->once()
@@ -117,6 +117,22 @@ class RoleFacadeTest extends Unit
 
 		$this->expectException(DuplicateEntryException::class);
 		$this->roleFacade->save($role);
+	}
+
+
+	public function testRemove()
+	{
+		$role = Mockery::mock(Role::class);
+
+		$this->entityManager->shouldReceive('remove')
+			->once()
+			->with($role);
+
+		$this->entityManager->shouldReceive('flush')
+			->once()
+			->withNoArgs();
+
+		$this->roleFacade->remove($role);
 	}
 
 }

@@ -65,7 +65,7 @@ class LostPasswordFacade
 	{
 		$new = ($this->entityManager->getUnitOfWork()->getEntityState($lostPassword) == UnitOfWork::STATE_NEW);
 
-		if($this->lostPasswordRepository->countBy(['code' => $lostPassword->getCode()]) != 0) {
+		if(!$this->lostPasswordRepository->isCodeFree($lostPassword, $lostPassword->getCode())) {
 			throw new DuplicateEntryException('Lost password with this code is already exists.');
 		}
 

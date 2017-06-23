@@ -43,6 +43,11 @@ class RoleFacade
 	 */
 	public $onUpdate = [];
 
+	/**
+	 * @var array
+	 */
+	public $onRemove = [];
+
 
 	public function __construct(EntityManagerInterface $entityManager, RoleRepository $roleRepository)
 	{
@@ -60,7 +65,7 @@ class RoleFacade
 	{
 		$new = ($this->entityManager->getUnitOfWork()->getEntityState($role) == UnitOfWork::STATE_NEW);
 
-		if($this->roleRepository->countBy(['name' => $role->getName()]) != 0) {
+		if(!$this->roleRepository->isNameFree($role, $role->getName())) {
 			throw new DuplicateEntryException('Role with this name is already exists.');
 		}
 
@@ -72,6 +77,18 @@ class RoleFacade
 		} else {
 			$this->onUpdate($role);
 		}
+	}
+
+
+	/**
+	 * @param Role $role
+	 */
+	public function remove(Role $role)
+	{
+		$this->onRemove($role);
+
+		$this->entityManager->remove($role);
+		$this->entityManager->flush();
 	}
 
 }

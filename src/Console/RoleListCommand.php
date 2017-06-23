@@ -44,10 +44,17 @@ class RoleListCommand extends Command
 	{
 		if(!$this->getHelper('state')->isInstalled()) {
 			$output->writeln('<error>  The Voonne Platform must be installed in the first place. Please use command voonne:install.  </error>');
+
 			return 1;
 		}
 
-		foreach ($this->roleRepository->findAll() as $role) {
+		$roles = $this->roleRepository->findAll();
+
+		if (count($roles) == 0) {
+			$output->writeln('There are no roles. You can create a new role by using voonne:role:create.');
+		}
+
+		foreach ($roles as $role) {
 			/** @var Role $role */
 			$output->writeln(sprintf('<fg=yellow>%s</>', $role->getName()));
 
@@ -57,6 +64,8 @@ class RoleListCommand extends Command
 				$output->writeln(sprintf('  <fg=green>%s</>%s%s', $role, str_repeat(' ', (35 - strlen($role))), $privileges));
 			}
 		}
+
+		return 0;
 	}
 
 

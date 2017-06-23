@@ -70,11 +70,13 @@ class InstallCommand extends Command
 
 		if(!$validator->schemaInSyncWithMetadata()) {
 			$output->writeln('<error> The database schema is not in sync with the current mapping file. </error>');
+
 			return 1;
 		}
 
 		if($this->languageRepository->countBy([]) != 0) {
 			$output->writeln('<error>The Voonne Platform is already installed.</error>');
+
 			return 1;
 		}
 
@@ -87,13 +89,13 @@ class InstallCommand extends Command
 
 			$this->domainManager->synchronize();
 
-			$output->writeln('<info>The Voonne Platform has been successfully installed.</info>');
-
-			return 1;
-		} catch (PDOException $e) {
-			$output->writeln('<error>error!</error>');
+			$output->writeln('The Voonne Platform has been successfully installed.');
 
 			return 0;
+		} catch (PDOException $e) {
+			$output->writeln(sprintf('<error>  %s  </error>', $e->getMessage()));
+
+			return 1;
 		}
 	}
 

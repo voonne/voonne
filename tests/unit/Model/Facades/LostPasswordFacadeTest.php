@@ -68,10 +68,10 @@ class LostPasswordFacadeTest extends Unit
 			->with($lostPassword)
 			->andReturn(UnitOfWork::STATE_NEW);
 
-		$this->lostPasswordRepository->shouldReceive('countBy')
+		$this->lostPasswordRepository->shouldReceive('isCodeFree')
 			->once()
-			->with(['code' => '1234567890'])
-			->andReturn(0);
+			->with($lostPassword, '1234567890')
+			->andReturn(true);
 
 		$this->entityManager->shouldReceive('persist')
 			->once()
@@ -105,10 +105,10 @@ class LostPasswordFacadeTest extends Unit
 			->with($lostPassword)
 			->andReturn(UnitOfWork::STATE_NEW);
 
-		$this->lostPasswordRepository->shouldReceive('countBy')
+		$this->lostPasswordRepository->shouldReceive('isCodeFree')
 			->once()
-			->with(['code' => '1234567890'])
-			->andReturn(1);
+			->with($lostPassword, '1234567890')
+			->andReturn(false);
 
 
 		$this->entityManager->shouldReceive('getUnitOfWork')

@@ -53,23 +53,25 @@ class UserCreateCommand extends Command
 		$password = $input->getArgument('password');
 
 		if(!Validators::isEmail($email)) {
-			$output->writeln("<error>  First parameter must be valid email, '" . $email . "' given.  </error>");
+			$output->writeln(sprintf('<error>  First parameter must be valid email, \'%s\' given.  </error>', $email));
+
 			return 1;
 		}
 
 		if(!$this->getHelper('state')->isInstalled()) {
 			$output->writeln('<error>  The Voonne Platform must be installed in the first place. Please use command voonne:install.  </error>');
+
 			return 1;
 		}
 
 		try {
 			$this->userFacade->save(new User($email, $password));
 
-			$output->writeln('<info>The new user was created successfully.</info>');
+			$output->writeln('The new user was created successfully.');
 
 			return 0;
 		} catch (DuplicateEntryException $e) {
-			$output->writeln('<error>  ' . $e->getMessage() . '  </error>');
+			$output->writeln(sprintf('<error>  %s  </error>', $e->getMessage()));
 
 			return 1;
 		}
