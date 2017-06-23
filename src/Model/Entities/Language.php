@@ -27,13 +27,13 @@ class Language
 	use UniversallyUniqueIdentifier;
 
 	/**
-	 * @ORM\Column(type="string", length=100, nullable=false)
+	 * @ORM\Column(type="string", nullable=false)
 	 * @var string
 	 */
 	protected $name;
 
 	/**
-	 * @ORM\Column(type="string", length=2, unique=true, nullable=false)
+	 * @ORM\Column(type="string", nullable=false, unique=true)
 	 * @var string
 	 */
 	protected $isoCode;

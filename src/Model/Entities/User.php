@@ -35,7 +35,7 @@ class User
 	protected $email;
 
 	/**
-	 * @ORM\Column(type="string", length=60, nullable=false)
+	 * @ORM\Column(type="string", nullable=false)
 	 * @var string
 	 */
 	protected $password;

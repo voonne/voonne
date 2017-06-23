@@ -27,7 +27,7 @@ class Domain
 	use UniversallyUniqueIdentifier;
 
 	/**
-	 * @ORM\Column(type="string", length=100, nullable=false)
+	 * @ORM\Column(type="string", nullable=false, unique=true)
 	 * @var string
 	 */
 	protected $name;

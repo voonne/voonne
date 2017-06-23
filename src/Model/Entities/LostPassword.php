@@ -27,7 +27,7 @@ class LostPassword
 	use UniversallyUniqueIdentifier;
 
 	/**
-	 * @ORM\Column(type="string", length=10, nullable=false, unique=true)
+	 * @ORM\Column(type="string", nullable=false, unique=true)
 	 * @var string
 	 */
 	protected $code;

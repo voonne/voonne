@@ -27,7 +27,7 @@ class Role
 	use UniversallyUniqueIdentifier;
 
 	/**
-	 * @ORM\Column(type="string", nullable=false)
+	 * @ORM\Column(type="string", nullable=false, unique=true)
 	 * @var string
 	 */
 	private $name;

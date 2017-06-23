@@ -47,6 +47,7 @@ use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
 use Voonne\Voonne\AssertionException;
 use Voonne\Voonne\Console\Helpers\StateHelper;
 use Voonne\Voonne\Console\InstallCommand;
+use Voonne\Voonne\Console\RoleCreateCommand;
 use Voonne\Voonne\Console\UserCreateCommand;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\Latte\Engine;
@@ -66,6 +67,7 @@ use Voonne\Voonne\Model\Entities\Role;
 use Voonne\Voonne\Model\Entities\User;
 use Voonne\Voonne\Model\Entities\Zone;
 use Voonne\Voonne\Model\Facades\LostPasswordFacade;
+use Voonne\Voonne\Model\Facades\RoleFacade;
 use Voonne\Voonne\Model\Facades\UserFacade;
 use Voonne\Voonne\Model\Repositories\ZoneRepository;
 use Voonne\Voonne\Model\Repositories\DomainLanguageRepository;
@@ -100,6 +102,9 @@ class VoonneExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('lostPasswordFacade'))
 			->setClass(LostPasswordFacade::class);
+
+		$builder->addDefinition($this->prefix('roleFacade'))
+			->setClass(RoleFacade::class);
 
 		$builder->addDefinition($this->prefix('userFacade'))
 			->setClass(UserFacade::class);
@@ -240,6 +245,10 @@ class VoonneExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('cli.install'))
 			->setClass(InstallCommand::class)
+			->addTag(ConsoleExtension::TAG_COMMAND);
+
+		$builder->addDefinition($this->prefix('cli.role.create'))
+			->setClass(RoleCreateCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
 		$builder->addDefinition($this->prefix('cli.user.create'))

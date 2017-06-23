@@ -10,52 +10,44 @@
 
 namespace Voonne\Voonne\Console;
 
-use Nette\Utils\Validators;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Voonne\Voonne\DuplicateEntryException;
-use Voonne\Voonne\Model\Entities\User;
-use Voonne\Voonne\Model\Facades\UserFacade;
+use Voonne\Voonne\Model\Entities\Role;
+use Voonne\Voonne\Model\Facades\RoleFacade;
 
 
-class UserCreateCommand extends Command
+class RoleCreateCommand extends Command
 {
 
 	/**
-	 * @var UserFacade
+	 * @var RoleFacade
 	 * @inject
 	 */
-	public $userFacade;
+	public $roleFacade;
 
 	/**
 	 * @var string
 	 */
-	private $name = 'voonne:user:create';
+	private $name = 'voonne:role:create';
 
 
 	protected function configure()
 	{
 		$this->setName($this->name);
-		$this->setDescription('Creates a new user.');
+		$this->setDescription('Creates a new role.');
 
 		$this->setDefinition([
-			new InputArgument('email', InputArgument::REQUIRED),
-			new InputArgument('password', InputArgument::REQUIRED)
+			new InputArgument('name', InputArgument::REQUIRED)
 		]);
 	}
 
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$email = $input->getArgument('email');
-		$password = $input->getArgument('password');
-
-		if(!Validators::isEmail($email)) {
-			$output->writeln("<error>  First parameter must be valid email, '" . $email . "' given.  </error>");
-			return 1;
-		}
+		$name = $input->getArgument('name');
 
 		if(!$this->getHelper('state')->isInstalled()) {
 			$output->writeln('<error>  The Voonne Platform must be installed in the first place. Please use command voonne:install.  </error>');
@@ -63,9 +55,9 @@ class UserCreateCommand extends Command
 		}
 
 		try {
-			$this->userFacade->save(new User($email, $password));
+			$this->roleFacade->save(new Role($name));
 
-			$output->writeln('<info>The new user was created successfully.</info>');
+			$output->writeln('<info>The new role was created successfully.</info>');
 
 			return 0;
 		} catch (DuplicateEntryException $e) {

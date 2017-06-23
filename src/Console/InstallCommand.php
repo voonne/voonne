@@ -15,13 +15,9 @@ use Doctrine\ORM\Tools\SchemaValidator;
 use Kdyby\Doctrine\Tools\CacheCleaner;
 use PDOException;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Voonne\Domains\DomainManager;
-use Voonne\Voonne\InvalidArgumentException;
-use Voonne\Voonne\Model\Entities\Domain;
-use Voonne\Voonne\Model\Entities\DomainLanguage;
 use Voonne\Voonne\Model\Entities\Language;
 use Voonne\Voonne\Model\Repositories\LanguageRepository;
 
