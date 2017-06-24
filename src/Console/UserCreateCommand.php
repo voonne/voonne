@@ -49,11 +49,11 @@ class UserCreateCommand extends Command
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$email = $input->getArgument('email');
-		$password = $input->getArgument('password');
+		$userEmail = $input->getArgument('email');
+		$userPassword = $input->getArgument('password');
 
-		if(!Validators::isEmail($email)) {
-			$output->writeln(sprintf('<error>  First parameter must be valid email, "%s" given.  </error>', $email));
+		if(!Validators::isEmail($userEmail)) {
+			$output->writeln(sprintf('<error>  First parameter must be valid email, "%s" given.  </error>', $userEmail));
 
 			return 1;
 		}
@@ -65,7 +65,7 @@ class UserCreateCommand extends Command
 		}
 
 		try {
-			$this->userFacade->save(new User($email, $password));
+			$this->userFacade->save(new User($userEmail, $userPassword));
 
 			$output->writeln('The new user was created successfully.');
 

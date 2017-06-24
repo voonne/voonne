@@ -47,7 +47,7 @@ class RoleCreateCommand extends Command
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$name = $input->getArgument('name');
+		$roleName = $input->getArgument('name');
 
 		if(!$this->getHelper('state')->isInstalled()) {
 			$output->writeln('<error>  The Voonne Platform must be installed in the first place. Please use command voonne:install.  </error>');
@@ -56,7 +56,7 @@ class RoleCreateCommand extends Command
 		}
 
 		try {
-			$this->roleFacade->save(new Role($name));
+			$this->roleFacade->save(new Role($roleName));
 
 			$output->writeln('The new role was created successfully.');
 

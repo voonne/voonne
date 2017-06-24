@@ -16,11 +16,14 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Voonne\Model\IOException;
+use Voonne\Voonne\Model\Entities\Privilege;
+use Voonne\Voonne\Model\Entities\Role;
 use Voonne\Voonne\Model\Facades\RoleFacade;
+use Voonne\Voonne\Model\Repositories\PrivilegeRepository;
 use Voonne\Voonne\Model\Repositories\RoleRepository;
 
 
-class RoleRemoveCommand extends Command
+class RoleAddPrivilegeCommand extends Command
 {
 
 	/**
@@ -28,6 +31,12 @@ class RoleRemoveCommand extends Command
 	 * @inject
 	 */
 	public $roleRepository;
+
+	/**
+	 * @var PrivilegeRepository
+	 * @inject
+	 */
+	public $privilegeRepository;
 
 	/**
 	 * @var RoleFacade
@@ -38,23 +47,29 @@ class RoleRemoveCommand extends Command
 	/**
 	 * @var string
 	 */
-	private $name = 'voonne:role:remove';
+	private $name = 'voonne:role:add-privilege';
 
 
 	protected function configure()
 	{
 		$this->setName($this->name);
-		$this->setDescription('Removes the role.');
+		$this->setDescription('Adds the privilege to the role.');
 
 		$this->setDefinition([
-			new InputArgument('name', InputArgument::REQUIRED)
+			new InputArgument('role', InputArgument::REQUIRED),
+			new InputArgument('zone', InputArgument::REQUIRED),
+			new InputArgument('resource', InputArgument::REQUIRED),
+			new InputArgument('privilege', InputArgument::REQUIRED)
 		]);
 	}
 
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$roleName = $input->getArgument('name');
+		$roleName = $input->getArgument('role');
+		$zoneName = $input->getArgument('zone');
+		$resourceName = $input->getArgument('resource');
+		$privilegeName = $input->getArgument('privilege');
 
 		if(!$this->getHelper('state')->isInstalled()) {
 			$output->writeln('<error>  The Voonne Platform must be installed in the first place. Please use command voonne:install.  </error>');
@@ -63,6 +78,7 @@ class RoleRemoveCommand extends Command
 		}
 
 		try {
+			/** @var Role $role */
 			$role = $this->roleRepository->findOneBy(['name' => $roleName]);
 		} catch (IOException $e) {
 			$output->writeln('<error>  Role with this name was not found.  </error>');
@@ -71,9 +87,26 @@ class RoleRemoveCommand extends Command
 		}
 
 		try {
-			$this->roleFacade->remove($role);
+			/** @var Privilege $privilege */
+			$privilege = $this->privilegeRepository->getPrivilege($zoneName, $resourceName, $privilegeName);
+		} catch (IOException $e) {
+			$output->writeln('<error>  Privilege with this name was not found.  </error>');
 
-			$output->writeln('The role has been successfully removed.');
+			return 1;
+		}
+
+		if ($role->getPrivileges()->contains($privilege)) {
+			$output->writeln('<error>  This role already has this privilege.  </error>');
+
+			return 1;
+		}
+
+		try {
+			$role->addPrivilege($privilege);
+
+			$this->roleFacade->save($role);
+
+			$output->writeln('The privilege was successfully added to the role.');
 
 			return 0;
 		} catch (PDOException $e) {
