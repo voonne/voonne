@@ -10,6 +10,7 @@
 
 namespace Voonne\Voonne\DI;
 
+use Doctrine\Common\CommonException;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Kdyby\Console\DI\ConsoleExtension;
 use Kdyby\Doctrine\DI\OrmExtension;
@@ -51,6 +52,7 @@ use Voonne\Voonne\Console\PermissionListCommand;
 use Voonne\Voonne\Console\RoleCreateCommand;
 use Voonne\Voonne\Console\RoleListCommand;
 use Voonne\Voonne\Console\RoleRemoveCommand;
+use Voonne\Voonne\Console\UserAddRoleCommand;
 use Voonne\Voonne\Console\UserCreateCommand;
 use Voonne\Voonne\Console\UserListCommand;
 use Voonne\Voonne\Console\UserRemoveCommand;
@@ -266,6 +268,10 @@ class VoonneExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('cli.role.remove'))
 			->setClass(RoleRemoveCommand::class)
+			->addTag(ConsoleExtension::TAG_COMMAND);
+
+		$builder->addDefinition($this->prefix('cli.user.addRole'))
+			->setClass(UserAddRoleCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
 		$builder->addDefinition($this->prefix('cli.user.create'))
