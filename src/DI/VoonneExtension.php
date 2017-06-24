@@ -47,6 +47,7 @@ use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
 use Voonne\Voonne\AssertionException;
 use Voonne\Voonne\Console\Helpers\StateHelper;
 use Voonne\Voonne\Console\InstallCommand;
+use Voonne\Voonne\Console\PermissionListCommand;
 use Voonne\Voonne\Console\RoleCreateCommand;
 use Voonne\Voonne\Console\RoleListCommand;
 use Voonne\Voonne\Console\RoleRemoveCommand;
@@ -249,6 +250,10 @@ class VoonneExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('cli.install'))
 			->setClass(InstallCommand::class)
+			->addTag(ConsoleExtension::TAG_COMMAND);
+
+		$builder->addDefinition($this->prefix('cli.permission.list'))
+			->setClass(PermissionListCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
 		$builder->addDefinition($this->prefix('cli.role.create'))
