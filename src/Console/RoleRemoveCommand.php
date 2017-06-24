@@ -44,7 +44,7 @@ class RoleRemoveCommand extends Command
 	protected function configure()
 	{
 		$this->setName($this->name);
-		$this->setDescription('Removes a role.');
+		$this->setDescription('Removes the role.');
 
 		$this->setDefinition([
 			new InputArgument('name', InputArgument::REQUIRED)
@@ -65,7 +65,7 @@ class RoleRemoveCommand extends Command
 		try {
 			$role = $this->roleRepository->findOneBy(['name' => $name]);
 		} catch (IOException $e) {
-			$output->writeln('<error>  A role with this name was not found.  </error>');
+			$output->writeln('<error>  Role with this name was not found.  </error>');
 
 			return 1;
 		}

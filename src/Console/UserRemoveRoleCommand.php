@@ -23,7 +23,7 @@ use Voonne\Voonne\Model\Repositories\RoleRepository;
 use Voonne\Voonne\Model\Repositories\UserRepository;
 
 
-class UserAddRoleCommand extends Command
+class UserRemoveRoleCommand extends Command
 {
 
 	/**
@@ -47,13 +47,13 @@ class UserAddRoleCommand extends Command
 	/**
 	 * @var string
 	 */
-	private $name = 'voonne:user:add-role';
+	private $name = 'voonne:user:remove-role';
 
 
 	protected function configure()
 	{
 		$this->setName($this->name);
-		$this->setDescription('Adds the role to the user.');
+		$this->setDescription('Removes the role from the user.');
 
 		$this->setDefinition([
 			new InputArgument('user', InputArgument::REQUIRED),
@@ -91,18 +91,18 @@ class UserAddRoleCommand extends Command
 			return 1;
 		}
 
-		if ($user->getRoles()->contains($role)) {
-			$output->writeln('<error>  This user already has this role.  </error>');
+		if (!$user->getRoles()->contains($role)) {
+			$output->writeln('<error>  This user do not have this role.  </error>');
 
 			return 1;
 		}
 
 		try {
-			$user->addRole($role);
+			$user->removeRole($role);
 
 			$this->userFacade->save($user);
 
-			$output->writeln('The role was successfully added to the user.');
+			$output->writeln('The role was successfully removed to the user.');
 
 			return 0;
 		} catch (PDOException $e) {

@@ -37,7 +37,7 @@ class RoleCreateCommand extends Command
 	protected function configure()
 	{
 		$this->setName($this->name);
-		$this->setDescription('Creates a new role.');
+		$this->setDescription('Creates the new role.');
 
 		$this->setDefinition([
 			new InputArgument('name', InputArgument::REQUIRED)

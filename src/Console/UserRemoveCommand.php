@@ -44,7 +44,7 @@ class UserRemoveCommand extends Command
 	protected function configure()
 	{
 		$this->setName($this->name);
-		$this->setDescription('Removes a user.');
+		$this->setDescription('Removes the user.');
 
 		$this->setDefinition([
 			new InputArgument('email', InputArgument::REQUIRED)
@@ -65,7 +65,7 @@ class UserRemoveCommand extends Command
 		try {
 			$user = $this->userRepository->findOneBy(['email' => $email]);
 		} catch (IOException $e) {
-			$output->writeln('<error>  A user with this email was not found.  </error>');
+			$output->writeln('<error>  User with this email was not found.  </error>');
 
 			return 1;
 		}

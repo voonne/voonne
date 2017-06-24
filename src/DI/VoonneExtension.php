@@ -56,6 +56,7 @@ use Voonne\Voonne\Console\UserAddRoleCommand;
 use Voonne\Voonne\Console\UserCreateCommand;
 use Voonne\Voonne\Console\UserListCommand;
 use Voonne\Voonne\Console\UserRemoveCommand;
+use Voonne\Voonne\Console\UserRemoveRoleCommand;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\Latte\Engine;
 use Voonne\Voonne\Controls\DomainSelect\IDomainSelectControlFactory;
@@ -284,6 +285,10 @@ class VoonneExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('cli.user.remove'))
 			->setClass(UserRemoveCommand::class)
+			->addTag(ConsoleExtension::TAG_COMMAND);
+
+		$builder->addDefinition($this->prefix('cli.user.removeRole'))
+			->setClass(UserRemoveRoleCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
 		/* domains */

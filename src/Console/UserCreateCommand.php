@@ -38,7 +38,7 @@ class UserCreateCommand extends Command
 	protected function configure()
 	{
 		$this->setName($this->name);
-		$this->setDescription('Creates a new user.');
+		$this->setDescription('Creates the new user.');
 
 		$this->setDefinition([
 			new InputArgument('email', InputArgument::REQUIRED),
