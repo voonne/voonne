@@ -51,6 +51,7 @@ use Voonne\Voonne\Console\RoleCreateCommand;
 use Voonne\Voonne\Console\RoleListCommand;
 use Voonne\Voonne\Console\RoleRemoveCommand;
 use Voonne\Voonne\Console\UserCreateCommand;
+use Voonne\Voonne\Console\UserListCommand;
 use Voonne\Voonne\Content\ContentForm;
 use Voonne\Voonne\Content\Latte\Engine;
 use Voonne\Voonne\Controls\DomainSelect\IDomainSelectControlFactory;
@@ -263,6 +264,10 @@ class VoonneExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('cli.user.create'))
 			->setClass(UserCreateCommand::class)
+			->addTag(ConsoleExtension::TAG_COMMAND);
+
+		$builder->addDefinition($this->prefix('cli.user.list'))
+			->setClass(UserListCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
 		/* domains */

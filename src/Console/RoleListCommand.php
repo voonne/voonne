@@ -51,7 +51,7 @@ class RoleListCommand extends Command
 		$roles = $this->roleRepository->findAll();
 
 		if (count($roles) == 0) {
-			$output->writeln('There are no roles. You can create a new role by using voonne:role:create.');
+			$output->writeln('There are no roles. You can create a new role by using voonne:role:create command.');
 		}
 
 		foreach ($roles as $role) {
@@ -59,9 +59,12 @@ class RoleListCommand extends Command
 			$output->writeln(sprintf('<fg=yellow>%s</>', $role->getName()));
 
 			foreach ($this->getResources($role->getPrivileges()) as $role => $items) {
-				$privileges = implode(', ', $items);
-
-				$output->writeln(sprintf('  <fg=green>%s</>%s%s', $role, str_repeat(' ', (35 - strlen($role))), $privileges));
+				$output->writeln(sprintf(
+					'  <fg=green>%s</>%s%s',
+					$role,
+					str_repeat(' ', (35 - strlen($role))),
+					implode(', ', $items)
+				));
 			}
 		}
 

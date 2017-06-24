@@ -53,7 +53,7 @@ class UserCreateCommand extends Command
 		$password = $input->getArgument('password');
 
 		if(!Validators::isEmail($email)) {
-			$output->writeln(sprintf('<error>  First parameter must be valid email, \'%s\' given.  </error>', $email));
+			$output->writeln(sprintf('<error>  First parameter must be valid email, "%s" given.  </error>', $email));
 
 			return 1;
 		}
