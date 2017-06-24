@@ -53,6 +53,7 @@ use Voonne\Voonne\Console\RoleAddPrivilegeCommand;
 use Voonne\Voonne\Console\RoleCreateCommand;
 use Voonne\Voonne\Console\RoleListCommand;
 use Voonne\Voonne\Console\RoleRemoveCommand;
+use Voonne\Voonne\Console\RoleRemovePrivilegeCommand;
 use Voonne\Voonne\Console\UserAddRoleCommand;
 use Voonne\Voonne\Console\UserCreateCommand;
 use Voonne\Voonne\Console\UserListCommand;
@@ -274,6 +275,10 @@ class VoonneExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('cli.role.remove'))
 			->setClass(RoleRemoveCommand::class)
+			->addTag(ConsoleExtension::TAG_COMMAND);
+
+		$builder->addDefinition($this->prefix('cli.role.removePrivilege'))
+			->setClass(RoleRemovePrivilegeCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
 		$builder->addDefinition($this->prefix('cli.user.addRole'))
