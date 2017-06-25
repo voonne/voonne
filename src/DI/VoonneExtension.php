@@ -10,7 +10,6 @@
 
 namespace Voonne\Voonne\DI;
 
-use Doctrine\Common\CommonException;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Kdyby\Console\DI\ConsoleExtension;
 use Kdyby\Doctrine\DI\OrmExtension;

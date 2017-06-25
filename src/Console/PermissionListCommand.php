@@ -10,6 +10,7 @@
 
 namespace Voonne\Voonne\Console;
 
+use Kdyby\Translation\Translator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,6 +30,12 @@ class PermissionListCommand extends Command
 	public $zoneRepository;
 
 	/**
+	 * @var Translator
+	 * @inject
+	 */
+	public $translator;
+
+	/**
 	 * @var string
 	 */
 	private $name = 'voonne:permission:list';
@@ -43,6 +50,8 @@ class PermissionListCommand extends Command
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		$this->translator->setLocale('en');
+
 		if(!$this->getHelper('state')->isInstalled()) {
 			$output->writeln('<error>  The Voonne Platform must be installed in the first place. Please use command voonne:install.  </error>');
 
@@ -61,7 +70,7 @@ class PermissionListCommand extends Command
 				'<fg=yellow>%s</>%s%s',
 				$zone->getName(),
 				str_repeat(' ', (37 - strlen($zone->getName()))),
-				$zone->getDescription()
+				$this->translator->translate($zone->getDescription())
 			));
 
 			foreach ($zone->getResources() as $resource) {
@@ -70,7 +79,7 @@ class PermissionListCommand extends Command
 					'  <fg=yellow>%s</>%s%s',
 					$resource->getName(),
 					str_repeat(' ', (35 - strlen($resource->getName()))),
-					$resource->getDescription()
+					$this->translator->translate($resource->getDescription())
 				));
 
 				foreach ($resource->getPrivileges() as $privilege) {
@@ -79,7 +88,7 @@ class PermissionListCommand extends Command
 						'    <fg=green>%s</>%s%s',
 						$privilege->getName(),
 						str_repeat(' ', (33- strlen($privilege->getName()))),
-						$privilege->getDescription()
+						$this->translator->translate($privilege->getDescription())
 					));
 				}
 			}
