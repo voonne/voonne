@@ -10,12 +10,15 @@
 
 namespace Voonne\Voonne\Console;
 
+use Nette\Caching\Cache;
+use Nette\Caching\IStorage;
 use PDOException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Voonne\Model\IOException;
+use Voonne\Security\Authorizator;
 use Voonne\Voonne\Model\Entities\Privilege;
 use Voonne\Voonne\Model\Entities\Role;
 use Voonne\Voonne\Model\Facades\RoleFacade;
@@ -43,6 +46,12 @@ class RoleAddPrivilegeCommand extends Command
 	 * @inject
 	 */
 	public $roleFacade;
+
+	/**
+	 * @var IStorage
+	 * @inject
+	 */
+	public $storage;
 
 	/**
 	 * @var string
@@ -105,6 +114,8 @@ class RoleAddPrivilegeCommand extends Command
 			$role->addPrivilege($privilege);
 
 			$this->roleFacade->save($role);
+
+			(new Cache($this->storage, Authorizator::CACHE_NAMESPACE))->remove('permissions');
 
 			$output->writeln('The privilege was successfully added to the role.');
 
