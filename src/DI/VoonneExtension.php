@@ -13,7 +13,7 @@ namespace Voonne\Voonne\DI;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Kdyby\Console\DI\ConsoleExtension;
 use Kdyby\Doctrine\DI\OrmExtension;
-use Kdyby\Doctrine\Mapping\AnnotationDriver;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Kdyby\Events\DI\EventsExtension;
 use Kdyby\Translation\Translator;
 use Nette\Application\IPresenterFactory;
