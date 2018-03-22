@@ -10,6 +10,7 @@
 
 namespace Voonne\Voonne\DI;
 
+use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Kdyby\Console\DI\ConsoleExtension;
 use Kdyby\Doctrine\DI\OrmExtension;
@@ -401,19 +402,22 @@ class VoonneExtension extends CompilerExtension
 		}
 
 		// inspired by: https://github.com/Kdyby/Doctrine/blob/master/src/Kdyby/Doctrine/DI/OrmExtension.php
-		$this->getContainerBuilder()->addDefinition($this->name . '.doctrine.annotations')
-			->setClass('Doctrine\Common\Persistence\Mapping\Driver\MappingDriver')
+		$builder->addDefinition($this->prefix('doctrine.annotations'))
+			->setClass(MappingDriver::class)
 			->setFactory(AnnotationDriver::class, [
-				0 => [0 => __DIR__ . '/..'],
-				2 => '@doctrine.cache.default.metadata'
+				0 => '@Doctrine\Common\Annotations\Reader',
+				1 => [__DIR__ . '/..']
 			])
 			->setAutowired(false);
 
-		$metadataDriver->addSetup('addDriver', ['@' . $this->prefix('doctrine.annotations'), 'Voonne\Voonne']);
+		$metadataDriver->addSetup('addDriver', [
+			'@' . $this->prefix('doctrine.annotations'),
+			'Voonne\Voonne'
+		]);
 
 		/* content */
 
-		$latteFactoryDefinition = $builder->addDefinition('' . $this->prefix('latteFactory'))
+		$latteFactoryDefinition = $builder->addDefinition($this->prefix('latteFactory'))
 			->setClass(Engine::class, ['@' . $this->prefix('contentForm')])
 			->setImplement(ILatteFactory::class)
 			->setAutowired(false);
