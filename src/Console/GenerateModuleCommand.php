@@ -37,7 +37,7 @@ class GenerateModuleCommand extends Command
 	protected function configure()
 	{
 		$this->setName($this->name);
-		$this->setDescription('Generates module boilerplate.');
+		$this->setDescription('Generates module scaffold.');
 
 		$this->setDefinition([
 			new InputArgument('name', InputArgument::REQUIRED),

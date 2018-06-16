@@ -1,16 +1,16 @@
 {
 	"name": "voonne",
 	"devDependencies": {
-		"autoprefixer": "~6.4",
-		"gulp": "~3.9",
-		"gulp-concat": "~2.6",
-		"gulp-less": "~3.1",
-		"gulp-livereload": "~3.8",
-		"gulp-clean-css": "~2.0",
-		"gulp-plumber": "~1.1",
-		"gulp-postcss": "~6.1",
-		"gulp-sourcemaps": "~1.6",
-		"gulp-uglify": "~2.0",
-		"run-sequence": "~1.2"
+		"autoprefixer": "^7.1.0",
+		"gulp": "^3.9.1",
+		"gulp-clean-css": "^3.9.4",
+		"gulp-concat": "^2.6.1",
+		"gulp-less": "^3.5.0",
+		"gulp-livereload": "^3.8.1",
+		"gulp-plumber": "^1.2.0",
+		"gulp-postcss": "^7.0.0",
+		"gulp-sourcemaps": "^1.12.1",
+		"gulp-uglify": "^2.1.2",
+		"run-sequence": "^1.2.2"
 	}
 }

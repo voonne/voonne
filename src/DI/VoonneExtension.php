@@ -348,6 +348,8 @@ class VoonneExtension extends CompilerExtension
 			->addSetup('addStyle', ['sign-in', __DIR__ . '/../../dist/styles/sign-in.css'])
 			->addSetup('addAsset', ['styles/admin.css.map', __DIR__ . '/../../dist/styles/admin.css.map'])
 			->addSetup('addAsset', ['styles/sign-in.css.map', __DIR__ . '/../../dist/styles/sign-in.css.map'])
+			->addSetup('addAsset', ['fonts/FontAwesome.otf', __DIR__ . '/../../dist/fonts/FontAwesome.otf'])
+			->addSetup('addAsset', ['fonts/fontawesome-webfont.eot', __DIR__ . '/../../dist/fonts/fontawesome-webfont.eot'])
 			->addSetup('addAsset', ['fonts/fontawesome-webfont.svg', __DIR__ . '/../../dist/fonts/fontawesome-webfont.svg'])
 			->addSetup('addAsset', ['fonts/fontawesome-webfont.ttf', __DIR__ . '/../../dist/fonts/fontawesome-webfont.ttf'])
 			->addSetup('addAsset', ['fonts/fontawesome-webfont.woff', __DIR__ . '/../../dist/fonts/fontawesome-webfont.woff'])
