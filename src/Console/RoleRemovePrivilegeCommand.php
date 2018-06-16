@@ -81,7 +81,7 @@ class RoleRemovePrivilegeCommand extends Command
 		$privilegeName = $input->getArgument('privilege');
 
 		if(!$this->getHelper('state')->isInstalled()) {
-			$output->writeln('<error>  The Voonne Platform must be installed in the first place. Please use command voonne:install.  </error>');
+			$output->writeln('<fg=red>The Voonne Platform must be installed in the first place. Please use command voonne:install.</>');
 
 			return 1;
 		}
@@ -90,7 +90,7 @@ class RoleRemovePrivilegeCommand extends Command
 			/** @var Role $role */
 			$role = $this->roleRepository->findOneBy(['name' => $roleName]);
 		} catch (IOException $e) {
-			$output->writeln('<error>  Role with this name was not found.  </error>');
+			$output->writeln('<fg=red>Role with this name was not found.</>');
 
 			return 1;
 		}
@@ -99,13 +99,13 @@ class RoleRemovePrivilegeCommand extends Command
 			/** @var Privilege $privilege */
 			$privilege = $this->privilegeRepository->getPrivilege($zoneName, $resourceName, $privilegeName);
 		} catch (IOException $e) {
-			$output->writeln('<error>  Privilege with this name was not found.  </error>');
+			$output->writeln('<fg=red>Privilege with this name was not found.</>');
 
 			return 1;
 		}
 
 		if (!$role->getPrivileges()->contains($privilege)) {
-			$output->writeln('<error>  This role do not have this privilege.  </error>');
+			$output->writeln('<fg=red>This role do not have this privilege.</>');
 
 			return 1;
 		}
@@ -121,7 +121,7 @@ class RoleRemovePrivilegeCommand extends Command
 
 			return 0;
 		} catch (PDOException $e) {
-			$output->writeln(sprintf('<error>  %s  </error>', $e->getMessage()));
+			$output->writeln(sprintf('<fg=red>%s</>', $e->getMessage()));
 
 			return 1;
 		}

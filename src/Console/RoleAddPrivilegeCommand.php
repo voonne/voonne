@@ -90,7 +90,7 @@ class RoleAddPrivilegeCommand extends Command
 			/** @var Role $role */
 			$role = $this->roleRepository->findOneBy(['name' => $roleName]);
 		} catch (IOException $e) {
-			$output->writeln('<error>  Role with this name was not found.  </error>');
+			$output->writeln('<fg=red>Role with this name was not found.</>');
 
 			return 1;
 		}
@@ -99,13 +99,13 @@ class RoleAddPrivilegeCommand extends Command
 			/** @var Privilege $privilege */
 			$privilege = $this->privilegeRepository->getPrivilege($zoneName, $resourceName, $privilegeName);
 		} catch (IOException $e) {
-			$output->writeln('<error>  Privilege with this name was not found.  </error>');
+			$output->writeln('<fg=red>Privilege with this name was not found. </>');
 
 			return 1;
 		}
 
 		if ($role->getPrivileges()->contains($privilege)) {
-			$output->writeln('<error>  This role already has this privilege.  </error>');
+			$output->writeln('<fg=red>This role already has this privilege.</>');
 
 			return 1;
 		}

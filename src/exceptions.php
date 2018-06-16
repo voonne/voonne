@@ -29,6 +29,12 @@ class DuplicateEntryException extends \RuntimeException
 }
 
 
+class IOException extends \RuntimeException
+{
+
+}
+
+
 class InvalidArgumentException extends \InvalidArgumentException
 {
 

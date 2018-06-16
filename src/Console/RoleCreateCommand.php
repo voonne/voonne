@@ -50,7 +50,7 @@ class RoleCreateCommand extends Command
 		$roleName = $input->getArgument('name');
 
 		if(!$this->getHelper('state')->isInstalled()) {
-			$output->writeln('<error>  The Voonne Platform must be installed in the first place. Please use command voonne:install.  </error>');
+			$output->writeln('<fg=red>The Voonne Platform must be installed in the first place. Please use command voonne:install.</>');
 
 			return 1;
 		}
@@ -62,7 +62,7 @@ class RoleCreateCommand extends Command
 
 			return 0;
 		} catch (DuplicateEntryException $e) {
-			$output->writeln(sprintf('<error>  %s  </error>', $e->getMessage()));
+			$output->writeln(sprintf('<fg=red>%s</>', $e->getMessage()));
 
 			return 1;
 		}

@@ -57,7 +57,7 @@ class UserRemoveCommand extends Command
 		$userEmail = $input->getArgument('email');
 
 		if(!$this->getHelper('state')->isInstalled()) {
-			$output->writeln('<error>  The Voonne Platform must be installed in the first place. Please use command voonne:install.  </error>');
+			$output->writeln('<fg=red>The Voonne Platform must be installed in the first place. Please use command voonne:install.</>');
 
 			return 1;
 		}
@@ -65,7 +65,7 @@ class UserRemoveCommand extends Command
 		try {
 			$user = $this->userRepository->findOneBy(['email' => $userEmail]);
 		} catch (IOException $e) {
-			$output->writeln('<error>  User with this email was not found.  </error>');
+			$output->writeln('<fg=red>User with this email was not found.</>');
 
 			return 1;
 		}
@@ -77,7 +77,7 @@ class UserRemoveCommand extends Command
 
 			return 0;
 		} catch (PDOException $e) {
-			$output->writeln(sprintf('<error>  %s  </error>', $e->getMessage()));
+			$output->writeln(sprintf('<fg=red>%s</>', $e->getMessage()));
 
 			return 1;
 		}

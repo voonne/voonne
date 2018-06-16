@@ -43,7 +43,7 @@ class RoleListCommand extends Command
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		if(!$this->getHelper('state')->isInstalled()) {
-			$output->writeln('<error>  The Voonne Platform must be installed in the first place. Please use command voonne:install.  </error>');
+			$output->writeln('<fg=red>The Voonne Platform must be installed in the first place. Please use command voonne:install.</>');
 
 			return 1;
 		}

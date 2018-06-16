@@ -46,6 +46,7 @@ use Voonne\Voonne\AdminModule\Forms\LostPasswordFormFactory;
 use Voonne\Voonne\AdminModule\Forms\NewPasswordFormFactory;
 use Voonne\Voonne\AdminModule\Forms\SignInFormFactory;
 use Voonne\Voonne\AssertionException;
+use Voonne\Voonne\Console\GenerateModuleCommand;
 use Voonne\Voonne\Console\Helpers\StateHelper;
 use Voonne\Voonne\Console\InstallCommand;
 use Voonne\Voonne\Console\PermissionListCommand;
@@ -99,7 +100,7 @@ class VoonneExtension extends CompilerExtension
 	 * @var array
 	 */
 	public $defaults = [
-		'storageProvider' => null
+		'storageAdapter' => null
 	];
 
 
@@ -111,62 +112,62 @@ class VoonneExtension extends CompilerExtension
 		/* facades */
 
 		$builder->addDefinition($this->prefix('lostPasswordFacade'))
-			->setClass(LostPasswordFacade::class);
+			->setType(LostPasswordFacade::class);
 
 		$builder->addDefinition($this->prefix('roleFacade'))
-			->setClass(RoleFacade::class);
+			->setType(RoleFacade::class);
 
 		$builder->addDefinition($this->prefix('userFacade'))
-			->setClass(UserFacade::class);
+			->setType(UserFacade::class);
 
 		/* repositories */
 
 		$builder->addDefinition($this->prefix('domainLanguageRepository'))
-			->setClass(DomainLanguageRepository::class)
+			->setType(DomainLanguageRepository::class)
 			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => DomainLanguage::class]);
 
 		$builder->addDefinition($this->prefix('domainRepository'))
-			->setClass(DomainRepository::class)
+			->setType(DomainRepository::class)
 			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => Domain::class]);
 
 		$builder->addDefinition($this->prefix('languageRepository'))
-			->setClass(LanguageRepository::class)
+			->setType(LanguageRepository::class)
 			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => Language::class]);
 
 		$builder->addDefinition($this->prefix('lostPasswordRepository'))
-			->setClass(LostPasswordRepository::class)
+			->setType(LostPasswordRepository::class)
 			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => LostPassword::class]);
 
 		$builder->addDefinition($this->prefix('PrivilegeRepository'))
-			->setClass(PrivilegeRepository::class)
+			->setType(PrivilegeRepository::class)
 			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => Privilege::class]);
 
 		$builder->addDefinition($this->prefix('resourceRepository'))
-			->setClass(ResourceRepository::class)
+			->setType(ResourceRepository::class)
 			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => Resource::class]);
 
 		$builder->addDefinition($this->prefix('roleRepository'))
-			->setClass(RoleRepository::class)
+			->setType(RoleRepository::class)
 			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => Role::class]);
 
 		$builder->addDefinition($this->prefix('userRepository'))
-			->setClass(UserRepository::class)
+			->setType(UserRepository::class)
 			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => User::class]);
 
 		$builder->addDefinition($this->prefix('zoneRepository'))
-			->setClass(ZoneRepository::class)
+			->setType(ZoneRepository::class)
 			->setTags([OrmExtension::TAG_REPOSITORY_ENTITY => Zone::class]);
 
 		/* forms */
 
 		$builder->addDefinition($this->prefix('lostPasswordFormFactory'))
-			->setClass(LostPasswordFormFactory::class);
+			->setType(LostPasswordFormFactory::class);
 
 		$builder->addDefinition($this->prefix('newPasswordFormFactory'))
-			->setClass(NewPasswordFormFactory::class);
+			->setType(NewPasswordFormFactory::class);
 
 		$builder->addDefinition($this->prefix('signInFormFactory'))
-			->setClass(SignInFormFactory::class);
+			->setType(SignInFormFactory::class);
 
 		/* controls */
 
@@ -185,27 +186,27 @@ class VoonneExtension extends CompilerExtension
 		/* listeners */
 
 		$builder->addDefinition($this->prefix('emailListener'))
-			->setClass(EmailListener::class)
+			->setType(EmailListener::class)
 			->addTag(EventsExtension::TAG_SUBSCRIBER);
 
 		/* content */
 
 		$builder->addDefinition($this->prefix('contentForm'))
-			->setClass(ContentForm::class);
+			->setType(ContentForm::class);
 
 		$builder->addDefinition($this->prefix('templateFactory'))
-			->setClass(TemplateFactory::class, ['@' . $this->prefix('latteFactory')])
+			->setFactory(TemplateFactory::class, ['@' . $this->prefix('latteFactory')])
 			->setAutowired(false);
 
 		/* pages */
 
 		$builder->addDefinition($this->prefix('pageManager'))
-			->setClass(PageManager::class);
+			->setType(PageManager::class);
 
 		/* layouts */
 
 		$builder->addDefinition($this->prefix('layoutManager'))
-			->setClass(LayoutManager::class);
+			->setType(LayoutManager::class);
 
 		$builder->addDefinition($this->prefix('layout1Factory'))
 			->setImplement(ILayout1Factory::class)
@@ -218,28 +219,28 @@ class VoonneExtension extends CompilerExtension
 		/* panels */
 
 		$builder->addDefinition($this->prefix('rendererManager'))
-			->setClass(RendererManager::class);
+			->setType(RendererManager::class);
 
 		$builder->addDefinition($this->prefix('basicRendererFactory'))
-			->setClass(BasicRendererFactory::class)
+			->setType(BasicRendererFactory::class)
 			->addTag(RendererManager::TAG_RENDERER);
 
 		$builder->addDefinition($this->prefix('blankRendererFactory'))
-			->setClass(BlankRendererFactory::class)
+			->setType(BlankRendererFactory::class)
 			->addTag(RendererManager::TAG_RENDERER);
 
 		$builder->addDefinition($this->prefix('formRendererFactory'))
-			->setClass(FormRendererFactory::class)
+			->setType(FormRendererFactory::class)
 			->addTag(RendererManager::TAG_RENDERER);
 
 		$builder->addDefinition($this->prefix('tableRendererFactory'))
-			->setClass(TableRendererFactory::class)
+			->setType(TableRendererFactory::class)
 			->addTag(RendererManager::TAG_RENDERER);
 
 		/* widgets */
 
 		$builder->addDefinition($this->prefix('widgetManager'))
-			->setClass(WidgetManager::class);
+			->setType(WidgetManager::class);
 
 		/* router */
 
@@ -249,62 +250,66 @@ class VoonneExtension extends CompilerExtension
 
 		/* commands */
 
-		$builder->addDefinition($this->prefix('cli.stateHelper'))
-			->setClass(StateHelper::class)
+		$builder->addDefinition($this->prefix('commands.helpers.stateHelper'))
+			->setType(StateHelper::class)
 			->addTag(ConsoleExtension::TAG_HELPER);
 
-		$builder->addDefinition($this->prefix('cli.install'))
-			->setClass(InstallCommand::class)
+		$builder->addDefinition($this->prefix('commands.generate.module'))
+			->setType(GenerateModuleCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
-		$builder->addDefinition($this->prefix('cli.permission.list'))
-			->setClass(PermissionListCommand::class)
+		$builder->addDefinition($this->prefix('commands.install'))
+			->setType(InstallCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
-		$builder->addDefinition($this->prefix('cli.role.addPrivilege'))
-			->setClass(RoleAddPrivilegeCommand::class)
+		$builder->addDefinition($this->prefix('commands.permission.list'))
+			->setType(PermissionListCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
-		$builder->addDefinition($this->prefix('cli.role.create'))
-			->setClass(RoleCreateCommand::class)
+		$builder->addDefinition($this->prefix('commands.role.addPrivilege'))
+			->setType(RoleAddPrivilegeCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
-		$builder->addDefinition($this->prefix('cli.role.list'))
-			->setClass(RoleListCommand::class)
+		$builder->addDefinition($this->prefix('commands.role.create'))
+			->setType(RoleCreateCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
-		$builder->addDefinition($this->prefix('cli.role.remove'))
-			->setClass(RoleRemoveCommand::class)
+		$builder->addDefinition($this->prefix('commands.role.list'))
+			->setType(RoleListCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
-		$builder->addDefinition($this->prefix('cli.role.removePrivilege'))
-			->setClass(RoleRemovePrivilegeCommand::class)
+		$builder->addDefinition($this->prefix('commands.role.remove'))
+			->setType(RoleRemoveCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
-		$builder->addDefinition($this->prefix('cli.user.addRole'))
-			->setClass(UserAddRoleCommand::class)
+		$builder->addDefinition($this->prefix('commands.role.removePrivilege'))
+			->setType(RoleRemovePrivilegeCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
-		$builder->addDefinition($this->prefix('cli.user.create'))
-			->setClass(UserCreateCommand::class)
+		$builder->addDefinition($this->prefix('commands.user.addRole'))
+			->setType(UserAddRoleCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
-		$builder->addDefinition($this->prefix('cli.user.list'))
-			->setClass(UserListCommand::class)
+		$builder->addDefinition($this->prefix('commands.user.create'))
+			->setType(UserCreateCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
-		$builder->addDefinition($this->prefix('cli.user.remove'))
-			->setClass(UserRemoveCommand::class)
+		$builder->addDefinition($this->prefix('commands.user.list'))
+			->setType(UserListCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
-		$builder->addDefinition($this->prefix('cli.user.removeRole'))
-			->setClass(UserRemoveRoleCommand::class)
+		$builder->addDefinition($this->prefix('commands.user.remove'))
+			->setType(UserRemoveCommand::class)
+			->addTag(ConsoleExtension::TAG_COMMAND);
+
+		$builder->addDefinition($this->prefix('commands.user.removeRole'))
+			->setType(UserRemoveRoleCommand::class)
 			->addTag(ConsoleExtension::TAG_COMMAND);
 
 		/* domains */
 
 		$builder->addDefinition($this->prefix('domainManager'))
-			->setClass(DomainManager::class);
+			->setType(DomainManager::class);
 
 		/* storage */
 
@@ -313,7 +318,7 @@ class VoonneExtension extends CompilerExtension
 		}
 
 		$builder->addDefinition($this->prefix('storageAdapter'))
-			->setClass(StorageManager::class, [$config['storageAdapter']]);
+			->setFactory(StorageManager::class, [$config['storageAdapter']]);
 
 		$builder->getDefinition('latte.latteFactory')
 			->addSetup('?->onCompile[] = function($engine) { ' . Macros::class . '::install($engine->getCompiler()); }', ['@self']);
@@ -321,22 +326,22 @@ class VoonneExtension extends CompilerExtension
 		/* security */
 
 		$builder->addDefinition($this->prefix('authenticator'))
-			->setClass(Authenticator::class);
+			->setType(Authenticator::class);
 
 		$builder->addDefinition($this->prefix('authorizator'))
-			->setClass(Authorizator::class);
+			->setType(Authorizator::class);
 
 		$builder->addDefinition($this->prefix('permissionManager'))
-			->setClass(PermissionManager::class)
+			->setType(PermissionManager::class)
 			->addSetup('addZone', ['admin', 'Administration']);
 
 		$builder->addDefinition($this->prefix('user'))
-			->setClass(\Voonne\Security\User::class);
+			->setType(\Voonne\Security\User::class);
 
 		/* assets */
 
 		$builder->addDefinition($this->prefix('assetsManager'))
-			->setClass(AssetsManager::class)
+			->setType(AssetsManager::class)
 			->addSetup('addScript', ['admin', __DIR__ . '/../../dist/scripts/admin.js'])
 			->addSetup('addScript', ['sign-in', __DIR__ . '/../../dist/scripts/sign-in.js'])
 			->addSetup('addStyle', ['admin', __DIR__ . '/../../dist/styles/admin.css'])
@@ -371,7 +376,7 @@ class VoonneExtension extends CompilerExtension
 		$builder->removeDefinition($routerServiceName);
 
 		$builder->addDefinition($routerServiceName)
-			->setClass(RouteList::class)
+			->setType(RouteList::class)
 			->addSetup('offsetSet', [NULL, '@' . $this->prefix('router')])
 			->addSetup('offsetSet', [NULL, '@' . $this->prefix('originalRouter')]);
 
@@ -403,7 +408,7 @@ class VoonneExtension extends CompilerExtension
 
 		// inspired by: https://github.com/Kdyby/Doctrine/blob/master/src/Kdyby/Doctrine/DI/OrmExtension.php
 		$builder->addDefinition($this->prefix('doctrine.annotations'))
-			->setClass(MappingDriver::class)
+			->setType(MappingDriver::class)
 			->setFactory(AnnotationDriver::class, [
 				0 => '@Doctrine\Common\Annotations\Reader',
 				1 => [__DIR__ . '/..']
@@ -418,7 +423,7 @@ class VoonneExtension extends CompilerExtension
 		/* content */
 
 		$latteFactoryDefinition = $builder->addDefinition($this->prefix('latteFactory'))
-			->setClass(Engine::class, ['@' . $this->prefix('contentForm')])
+			->setFactory(Engine::class, ['@' . $this->prefix('contentForm')])
 			->setImplement(ILatteFactory::class)
 			->setAutowired(false);
 
@@ -427,7 +432,7 @@ class VoonneExtension extends CompilerExtension
 		}
 
 		foreach ($builder->getDefinitions() as $definition) {
-			if(is_subclass_of($definition->getClass(), Panel::class)) {
+			if(is_subclass_of($definition->getType(), Panel::class)) {
 				$definition->addSetup('setTemplateFactory', ['@' . $this->prefix('templateFactory')]);
 			}
 		}
@@ -439,7 +444,7 @@ class VoonneExtension extends CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		foreach ($builder->getDefinitions() as $definition) {
-			if ($definition->getClass() == MappingDriverChain::class) {
+			if ($definition->getType() == MappingDriverChain::class) {
 				return $definition;
 			}
 		}
