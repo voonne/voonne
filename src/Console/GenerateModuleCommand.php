@@ -439,7 +439,10 @@ class CreateFormPanel extends FormPanel
 namespace ' . $namespace . '\Modules\\' . $name . '\Panels;
 
 use ' . $namespace . '\Modules\\' . $name . '\Model\Entities\\' . $name . ';
+use ' . $namespace . '\Modules\\' . $name . '\Model\Facades\\' . $name . 'Facade;
 use ' . $namespace . '\Modules\\' . $name . '\Model\Repositories\\' . $name . 'Repository;
+use Voonne\Messages\FlashMessage;
+use Voonne\Model\IOException;
 use Voonne\Panels\Panels\TablePanel\Adapters\Doctrine2Adapter;
 use Voonne\Panels\Panels\TablePanel\TablePanel;
 
@@ -452,12 +455,18 @@ class ' . $name . 'TablePanel extends TablePanel
 	 */
 	private $' . Strings::firstLower($name) . 'Repository;
 
+	/**
+	 * @var ' . $name. 'Facade
+	 */
+	private $' . Strings::firstLower($name) .  'Facade;
 
-	public function __construct(' . $name . 'Repository $' . Strings::firstLower($name) . 'Repository)
+
+	public function __construct(' . $name . 'Repository $' . Strings::firstLower($name) . 'Repository, ' . $name . 'Facade $' . Strings::firstLower($name) . 'Facade)
 	{
 		parent::__construct();
 
 		$this->' . Strings::firstLower($name) . 'Repository = $' . Strings::firstLower($name) . 'Repository;
+		$this->' . Strings::firstLower($name) . 'Facade = $' . Strings::firstLower($name) . 'Facade;
 
 		$this->setTitle(\'' . $this->getLabel($name) . '\');
 	}
@@ -476,8 +485,35 @@ class ' . $name . 'TablePanel extends TablePanel
 				return null;
 			}
 		});
+		
+		$this->addAction(\'remove\', \'Remove\', function (' . $name . ' $' . Strings::firstLower($name) . ') {
+			if ($this->getUser()->havePrivilege(\'admin\', \'' . Strings::firstLower($name) . '\', \'remove\')) {
+				return $this->link(\'remove!\', [\'id\' => $' . Strings::firstLower($name) . '->getId()]);
+			} else {
+				return null;
+			}
+		});
 
 		$this->setAdapter(new Doctrine2Adapter($this->' . Strings::firstLower($name) . 'Repository->getQuery()));
+	}
+
+
+	public function handleRemove($id)
+	{
+		try {
+			if (!$this->getUser()->havePrivilege(\'admin\', \'' . Strings::firstLower($name) . '\', \'remove\')) {
+				$this->flashMessage(\'voonne-common.authentication.unauthorizedAction\', FlashMessage::ERROR);
+				$this->redirect(\'this\');
+			}
+
+			$this->' . Strings::firstLower($name) . 'Facade->remove($this->' . Strings::firstLower($name) . 'Repository->find($id));
+
+			$this->flashMessage(\'' . $this->getLabel($name) . ' was successfully removed.\', FlashMessage::SUCCESS);
+			$this->redirect(\'this\');
+		} catch(IOException $e) {
+			$this->flashMessage(\'' . $this->getLabel($name) . ' was not found.\', FlashMessage::ERROR);
+			$this->redirect(\'this\');
+		}
 	}
 
 }
