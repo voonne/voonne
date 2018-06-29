@@ -41,6 +41,18 @@ class User
 	protected $password;
 
 	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 * @var string|null
+	 */
+	private $firstName;
+
+	/**
+	 * @ORM\Column(type="string", nullable=true)
+	 * @var string|null
+	 */
+	private $lastName;
+
+	/**
 	 * @ORM\Column(type="datetime", nullable=false)
 	 * @var DateTime
 	 */
@@ -53,10 +65,12 @@ class User
 	private $roles;
 
 
-	public function __construct($email, $password)
+	public function __construct($email, $password, $firstName = null, $lastName = null)
 	{
 		$this->email = $email;
 		$this->password = Passwords::hash($password);
+		$this->firstName = $firstName;
+		$this->lastName = $lastName;
 		$this->createdAt = new DateTime();
 		$this->roles = new ArrayCollection();
 	}
@@ -81,6 +95,24 @@ class User
 
 
 	/**
+	 * @return string|null
+	 */
+	public function getFirstName()
+	{
+		return $this->firstName;
+	}
+
+
+	/**
+	 * @return string|null
+	 */
+	public function getLastName()
+	{
+		return $this->lastName;
+	}
+
+
+	/**
 	 * @return DateTime
 	 */
 	public function getCreatedAt()
@@ -100,10 +132,14 @@ class User
 
 	/**
 	 * @param string $email
+	 * @param string|null $firstName
+	 * @param string|null $lastName
 	 */
-	public function update($email)
+	public function update($email, $firstName = null, $lastName = null)
 	{
 		$this->email = $email;
+		$this->firstName = $firstName;
+		$this->lastName = $lastName;
 	}
 
 

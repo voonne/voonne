@@ -146,7 +146,7 @@ class ' . $name . 'Extension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix(\'defaultPage\'))
 			->setType(DefaultPage::class)
-			->addSetup(\'addPanel\', [\'@\' . $this->prefix(\'' . $name . 'TablePanel\'), [Layout::POSITION_CENTER]]);
+			->addSetup(\'addPanel\', [\'@\' . $this->prefix(\'' . Strings::firstLower($name) . 'TablePanel\'), [Layout::POSITION_CENTER]]);
 
 		$builder->addDefinition($this->prefix(\'updatePage\'))
 			->setType(UpdatePage::class)
@@ -155,7 +155,7 @@ class ' . $name . 'Extension extends CompilerExtension
 		$builder->addDefinition($this->prefix(\'createFormPanel\'))
 			->setType(CreateFormPanel::class);
 
-		$builder->addDefinition($this->prefix(\'' . $name . 'TablePanel\'))
+		$builder->addDefinition($this->prefix(\'' . Strings::firstLower($name) . 'TablePanel\'))
 			->setType(' . $name . 'TablePanel::class);
 
 		$builder->addDefinition($this->prefix(\'updateFormPanel\'))
