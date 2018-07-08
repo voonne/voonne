@@ -14,6 +14,7 @@ use Nette\Application\Request;
 use Nette\Application\Routers\Route;
 use Nette\Http\IRequest;
 use Nette\Http\Url;
+use Nette\Utils\Strings;
 
 
 class ContentRoute extends Route
@@ -75,8 +76,8 @@ class ContentRoute extends Route
 			return null;
 		}
 
-		$parameters['groupName'] = strtolower(preg_replace('/[A-Z]/', '-$0', $parameters['groupName']));
-		$parameters['pageName'] = strtolower(preg_replace('/[A-Z]/', '-$0', $parameters['pageName']));
+		$parameters['groupName'] = strtolower(preg_replace('/[A-Z]/', '-$0', Strings::firstLower($parameters['groupName'])));
+		$parameters['pageName'] = strtolower(preg_replace('/[A-Z]/', '-$0', Strings::firstLower($parameters['pageName'])));
 
 		$url = $refUrl->getBasePath() . 'admin/' . $parameters['groupName'] . '/' . $parameters['pageName'];
 

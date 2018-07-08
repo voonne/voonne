@@ -14,7 +14,6 @@ use Nette\Application\BadRequestException;
 use Nette\Application\Responses\TextResponse;
 use Nette\Application\UI\Presenter;
 use Nette\Http\Response;
-use Voonne\Storage\DirectoryNotFoundException;
 use Voonne\Storage\FileNotFoundException;
 use Voonne\Storage\StorageManager;
 
@@ -43,8 +42,6 @@ class FilesPresenter extends Presenter
 
 			$this->response->setContentType($file->getMimeType());
 			$this->sendResponse(new TextResponse(file_get_contents($file->getPath())));
-		} catch (DirectoryNotFoundException $e) {
-			throw new BadRequestException('Not found', 404);
 		} catch (FileNotFoundException $e) {
 			throw new BadRequestException('Not found', 404);
 		}

@@ -6,12 +6,12 @@
  * For the full copyright and license information, please view the file licence.md that was distributed with this source code.
  */
 
-$(document).ready(function() {
-	$('[data-confirm]').click(function() {
+$(document).ready(function () {
+	$('[data-confirm]').click(function () {
 		return confirm($(this).attr('data-confirm'));
 	});
 
-	$('.navbar-toggle').click(function(e) {
+	$('.navbar-toggle').click(function (e) {
 		e.preventDefault();
 
 		if($('body.sidebar-collapse').length == 0) {
@@ -21,7 +21,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.sidebar-menu>li').each(function() {
+	$('.sidebar-menu>li').each(function () {
 
 		if($(this).children('ul').length != 0) {
 			$(this).children('a').click(function (e) {
@@ -48,5 +48,13 @@ $(document).ready(function() {
 
 	$('.datetime-picker').datetimepicker({
 		locale: 'cs'
+	});
+
+	$('.table-panel tbody td').click(function () {
+		const link = $(this).parent().data('link');
+
+		if (link) {
+			window.location = link;
+		}
 	});
 });
