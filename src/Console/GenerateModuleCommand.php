@@ -161,10 +161,10 @@ class ' . $name . 'Extension extends CompilerExtension
 		$builder->addDefinition($this->prefix(\'updateFormPanel\'))
 			->setType(UpdateFormPanel::class);
 
-		$builder->addDefinition($this->prefix(\'' . $name . 'Facade\'))
+		$builder->addDefinition($this->prefix(\'' . Strings::firstLower($name) . 'Facade\'))
 			->setType(' . $name . 'Facade::class);
 
-		$builder->addDefinition($this->prefix(\'' . $name . 'Repository\'))
+		$builder->addDefinition($this->prefix(\'' . Strings::firstLower($name) . 'Repository\'))
 			->setType(' . $name . 'Repository::class)
 			->addTag(OrmExtension::TAG_REPOSITORY_ENTITY, ' . $name . '::class);
 	}
