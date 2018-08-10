@@ -16,6 +16,7 @@ use Kdyby\Console\DI\ConsoleExtension;
 use Kdyby\Doctrine\DI\OrmExtension;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Kdyby\Events\DI\EventsExtension;
+use Kdyby\Events\EventManager;
 use Kdyby\Translation\Translator;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\IRouter;
@@ -23,6 +24,7 @@ use Nette\Application\Routers\RouteList;
 use Nette\Bridges\ApplicationLatte\ILatteFactory;
 use Nette\Bridges\ApplicationLatte\TemplateFactory;
 use Nette\DI\CompilerExtension;
+use Nette\Http\Request;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use Voonne\Assets\AssetsManager;
@@ -100,7 +102,8 @@ class VoonneExtension extends CompilerExtension
 	 * @var array
 	 */
 	public $defaults = [
-		'storageAdapter' => null
+		'storageAdapter' => null,
+		'prefix' => 'admin'
 	];
 
 
@@ -245,7 +248,7 @@ class VoonneExtension extends CompilerExtension
 		/* router */
 
 		$builder->addDefinition($this->prefix('router'))
-			->setFactory(RouterFactory::class . '::createRouter')
+			->setFactory(RouterFactory::class . '::createRouter', ['@' . Request::class, $config['prefix']])
 			->setAutowired(false);
 
 		/* commands */

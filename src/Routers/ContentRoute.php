@@ -25,12 +25,22 @@ class ContentRoute extends Route
 	 */
 	private $request;
 
+	/**
+	 * @var string
+	 */
+	private $prefix;
 
-	public function __construct(\Nette\Http\Request $request)
+
+	public function __construct(\Nette\Http\Request $request, $prefix)
 	{
-		parent::__construct('admin/<groupName>/<pageName>', 'Content:default', 0);
+		parent::__construct(
+			sprintf('%s%s<groupName>/<pageName>', trim($prefix), !empty($prefix) ? '/' : ''),
+			'Content:default',
+			0
+		);
 
 		$this->request = $request;
+		$this->prefix = $prefix;
 	}
 
 
@@ -79,7 +89,14 @@ class ContentRoute extends Route
 		$parameters['groupName'] = strtolower(preg_replace('/[A-Z]/', '-$0', Strings::firstLower($parameters['groupName'])));
 		$parameters['pageName'] = strtolower(preg_replace('/[A-Z]/', '-$0', Strings::firstLower($parameters['pageName'])));
 
-		$url = $refUrl->getBasePath() . 'admin/' . $parameters['groupName'] . '/' . $parameters['pageName'];
+		$url = sprintf(
+			'%s%s%s%s/%s',
+			$refUrl->getBasePath(),
+			trim($this->prefix),
+			!empty($this->prefix) ? '/' : '',
+			$parameters['groupName'],
+			$parameters['pageName']
+		);
 
 		unset($parameters['groupName'], $parameters['pageName'], $parameters['action']);
 
@@ -94,7 +111,7 @@ class ContentRoute extends Route
 
 		$query = http_build_query($parameters, '', '&');
 		if ($query !== '') {
-			$url .= '?' . $query;
+			$url .= sprintf('?%s', $query);
 		}
 
 		return $url;

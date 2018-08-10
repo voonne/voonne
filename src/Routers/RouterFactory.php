@@ -10,7 +10,6 @@
 
 namespace Voonne\Voonne\Routers;
 
-use Nette\Application\IRouter;
 use Nette\Application\Routers\Route;
 use Nette\Application\Routers\RouteList;
 use Nette\Http\Request;
@@ -19,30 +18,42 @@ use Nette\Http\Request;
 class RouterFactory
 {
 
-	/**
-	 * @return IRouter
-	 */
-	public static function createRouter(Request $request)
+	public static function createRouter(Request $request, $prefix)
 	{
 		$router = new RouteList;
 
 		$router[] = $frontRouter = new RouteList('Admin');
 
-		$frontRouter[] = new Route('admin', 'Default:default');
+		$frontRouter[] = new Route(trim($prefix), 'Default:default');
 
-		$frontRouter[] = new Route('admin/lost-password', 'Default:lostPassword');
+		$frontRouter[] = new Route(
+			sprintf('%s%slost-password', trim($prefix), !empty($prefix) ? '/' : ''),
+			'Default:lostPassword'
+		);
 
-		$frontRouter[] = new Route('admin/new-password/<code>', 'Default:newPassword');
+		$frontRouter[] = new Route(
+			sprintf('%s%snew-password/<code>', trim($prefix), !empty($prefix) ? '/' : ''),
+			'Default:newPassword'
+		);
 
-		$frontRouter[] = new Route('admin/dashboard', 'Dashboard:default');
+		$frontRouter[] = new Route(
+			sprintf('%s%sdashboard', trim($prefix), !empty($prefix) ? '/' : ''),
+			'Dashboard:default'
+		);
 
-		$frontRouter[] = new ContentRoute($request);
+		$frontRouter[] = new ContentRoute($request, $prefix);
 
 		$frontRouter[] = $apiRouter = new RouteList('Api');
 
-		$apiRouter[] = new Route('admin/api/v1/assets/<name .+>', 'Assets:default');
+		$apiRouter[] = new Route(
+			sprintf('%s%sapi/v1/assets/<name .+>', trim($prefix), !empty($prefix) ? '/' : ''),
+			'Assets:default'
+		);
 
-		$apiRouter[] = new Route('admin/api/v1/files/<directoryName>/<fileName .+>', 'Files:default');
+		$apiRouter[] = new Route(
+			sprintf('%s%sapi/v1/files/<directoryName>/<fileName .+>', trim($prefix), !empty($prefix) ? '/' : ''),
+			'Files:default'
+		);
 
 		return $router;
 	}

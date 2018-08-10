@@ -47,7 +47,7 @@ class ContentRouteTest extends Unit
 		$this->appRequest = Mockery::mock(Request::class);
 		$this->refUrl = Mockery::mock(Url::class);
 
-		$this->contentRoute = new ContentRoute($this->request);
+		$this->contentRoute = new ContentRoute($this->request, 'admin');
 	}
 
 
