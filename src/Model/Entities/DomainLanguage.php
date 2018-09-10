@@ -28,13 +28,13 @@ class DomainLanguage
 	 * @ORM\ManyToOne(targetEntity="Domain", inversedBy="domainLanguages", cascade={"persist"})
 	 * @var Domain
 	 */
-	protected $domain;
+	private $domain;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Language", inversedBy="domainLanguages", cascade={"persist"})
 	 * @var Language
 	 */
-	protected $language;
+	private $language;
 
 
 	public function __construct(Domain $domain, Language $language)

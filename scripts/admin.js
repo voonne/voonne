@@ -11,10 +11,12 @@ $(document).ready(function () {
 		return confirm($(this).attr('data-confirm'));
 	});
 
+	$('[data-toggle="tooltip"]').tooltip();
+
 	$('.navbar-toggle').click(function (e) {
 		e.preventDefault();
 
-		if($('body.sidebar-collapse').length == 0) {
+		if($('body.sidebar-collapse').length === 0) {
 			$('body').addClass('sidebar-collapse');
 		} else {
 			$('body').removeClass('sidebar-collapse');
@@ -23,7 +25,7 @@ $(document).ready(function () {
 
 	$('.sidebar-menu>li').each(function () {
 
-		if($(this).children('ul').length != 0) {
+		if($(this).children('ul').length !== 0) {
 			$(this).children('a').click(function (e) {
 				e.preventDefault();
 

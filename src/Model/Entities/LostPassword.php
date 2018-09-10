@@ -30,19 +30,19 @@ class LostPassword
 	 * @ORM\Column(type="string", nullable=false, unique=true)
 	 * @var string
 	 */
-	protected $code;
+	private $code;
 
 	/**
 	 * @ORM\Column(type="datetime", nullable=false)
 	 * @var DateTime
 	 */
-	protected $createdAt;
+	private $createdAt;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="User", inversedBy="lostPasswords", cascade={"persist"})
 	 * @var User
 	 */
-	protected $user;
+	private $user;
 
 
 	public function __construct(User $user)

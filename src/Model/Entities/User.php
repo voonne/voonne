@@ -32,13 +32,13 @@ class User
 	 * @ORM\Column(type="string", nullable=false, unique=true)
 	 * @var string
 	 */
-	protected $email;
+	private $email;
 
 	/**
 	 * @ORM\Column(type="string", nullable=false)
 	 * @var string
 	 */
-	protected $password;
+	private $password;
 
 	/**
 	 * @ORM\Column(type="string", nullable=true)
@@ -56,13 +56,19 @@ class User
 	 * @ORM\Column(type="datetime", nullable=false)
 	 * @var DateTime
 	 */
-	protected $createdAt;
+	private $createdAt;
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Role", inversedBy="users", cascade={"persist"})
 	 * @var ArrayCollection
 	 */
 	private $roles;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="LostPassword", mappedBy="user", orphanRemoval=true)
+	 * @var ArrayCollection
+	 */
+	private $lostPasswords;
 
 
 	public function __construct($email, $password, $firstName = null, $lastName = null)
